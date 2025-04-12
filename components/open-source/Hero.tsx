@@ -264,7 +264,7 @@ export default function OpenSourceHero() {
       {mounted && (
         <>
           <motion.div
-            className="absolute top-1/4 -left-20 md:left-10 bg-black/30 backdrop-blur-md border border-primary/20 rounded-lg p-4 text-xs font-mono text-primary/70 w-60 transform -rotate-6 z-10"
+            className="absolute top-1/4 left-4 md:left-10 bg-black/30 backdrop-blur-md border border-primary/20 rounded-lg p-4 text-xs font-mono text-primary/70 w-[180px] sm:w-60 transform -rotate-6 z-10"
             initial={{ opacity: 0, x: -100 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 1 }}
@@ -284,7 +284,7 @@ pnpm start`}
           </motion.div>
 
           <motion.div
-            className="absolute bottom-1/4 -right-20 md:right-10 bg-black/30 backdrop-blur-md border border-primary/20 rounded-lg p-4 text-xs font-mono text-primary/70 w-60 transform rotate-6 z-10"
+            className="absolute bottom-1/4 right-4 md:right-10 bg-black/30 backdrop-blur-md border border-primary/20 rounded-lg p-4 text-xs font-mono text-primary/70 w-[220px] sm:w-72 transform rotate-6 z-10"
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 1.5 }}
