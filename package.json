@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "turbo build",
+    "build": "next build --turbopack",
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write .",
@@ -32,6 +32,7 @@
     "react-dom": "^19.1.0",
     "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7",
+    "turbo": "^2.5.2",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
