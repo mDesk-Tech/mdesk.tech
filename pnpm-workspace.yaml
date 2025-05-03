@@ -1,10 +1,10 @@
 packages:
-  - 'app/*'
-  - 'components/*'
-  - 'packages/*'
-  
+  - "app/*"
+  - "components/*"
+  - "packages/*"
+
 onlyBuiltDependencies:
-  - '@vercel/speed-insights'
+  - "@vercel/speed-insights"
   - canvas
   - sharp
   - unrs-resolver
