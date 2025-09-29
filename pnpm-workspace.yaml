@@ -1,9 +1,10 @@
 packages:
-  - "app/*"
-  - "components/*"
-  - "packages/*"
+  - app/*
+  - components/*
+  - packages/*
 
 onlyBuiltDependencies:
+  - "@tailwindcss/oxide"
   - "@vercel/speed-insights"
   - canvas
   - sharp
