@@ -9,3 +9,5 @@ onlyBuiltDependencies:
   - canvas
   - sharp
   - unrs-resolver
+
+ignore-workspace-root-check: true

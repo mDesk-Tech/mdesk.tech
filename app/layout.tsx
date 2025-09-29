@@ -8,8 +8,6 @@ import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
-import LcpOptimizer from "@/components/LcpOptimizer";
-import PerformanceOptimizer from "@/components/PerformanceOptimizer";
 
 // Optimize font loading
 const inter = Inter({
@@ -82,15 +80,14 @@ export default function RootLayout({
       style={{ colorScheme: "dark" }}
     >
       <head>
-        {/* Add preconnect for external domains */}
+        {/* Preconnect to critical domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
         {/* Inline critical CSS */}
         <style
@@ -99,55 +96,44 @@ export default function RootLayout({
               :root { --font-inter: '__Inter_Fallback_${inter.variable}'; }
               .critical-content { opacity: 1 !important; }
               
-              /* Additional critical CSS for LCP */
+              /* Critical CSS for LCP */
               h1, [data-lcp-element="true"] {
                 opacity: 1 !important;
                 visibility: visible !important;
-                content-visibility: visible !important;
-                transform: translateZ(0);
               }
               
               /* Optimize paint performance */
               .composite-layer {
-                transform: translateZ(0);
-                backface-visibility: hidden;
-                perspective: 1000px;
+                will-change: transform;
               }
               
-              /* Reduce layout shifts */
-              .motion-safe {
-                transform: translateZ(0);
+              /* Prevent layout shifts */
+              img, video {
+                height: auto;
+                max-width: 100%;
+                display: block;
               }
               
-              /* Optimize LCP elements */
-              [data-lcp-element] {
-                content-visibility: visible;
-                contain-intrinsic-size: 0 auto;
+              /* Smart content visibility for mobile */
+              @media (max-width: 768px) {
+                section:not(:first-of-type):not(.in-viewport) {
+                  content-visibility: auto;
+                  contain-intrinsic-size: 0 500px;
+                }
               }
               
-              /* Defer non-critical content */
-              section:not(:first-of-type) {
-                content-visibility: auto;
-                contain-intrinsic-size: 0 500px;
-              }
-              
-              /* Pre-allocate space for grid pattern */
+              /* Grid pattern - optimized */
               .grid-pattern {
-                height: 100% !important;
-                width: 100% !important;
-                position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                contain: strict !important;
+                contain: layout style;
+                pointer-events: none;
               }
               
-              /* Add support for reduced motion */
+              /* Reduced motion support */
               @media (prefers-reduced-motion: reduce) {
-                * {
+                *, *::before, *::after {
                   animation-duration: 0.01ms !important;
                   animation-iteration-count: 1 !important;
                   transition-duration: 0.01ms !important;
-                  scroll-behavior: auto !important;
                 }
               }
             `,
@@ -173,9 +159,7 @@ export default function RootLayout({
             <Footer />
           </div>
 
-          {/* Client components for performance optimization */}
-          <LcpOptimizer />
-          <PerformanceOptimizer />
+          {/* Performance optimizers are loaded in page.tsx */}
 
           {/* Defer non-critical scripts */}
           <Script
