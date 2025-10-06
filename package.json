@@ -51,15 +51,15 @@
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.22",
     "input-otp": "^1.4.2",
-    "lucide-react": "^0.544.0",
+    "lucide-react": "^0.545.0",
     "mongodb": "^6.20.0",
     "next": "15.5.4",
     "next-themes": "^0.4.6",
-    "react": "^19.1.1",
+    "react": "^19.2.0",
     "react-custom-scrollbars-2": "^4.5.0",
     "react-day-picker": "^9.11.0",
-    "react-dom": "^19.1.1",
-    "react-hook-form": "^7.63.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.64.0",
     "react-resizable-panels": "^3.0.6",
     "recharts": "3.2.1",
     "sonner": "^2.0.7",
@@ -68,16 +68,16 @@
     "turbo": "^2.5.8",
     "uuid": "^13.0.0",
     "vaul": "^1.1.2",
-    "zod": "^4.1.11"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^9.36.0",
-    "@tailwindcss/postcss": "^4.1.13",
+    "@eslint/js": "^9.37.0",
+    "@tailwindcss/postcss": "^4.1.14",
     "@types/node": "^24.6.2",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "eslint": "^9.36.0",
+    "eslint": "^9.37.0",
     "eslint-config-next": "15.5.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
@@ -86,13 +86,13 @@
     "lint-staged": "^16.2.3",
     "postcss": "^8.5.6",
     "prettier": "3.6.2",
-    "tailwindcss": "^4.1.13",
-    "typescript": "^5.9.2",
-    "typescript-eslint": "^8.44.1"
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.0"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "eslint --fix",
     "**/*.{js,ts,tsx,json,mjs,yaml,css,md}": "prettier -w"
   },
-  "packageManager": "pnpm@10.17.1"
+  "packageManager": "pnpm@10.18.1"
 }
