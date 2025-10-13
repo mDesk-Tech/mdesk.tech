@@ -49,7 +49,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
-    "framer-motion": "^12.23.22",
+    "framer-motion": "^12.23.24",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.545.0",
     "mongodb": "^6.20.0",
@@ -57,9 +57,9 @@
     "next-themes": "^0.4.6",
     "react": "^19.2.0",
     "react-custom-scrollbars-2": "^4.5.0",
-    "react-day-picker": "^9.11.0",
+    "react-day-picker": "^9.11.1",
     "react-dom": "^19.2.0",
-    "react-hook-form": "^7.64.0",
+    "react-hook-form": "^7.65.0",
     "react-resizable-panels": "^3.0.6",
     "recharts": "3.2.1",
     "sonner": "^2.0.7",
@@ -83,7 +83,7 @@
     "eslint-plugin-react": "^7.37.5",
     "globals": "^16.4.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.3",
+    "lint-staged": "^16.2.4",
     "postcss": "^8.5.6",
     "prettier": "3.6.2",
     "tailwindcss": "^4.1.14",
@@ -94,5 +94,5 @@
     "**/*.{js,jsx,ts,tsx}": "eslint --fix",
     "**/*.{js,ts,tsx,json,mjs,yaml,css,md}": "prettier -w"
   },
-  "packageManager": "pnpm@10.18.1"
+  "packageManager": "pnpm@10.18.2"
 }
