@@ -215,7 +215,7 @@ const Features = () => {
               className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50"
               onClick={() => setSelectedFeature(null)}
             />
-            <div className="fixed inset-0 grid place-items-center z-[100] p-4">
+            <div className="fixed inset-0 grid place-items-center z-100 p-4">
               <motion.button
                 key={`button-${selectedFeature.title}-${id}`}
                 layout
@@ -240,7 +240,7 @@ const Features = () => {
                   <div className="flex items-start gap-4 mb-6">
                     <motion.div
                       layoutId={`icon-${selectedFeature.title}-${id}`}
-                      className="p-3 sm:p-4 rounded-xl bg-primary/10 text-primary flex-shrink-0"
+                      className="p-3 sm:p-4 rounded-xl bg-primary/10 text-primary shrink-0"
                     >
                       {selectedFeature.icon}
                     </motion.div>
@@ -278,7 +278,7 @@ const Features = () => {
                         transition={{ delay: index * 0.1 }}
                         className="flex items-start gap-3 p-3 rounded-lg bg-muted/50"
                       >
-                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+                        <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
                         <p className="text-sm">{detail}</p>
                       </motion.div>
                     ))}

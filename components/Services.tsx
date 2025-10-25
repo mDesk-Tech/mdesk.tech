@@ -114,7 +114,7 @@ const Services = () => {
                       key={idx}
                       className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground"
                     >
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
                       <span>{feature}</span>
                     </div>
                   ))}
