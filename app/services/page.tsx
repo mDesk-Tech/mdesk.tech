@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { motion } from "framer-motion";
+import GlobalReach from "@/components/GlobalReach";
 import {
   Palette,
   Code2,
@@ -270,6 +271,8 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+
+      <GlobalReach />
 
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden">

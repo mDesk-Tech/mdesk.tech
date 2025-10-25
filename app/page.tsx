@@ -1,7 +1,6 @@
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Services from "@/components/Services";
-import GlobalReach from "@/components/GlobalReach";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import {
@@ -21,7 +20,7 @@ export default async function Home({
   searchParams: Promise<{ ref?: string }>;
 }) {
   const params = await searchParams;
-  const showDialog = params.ref === "miyuki-home";
+  const showDialog = params?.ref === "miyuki-home";
 
   return (
     <div className="bg-background text-foreground">
@@ -45,7 +44,6 @@ export default async function Home({
       <Hero />
       <Features />
       <Services />
-      <GlobalReach />
       <About />
       <Contact />
     </div>

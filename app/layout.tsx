@@ -9,6 +9,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 
+const gaId = process.env.NEXT_PUBLIC_GA_ID;
+
 const geist = Geist({
   subsets: ["latin"],
   display: "swap",
@@ -161,36 +163,38 @@ export default function RootLayout({
           {/* Performance optimizers are loaded in page.tsx */}
 
           {/* Defer non-critical scripts */}
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-            strategy="lazyOnload"
-            data-priority="low"
-          />
-          <Script
-            id="google-analytics"
-            strategy="lazyOnload"
-            data-priority="low"
-          >
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-                send_page_view: false,
-                transport_type: 'beacon',
-                anonymize_ip: true,
-              });
-            `}
-          </Script>
+          {gaId ? (
+            <>
+              <Script
+                src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+                strategy="lazyOnload"
+                data-priority="low"
+              />
+              <Script
+                id="google-analytics"
+                strategy="lazyOnload"
+                data-priority="low"
+              >
+                {`
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${gaId}', {
+                    send_page_view: false,
+                    transport_type: 'beacon',
+                    anonymize_ip: true,
+                  });
+                `}
+              </Script>
+            </>
+          ) : null}
 
           {/* Load analytics only in production */}
           {process.env.NODE_ENV === "production" && (
             <>
               <Analytics />
               <SpeedInsights />
-              {process.env.NEXT_PUBLIC_GA_ID && (
-                <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-              )}
+              {gaId && <GoogleAnalytics gaId={gaId} />}
             </>
           )}
         </ThemeProvider>

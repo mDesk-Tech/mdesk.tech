@@ -117,13 +117,9 @@ export function HyperText({
   }, [sourceText, duration, isAnimating, characterSet]);
 
   return (
-    // @ts-expect-error - Generic Component type compatibility with ElementType
     <Component
-      // @ts-expect-error - Generic Component type compatibility
       ref={elementRef}
-      // @ts-expect-error - Generic Component type compatibility
       className={cn("overflow-hidden py-2 text-4xl font-bold", className)}
-      // @ts-expect-error - Generic Component type compatibility
       onMouseEnter={handleAnimationTrigger}
       {...props}
     >

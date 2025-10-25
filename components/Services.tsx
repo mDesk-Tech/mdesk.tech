@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "motion/react";
 import { GlareCard } from "@/components/ui/glare-card";
 import { Palette, Code2, Server, TrendingUp } from "lucide-react";
 import { Cover } from "@/components/ui/cover";
@@ -63,13 +60,7 @@ const Services = () => {
       <div className="absolute inset-0 bg-linear-to-b from-background via-transparent to-background" />
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <motion.div
-          className="max-w-3xl mx-auto text-center mb-12 sm:mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
+        <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
             <span className="text-xs sm:text-sm font-semibold text-primary">
               What We Offer
@@ -84,16 +75,12 @@ const Services = () => {
             We provide comprehensive web solutions to help your business thrive
             in the digital landscape.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
+          {services.map((service) => (
+            <div
+              key={service.title}
               className="h-auto min-h-[350px] sm:h-[400px]"
             >
               <GlareCard className="flex flex-col items-start justify-between p-6 sm:p-8 h-full">
@@ -120,7 +107,7 @@ const Services = () => {
                   ))}
                 </div>
               </GlareCard>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

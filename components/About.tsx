@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "motion/react";
 import { Calendar, Users, Award, Target, Rocket, Heart } from "lucide-react";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 
@@ -86,13 +83,7 @@ const About = () => {
       className="py-16 sm:py-20 md:py-32 relative overflow-hidden bg-muted/20"
     >
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <motion.div
-          className="max-w-3xl mx-auto text-center mb-12 sm:mb-16 md:mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
+        <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16 md:mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
             <span className="text-xs sm:text-sm font-semibold text-primary">
               Our Story
@@ -105,17 +96,11 @@ const About = () => {
             We&apos;re passionate about creating exceptional digital experiences
             that transform businesses.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
+          {features.map((feature) => (
+            <div key={feature.name}>
               <CardSpotlight className="h-full w-full p-6 sm:p-8">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2.5 sm:p-3 rounded-xl bg-primary/10 text-primary">
@@ -151,17 +136,11 @@ const About = () => {
                   ))}
                 </ul>
               </CardSpotlight>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        <motion.div
-          className="mt-12 sm:mt-16 md:mt-20 max-w-4xl mx-auto p-6 sm:p-8 md:p-10 rounded-3xl border border-primary/20 bg-linear-to-br from-primary/5 to-accent/5 backdrop-blur-sm"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          viewport={{ once: true }}
-        >
+        <div className="mt-12 sm:mt-16 md:mt-20 max-w-4xl mx-auto p-6 sm:p-8 md:p-10 rounded-3xl border border-primary/20 bg-linear-to-br from-primary/5 to-accent/5 backdrop-blur-sm">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <h3 className="text-2xl sm:text-3xl font-bold mb-2 flex items-center gap-3">
@@ -172,18 +151,14 @@ const About = () => {
                 Let&apos;s create something amazing together.
               </p>
             </div>
-            <button
-              onClick={() => {
-                document
-                  .getElementById("contact")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
+            <a
+              href="#contact"
               className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-primary text-primary-foreground font-bold transition-all hover:scale-105 hover:shadow-lg hover:shadow-primary/50 whitespace-nowrap touch-manipulation w-full md:w-auto"
             >
               Get in Touch
-            </button>
+            </a>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

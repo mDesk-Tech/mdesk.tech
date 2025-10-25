@@ -6,7 +6,7 @@ import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 
 export default function GlobalReach() {
   return (
-    <div className="py-16 sm:py-20 md:py-32 bg-background w-full relative overflow-hidden">
+    <div className="pt-16 sm:pt-20 md:pt-32 bg-background w-full relative overflow-hidden">
       <div className="absolute inset-0 bg-linear-to-b from-primary/5 via-transparent to-primary/5" />
       <div className="absolute inset-0 grid-pattern opacity-10" />
 
@@ -45,11 +45,13 @@ export default function GlobalReach() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-base sm:text-xl text-muted-foreground max-w-3xl mx-auto py-4 leading-relaxed px-4"
+          className="text-base sm:text-xl text-muted-foreground max-w-4xl mx-auto py-4 leading-relaxed px-4"
         >
           Serving clients across continents with lightning-fast hosting and
-          world-class web solutions. Our global infrastructure ensures your
-          digital presence is always accessible, anywhere.
+          world-class web solutions.
+          <br />
+          Our global infrastructure ensures your digital presence is always
+          accessible, anywhere.
         </motion.p>
       </div>
 

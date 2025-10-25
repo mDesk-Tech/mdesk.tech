@@ -131,11 +131,8 @@ export const CardItem = ({
   }, [isMouseEntered]);
 
   return (
-    // @ts-expect-error - Generic Tag component type compatibility
     <Tag
-      // @ts-expect-error - Generic Tag component type compatibility
       ref={ref}
-      // @ts-expect-error - Generic Tag component type compatibility
       className={cn("w-fit transition duration-200 ease-linear", className)}
       {...rest}
     >
