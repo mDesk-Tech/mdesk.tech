@@ -193,8 +193,9 @@ const Features = () => {
             Powerful Features
           </h2>
           <p className="text-base sm:text-xl text-muted-foreground leading-relaxed px-4">
-            Our platform combines cutting-edge technologies with intuitive
-            design to deliver exceptional digital experiences.
+            Our platform combines cutting-edge technologies with
+            <br />
+            intuitivedesign to deliver exceptional digital experiences
           </p>
         </motion.div>
 

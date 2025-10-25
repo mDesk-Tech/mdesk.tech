@@ -89,7 +89,7 @@ export default function ServicesPage() {
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
-            className="max-w-3xl mx-auto text-center"
+            className="max-w-4xl mx-auto text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -115,8 +115,8 @@ export default function ServicesPage() {
             </h1>
 
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Comprehensive web solutions designed to help your business thrive
-              in the modern digital landscape
+              Web solutions designed to help your business thrive in the modern
+              digital landscape
             </p>
           </motion.div>
         </div>
@@ -290,8 +290,9 @@ export default function ServicesPage() {
               Ready to Start Your Project?
             </h2>
             <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-              Let&apos;s collaborate to bring your vision to life with
-              cutting-edge design and development
+              Let&apos;s collaborate to bring your vision to life
+              <br />
+              with cutting-edge design and development
             </p>
 
             <Link

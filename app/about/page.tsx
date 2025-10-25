@@ -27,35 +27,35 @@ export default function AboutPage() {
       title: "Our Mission",
       icon: Target,
       description:
-        "Empowering businesses with cutting-edge web solutions that drive growth and success.",
+        "Empowering businesses with cutting-edge web solutions that drive growth and success",
       gradient: "from-cyan-500/20 to-teal-500/20",
     },
     {
       title: "Founded 2023",
       icon: Calendar,
       description:
-        "Started with a vision to bridge the gap between complex technology and beautiful design.",
+        "Started with a vision to bridge the gap between complex technology and beautiful design",
       gradient: "from-teal-500/20 to-cyan-500/20",
     },
     {
       title: "15+ Team Members",
       icon: Users,
       description:
-        "A diverse team of passionate developers, designers, and strategists.",
+        "A diverse team of passionate developers, designers, and strategists",
       gradient: "from-cyan-500/20 to-teal-500/20",
     },
     {
       title: "100+ Projects",
       icon: Award,
       description:
-        "Successfully delivered projects for clients worldwide across various industries.",
+        "Successfully delivered projects for clients worldwide across various industries",
       gradient: "from-teal-500/20 to-cyan-500/20",
     },
     {
       title: "Innovation First",
       icon: Rocket,
       description:
-        "We stay ahead of the curve with the latest technologies and best practices.",
+        "We stay ahead of the curve with the latest technologies and best practices",
       gradient: "from-cyan-500/20 to-teal-500/20",
     },
   ];
@@ -209,7 +209,7 @@ export default function AboutPage() {
 
             <p className="text-base sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto px-4">
               We&apos;re passionate about creating exceptional digital
-              experiences that transform businesses.
+              experiences that transform businesses
             </p>
           </motion.div>
         </div>
@@ -228,8 +228,9 @@ export default function AboutPage() {
               Explore Our Story
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base px-4">
-              Drag the cards around to explore different aspects of our company.
-              They&apos;re interactive and fun to play with.
+              Drag the cards around to explore different aspects of our company
+              <br />
+              They&apos;re interactive and fun to play with
             </p>
           </motion.div>
 

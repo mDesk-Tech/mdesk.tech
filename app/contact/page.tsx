@@ -113,8 +113,9 @@ export default function ContactPage() {
               </div>
 
               <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-lg">
-                Have a project in mind or just want to say hello? We&apos;d love
-                to hear from you.
+                Have a project in mind or just want to say hello?
+                <br />
+                We&apos;d love to hear from you
               </p>
 
               {/* Contact Info Cards */}

@@ -48,10 +48,10 @@ export default function GlobalReach() {
           className="text-base sm:text-xl text-muted-foreground max-w-4xl mx-auto py-4 leading-relaxed px-4"
         >
           Serving clients across continents with lightning-fast hosting and
-          world-class web solutions.
+          world-class web solutions
           <br />
           Our global infrastructure ensures your digital presence is always
-          accessible, anywhere.
+          accessible, anywhere
         </motion.p>
       </div>
 

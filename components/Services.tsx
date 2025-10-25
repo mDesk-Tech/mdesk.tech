@@ -60,7 +60,7 @@ const Services = () => {
       <div className="absolute inset-0 bg-linear-to-b from-background via-transparent to-background" />
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-20">
+        <div className="max-w-4xl mx-auto text-center mb-12 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
             <span className="text-xs sm:text-sm font-semibold text-primary">
               What We Offer
@@ -73,7 +73,7 @@ const Services = () => {
           </h2>
           <p className="text-base sm:text-xl text-muted-foreground leading-relaxed px-4">
             We provide comprehensive web solutions to help your business thrive
-            in the digital landscape.
+            in the digital landscape
           </p>
         </div>
 
