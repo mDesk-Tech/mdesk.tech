@@ -1,19 +1,17 @@
 "use client";
 
 import type React from "react";
-
 import { motion } from "framer-motion";
 import {
   Mail,
   ArrowRight,
   MessageSquare,
   CheckCircle,
-  Clock,
   Globe,
-  Video,
-  ClockIcon as Clock24,
 } from "lucide-react";
 import { useState, useCallback } from "react";
+import { TextHoverEffect } from "@/components/ui/text-hover-effect";
+import { ShineBorder } from "@/components/ui/shine-border";
 
 export default function ContactPage() {
   const [formState, setFormState] = useState({
@@ -83,159 +81,138 @@ export default function ContactPage() {
   );
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-linear-to-b from-indigo-950/30 via-background to-background z-0" />
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-500/20 via-purple-500/10 to-transparent blur-2xl" />
-      </div>
-
+    <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
+      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-b from-primary/5 via-background to-background" />
+        <div className="absolute inset-0 grid-pattern opacity-20" />
+
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="flex flex-col lg:flex-row items-start gap-8 sm:gap-12">
             <motion.div
-              className="lg:w-1/2"
+              className="lg:w-1/2 w-full"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <div className="inline-flex items-center px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 backdrop-blur-xs mb-4">
-                <span className="text-xs font-medium text-indigo-300">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
+                <span className="text-xs sm:text-sm font-semibold text-primary">
                   Get in touch
                 </span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                Let's start a{" "}
-                <span className="text-gradient">conversation</span>
-              </h1>
-              <p className="text-lg text-muted-foreground mb-8 max-w-lg">
-                Have a project in mind or just want to say hello? We'd love to
-                hear from you. Fill out the form and we'll get back to you as
-                soon as possible.
+
+              <div className="mb-6 sm:mb-8">
+                <div className="block sm:hidden">
+                  <h1 className="text-4xl font-black bg-clip-text text-transparent bg-linear-to-r from-primary to-accent">
+                    CONTACT
+                  </h1>
+                </div>
+                <div className="hidden sm:block">
+                  <TextHoverEffect text="CONTACT" />
+                </div>
+              </div>
+
+              <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-lg">
+                Have a project in mind or just want to say hello? We&apos;d love
+                to hear from you.
               </p>
 
-              <div className="space-y-6 mb-8">
+              {/* Contact Info Cards */}
+              <div className="space-y-4 mb-6 sm:mb-8">
                 <motion.div
-                  className="flex items-start gap-4"
+                  className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-card border border-border transition-colors"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.3 }}
                 >
-                  <div className="p-3 rounded-full bg-indigo-500/10 text-indigo-400">
-                    <Mail className="h-5 w-5" />
+                  <div className="p-2 sm:p-3 rounded-full bg-primary/10 text-primary border">
+                    <Mail className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-xs sm:text-sm text-muted-foreground">
                       Email us at
                     </div>
-                    <div className="font-medium">hello@mdesk.tech</div>
+                    <div className="font-medium text-sm sm:text-base break-all">
+                      hello@mdesk.tech
+                    </div>
                   </div>
                 </motion.div>
-              </div>
 
-              {/* We Work Remotely Section */}
-              <div className="p-6 rounded-lg bg-linear-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 backdrop-blur-xs mb-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <Globe className="h-5 w-5 text-indigo-400" />
-                  <h3 className="text-lg font-semibold">We Work Remotely!</h3>
-                </div>
-                <p className="text-muted-foreground mb-4">
-                  Our team is distributed across the globe, allowing us to serve
-                  clients worldwide without geographical limitations.
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                  <div className="flex items-start gap-2">
-                    <Clock24 className="h-4 w-4 text-indigo-400 mt-1 shrink-0" />
-                    <div className="text-sm">
-                      <span className="font-medium">24/7 Availability</span>
-                      <p className="text-muted-foreground">
-                        Our team spans multiple time zones, ensuring someone is
-                        always available to assist you.
-                      </p>
-                    </div>
+                <motion.div
+                  className="p-4 sm:p-6 rounded-xl bg-linear-to-br from-primary/10 to-accent/10 border border-primary/20"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.4 }}
+                >
+                  <div className="flex items-center gap-3 mb-3 sm:mb-4">
+                    <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    <h3 className="text-base sm:text-lg font-semibold">
+                      We Work Remotely!
+                    </h3>
                   </div>
-                  <div className="flex items-start gap-2">
-                    <Video className="h-4 w-4 text-indigo-400 mt-1 shrink-0" />
-                    <div className="text-sm">
-                      <span className="font-medium">Virtual Meetings</span>
-                      <p className="text-muted-foreground">
-                        We schedule video calls at times that are convenient for
-                        you, no matter where you're located.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Office Hours Section */}
-              <div className="p-6 rounded-lg bg-card/50 border border-indigo-500/20 backdrop-blur-xs">
-                <div className="flex items-center gap-3 mb-4">
-                  <Clock className="h-5 w-5 text-indigo-400" />
-                  <h3 className="text-lg font-semibold">Office Hours</h3>
-                </div>
-                <div className="space-y-2 text-muted-foreground">
-                  <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                  <p>Saturday: 10:00 AM - 4:00 PM</p>
-                  <p>Sunday: Closed</p>
-                </div>
-                <p className="mt-4 text-sm text-muted-foreground">
-                  These hours are in CST (China Standard Time), but our global
-                  team is available outside these hours as well.
-                </p>
+                  <p className="text-muted-foreground text-xs sm:text-sm">
+                    Our team is distributed across the globe, serving clients
+                    worldwide without geographical limitations.
+                  </p>
+                </motion.div>
               </div>
             </motion.div>
 
             <motion.div
-              className="lg:w-1/2"
+              className="lg:w-1/2 w-full"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="relative">
-                {/* Decorative elements */}
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl" />
-                <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl" />
+              <div className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-xl">
+                <ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
+                <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-accent/5 rounded-2xl" />
 
-                {/* Contact form card */}
-                <div className="relative bg-card/80 backdrop-blur-xs border border-indigo-500/20 rounded-xl p-8 shadow-xl">
+                <div className="relative z-10">
                   {isSubmitted ? (
                     <motion.div
-                      className="text-center py-12"
+                      className="text-center py-8 sm:py-12"
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.5 }}
                     >
-                      <div className="w-20 h-20 mx-auto bg-linear-to-br from-indigo-500/20 to-purple-500/20 rounded-full flex items-center justify-center mb-6">
-                        <CheckCircle className="h-10 w-10 text-indigo-400" />
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-linear-to-br from-primary/20 to-accent/20 rounded-full flex items-center justify-center mb-4 sm:mb-6">
+                        <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />
                       </div>
-                      <h3 className="text-2xl font-bold mb-4">Message Sent!</h3>
-                      <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-                        Thank you for reaching out. We'll get back to you as
-                        soon as possible.
+                      <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
+                        Message Sent!
+                      </h3>
+                      <p className="text-muted-foreground mb-6 sm:mb-8 max-w-md mx-auto text-sm sm:text-base px-4">
+                        Thank you for reaching out. We&apos;ll get back to you
+                        as soon as possible.
                       </p>
                       <button
                         onClick={() => setIsSubmitted(false)}
-                        className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-linear-to-r from-indigo-500 to-purple-500 text-white font-medium transition-all hover:from-indigo-600 hover:to-purple-600"
+                        className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-linear-to-r from-cyan-500 to-teal-500 text-white font-medium transition-all hover:scale-105 touch-manipulation text-sm sm:text-base"
                       >
                         Send Another Message
                       </button>
                     </motion.div>
                   ) : (
                     <>
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="p-2 rounded-lg bg-indigo-500/10">
-                          <MessageSquare className="h-5 w-5 text-indigo-400" />
+                      <div className="flex items-center gap-3 mb-5 sm:mb-6">
+                        <div className="p-2 rounded-lg bg-primary/10">
+                          <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                         </div>
-                        <h2 className="text-xl font-bold">Send us a message</h2>
+                        <h2 className="text-lg sm:text-xl font-bold">
+                          Send us a message
+                        </h2>
                       </div>
 
-                      <form onSubmit={handleSubmit} className="space-y-5">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <form
+                        onSubmit={handleSubmit}
+                        className="space-y-4 sm:space-y-5"
+                      >
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                           <div>
                             <label
                               htmlFor="name"
-                              className="block text-sm font-medium mb-2"
+                              className="block text-xs sm:text-sm font-medium mb-2"
                             >
                               Name
                             </label>
@@ -246,16 +223,15 @@ export default function ContactPage() {
                               value={formState.name}
                               onChange={handleChange}
                               required
-                              className="w-full px-4 py-3 rounded-lg bg-card/50 border border-indigo-500/20 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-hidden transition-colors"
+                              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-sm sm:text-base"
                               placeholder="Your name"
-                              aria-label="Your name"
                             />
                           </div>
 
                           <div>
                             <label
                               htmlFor="email"
-                              className="block text-sm font-medium mb-2"
+                              className="block text-xs sm:text-sm font-medium mb-2"
                             >
                               Email
                             </label>
@@ -266,9 +242,8 @@ export default function ContactPage() {
                               value={formState.email}
                               onChange={handleChange}
                               required
-                              className="w-full px-4 py-3 rounded-lg bg-card/50 border border-indigo-500/20 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-hidden transition-colors"
+                              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-sm sm:text-base"
                               placeholder="your.email@example.com"
-                              aria-label="Your email address"
                             />
                           </div>
                         </div>
@@ -276,7 +251,7 @@ export default function ContactPage() {
                         <div>
                           <label
                             htmlFor="subject"
-                            className="block text-sm font-medium mb-2"
+                            className="block text-xs sm:text-sm font-medium mb-2"
                           >
                             Subject
                           </label>
@@ -287,16 +262,15 @@ export default function ContactPage() {
                             value={formState.subject}
                             onChange={handleChange}
                             required
-                            className="w-full px-4 py-3 rounded-lg bg-card/50 border border-indigo-500/20 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-hidden transition-colors"
+                            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-sm sm:text-base"
                             placeholder="What's this about?"
-                            aria-label="Subject of your message"
                           />
                         </div>
 
                         <div>
                           <label
                             htmlFor="message"
-                            className="block text-sm font-medium mb-2"
+                            className="block text-xs sm:text-sm font-medium mb-2"
                           >
                             Message
                           </label>
@@ -307,17 +281,13 @@ export default function ContactPage() {
                             onChange={handleChange}
                             required
                             rows={5}
-                            className="w-full px-4 py-3 rounded-lg bg-card/50 border border-indigo-500/20 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-hidden transition-colors resize-none"
-                            placeholder="Tell us about your project or inquiry..."
-                            aria-label="Your message"
+                            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors resize-none text-sm sm:text-base"
+                            placeholder="Tell us about your project..."
                           />
                         </div>
 
                         {error && (
-                          <div
-                            className="p-3 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-sm"
-                            role="alert"
-                          >
+                          <div className="p-3 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-xs sm:text-sm">
                             {error}
                           </div>
                         )}
@@ -325,8 +295,7 @@ export default function ContactPage() {
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className="w-full inline-flex items-center justify-center px-6 py-3 rounded-lg bg-linear-to-r from-indigo-500 to-purple-500 text-white font-medium transition-all hover:from-indigo-600 hover:to-purple-600 disabled:opacity-70"
-                          aria-label="Send message"
+                          className="w-full inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-linear-to-r from-cyan-500 to-teal-500 text-white font-medium transition-all hover:scale-105 disabled:opacity-70 touch-manipulation text-sm sm:text-base"
                         >
                           {isSubmitting ? (
                             <>
@@ -335,7 +304,6 @@ export default function ContactPage() {
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
-                                aria-hidden="true"
                               >
                                 <circle
                                   className="opacity-25"
@@ -369,73 +337,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 relative">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center mb-12"
-          >
-            <h2 className="text-3xl font-bold mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-muted-foreground">
-              Have questions? We've got answers. If you don't see what you're
-              looking for, feel free to reach out to us directly.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {[
-              {
-                question: "What services do you offer?",
-                answer:
-                  "We offer a comprehensive range of digital services including web design, web development, hosting solutions, and SEO optimization. Our team specializes in creating custom solutions tailored to your specific business needs.",
-              },
-              {
-                question: "How long does a typical project take?",
-                answer:
-                  "Project timelines vary depending on scope and complexity. A simple website might take 2-4 weeks, while more complex web applications can take 2-3 months. During our initial consultation, we'll provide you with a detailed timeline specific to your project.",
-              },
-              {
-                question: "What is your pricing structure?",
-                answer:
-                  "We provide custom quotes based on your specific requirements. Our pricing is transparent and competitive, with no hidden fees. Contact us for a free consultation and quote tailored to your project needs.",
-              },
-              {
-                question: "Do you offer ongoing support after launch?",
-                answer:
-                  "We offer various maintenance and support packages to ensure your website continues to perform optimally. Our team is always available to address any issues, make updates, or implement new features as your business grows.",
-              },
-            ].map((faq, index) => (
-              <motion.div
-                key={index}
-                className="bg-card/50 backdrop-blur-xs border border-indigo-500/20 rounded-lg p-6"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-muted-foreground text-sm">{faq.answer}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <style jsx global>{`
-        .text-gradient {
-          background: linear-gradient(to right, #6366f1, #a855f7);
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-        }
-      `}</style>
     </div>
   );
 }

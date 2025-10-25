@@ -1,13 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Services from "@/components/Services";
+import GlobalReach from "@/components/GlobalReach";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
-import PerformanceOptimizer from "@/components/PerformanceOptimizer";
-import LcpOptimizer from "@/components/LcpOptimizer";
-import { useState, useEffect } from "react";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,21 +20,17 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export default function Home() {
-  const [showDialog, setShowDialog] = useState(false);
-
-  useEffect(() => {
-    if (
-      new URLSearchParams(window.location.search).get("ref") === "miyuki-home"
-    ) {
-      setShowDialog(true);
+  const [showDialog, setShowDialog] = useState(() => {
+    if (typeof window !== "undefined") {
+      return (
+        new URLSearchParams(window.location.search).get("ref") === "miyuki-home"
+      );
     }
-  }, []);
+    return false;
+  });
 
   return (
     <div className="bg-background text-foreground">
-      <LcpOptimizer />
-      <PerformanceOptimizer />
-
       {showDialog && (
         <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
           <AlertDialogContent>
@@ -55,6 +51,7 @@ export default function Home() {
       <Hero />
       <Features />
       <Services />
+      <GlobalReach />
       <About />
       <Contact />
     </div>

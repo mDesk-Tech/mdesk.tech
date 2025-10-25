@@ -1,36 +1,19 @@
 "use client";
 
-import {
-  DialogDescription,
-  DialogTitle,
-  DialogHeader,
-  DialogContent,
-} from "@/components/ui/dialog";
-
 import type React from "react";
-import { useState, useRef } from "react";
-import { motion } from "framer-motion";
-import { Code, Globe, Lock, Users, Zap, Layers } from "lucide-react";
-import dynamic from "next/dynamic";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
-
-const Dialog = dynamic(
-  () => import("@/components/ui/dialog").then((mod) => mod.Dialog),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-full bg-card/50 animate-pulse rounded-lg" />
-    ),
-  },
-);
+import { motion } from "motion/react";
+import { Code, Zap, Layers, Globe, Lock, Users } from "lucide-react";
+import { CardContainer, CardBody, CardItem } from "@/components/ui/magic-card";
+import { useState, useEffect, useId, useRef } from "react";
+import { AnimatePresence } from "motion/react";
+import { useOutsideClick } from "@/hooks/use-outside-click";
+import { X } from "lucide-react";
 
 interface Feature {
   title: string;
   description: string;
-  details: string;
   icon: React.ReactNode;
-  color: string;
-  benefits: string[];
+  details: string[];
 }
 
 const features: Feature[] = [
@@ -38,297 +21,274 @@ const features: Feature[] = [
     title: "Completely open source",
     description:
       "Powered by powerful open-source projects, standing on giants' shoulders",
-    details:
-      "We leverage the best open-source technologies like React, Next.js, and TailwindCSS to build robust, maintainable applications. This approach ensures transparency, security, and a vibrant ecosystem of support.",
-    icon: <Code className="h-6 w-6" />,
-    color: "from-indigo-500 to-purple-500",
-    benefits: [
-      "Transparent codebase with no vendor lock-in",
-      "Community-driven improvements and security updates",
-      "Reduced licensing costs and legal complications",
-      "Flexibility to customize for specific business needs",
+    icon: <Code className="h-8 w-8" />,
+    details: [
+      "Built with Next.js, React, and TypeScript",
+      "Leverages industry-standard open-source libraries",
+      "Community-driven development and support",
+      "Transparent codebase with regular updates",
     ],
   },
   {
     title: "Dynamic HTML Streaming",
     description:
       "Instantly stream UI from the server, integrated with the App Router and React Suspense.",
-    details:
-      "Our streaming technology allows for progressive rendering of content, dramatically improving perceived load times. Users see content appear incrementally rather than waiting for the entire page to load, creating a more responsive experience.",
-    icon: <Zap className="h-6 w-6" />,
-    color: "from-purple-500 to-indigo-500",
-    benefits: [
-      "Faster perceived loading times for better user experience",
-      "Improved Core Web Vitals scores for better SEO",
-      "Reduced time-to-interactive for critical page elements",
-      "Optimized rendering for both fast and slow connections",
+    icon: <Zap className="h-8 w-8" />,
+    details: [
+      "Progressive rendering for faster perceived performance",
+      "Seamless integration with React Suspense boundaries",
+      "Optimized for Core Web Vitals",
+      "Reduced time to first byte (TTFB)",
     ],
   },
   {
     title: "React Server Components",
     description:
       "Add components without sending additional client-side JavaScript. Built on the latest React features.",
-    details:
-      "Server Components allow us to render complex UI on the server, reducing the JavaScript bundle sent to the client. This results in faster page loads, improved performance on mobile devices, and better SEO without sacrificing interactivity.",
-    icon: <Layers className="h-6 w-6" />,
-    color: "from-indigo-500 to-purple-600",
-    benefits: [
-      "Smaller JavaScript bundles for faster page loads",
-      "Direct database access without API endpoints",
-      "Improved performance on low-powered devices",
-      "Better SEO with fully rendered HTML content",
+    icon: <Layers className="h-8 w-8" />,
+    details: [
+      "Zero-bundle-size server components",
+      "Direct database access from components",
+      "Automatic code splitting",
+      "Improved SEO with server-side rendering",
     ],
   },
   {
     title: "AI-Powered Code Generation",
     description:
       "Leverage machine learning to automate repetitive coding tasks and suggest optimizations.",
-    details:
-      "Our AI tools analyze your codebase to identify patterns, suggest improvements, and even generate boilerplate code. This accelerates development while maintaining high quality standards and consistency across your project.",
-    icon: <Globe className="h-6 w-6" />,
-    color: "from-purple-500 to-pink-500",
-    benefits: [
-      "Accelerated development with automated code generation",
-      "Consistent code quality and style across projects",
-      "Reduced time spent on repetitive tasks",
-      "Intelligent suggestions for performance improvements",
+    icon: <Globe className="h-8 w-8" />,
+    details: [
+      "Intelligent code completion and suggestions",
+      "Automated refactoring recommendations",
+      "Pattern recognition for best practices",
+      "Context-aware documentation generation",
     ],
   },
   {
     title: "Advanced Security Features",
     description:
       "Built-in protection against common web vulnerabilities and automated security updates.",
-    details:
-      "We implement industry-standard security practices including HTTPS, content security policies, and protection against XSS, CSRF, and SQL injection attacks. Regular automated security scans ensure your application remains protected against emerging threats.",
-    icon: <Lock className="h-6 w-6" />,
-    color: "from-indigo-600 to-purple-500",
-    benefits: [
-      "Protection against OWASP top 10 vulnerabilities",
-      "Automated security scanning and updates",
-      "Secure authentication and authorization systems",
-      "Data encryption at rest and in transit",
+    icon: <Lock className="h-8 w-8" />,
+    details: [
+      "CSRF and XSS protection out of the box",
+      "Secure headers and content security policies",
+      "Regular security audits and patches",
+      "Environment variable encryption",
     ],
   },
   {
     title: "Real-time Collaboration",
     description:
-      "Enable seamless team collaboration with live editing and version control integration with coder.",
-    details:
-      "Our collaboration tools allow multiple team members to work on the same project simultaneously, with changes reflected in real-time. Built-in version control ensures nothing is ever lost, while commenting and approval workflows streamline the review process.",
-    icon: <Users className="h-6 w-6" />,
-    color: "from-purple-500 to-indigo-500",
-    benefits: [
-      "Simultaneous editing with conflict resolution",
-      "Integrated version control and change tracking",
-      "Contextual commenting and feedback systems",
-      "Streamlined approval workflows for faster delivery",
+      "Enable seamless team collaboration with live editing and version control integration.",
+    icon: <Users className="h-8 w-8" />,
+    details: [
+      "Live cursor tracking and presence indicators",
+      "Conflict-free collaborative editing",
+      "Git integration for version control",
+      "Team activity feeds and notifications",
     ],
   },
 ];
 
-const FeatureCard = ({ feature }: { feature: Feature; index: number }) => {
-  const [showDialog, setShowDialog] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  const handleMouseEnter = () => {
-    setIsHovering(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovering(false);
-  };
-
+const FeatureCard = ({
+  feature,
+  onClick,
+}: {
+  feature: Feature;
+  index: number;
+  onClick: () => void;
+}) => {
   return (
-    <>
-      <div
-        ref={cardRef}
-        className="relative h-full cursor-pointer group"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={() => setShowDialog(true)}
-      >
-        {/* Animated border */}
-        {isHovering && (
-          <div className="absolute inset-0 rounded-lg overflow-hidden z-0 pointer-events-none">
-            <div
-              className="absolute inset-0 rounded-lg"
-              style={{
-                background: `linear-gradient(90deg, 
-                  rgba(99, 102, 241, 0) 0%, 
-                  rgba(99, 102, 241, 1) 25%, 
-                  rgba(168, 85, 247, 1) 50%, 
-                  rgba(99, 102, 241, 1) 75%, 
-                  rgba(99, 102, 241, 0) 100%)`,
-                backgroundSize: "200% 100%",
-                animation: "moveGradient 2s linear infinite",
-              }}
-            />
-            <div className="absolute inset-[2px] rounded-lg bg-card" />
+    <CardContainer containerClassName="py-0">
+      <CardBody className="relative group/card w-full h-auto min-h-[280px] sm:h-[320px] rounded-2xl p-6 sm:p-8 border border-border bg-card flex flex-col cursor-pointer hover:border-primary/50 transition-colors touch-manipulation">
+        <CardItem translateZ="50" className="mb-4">
+          <div className="inline-flex p-3 sm:p-4 rounded-xl bg-primary/10 text-primary">
+            {feature.icon}
           </div>
-        )}
+        </CardItem>
 
-        {/* Glow effect */}
-        <div className="absolute inset-0 bg-linear-to-r from-indigo-500 to-purple-500 opacity-0 blur-xl transition-opacity duration-500 -z-10 group-hover:opacity-20 rounded-lg" />
-
-        <motion.div
-          className="bg-card rounded-lg border border-border/50 p-6 group-hover:border-transparent group-hover:bg-black/40 transition-colors duration-300 h-full flex flex-col z-10 relative"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
+        <CardItem
+          translateZ="60"
+          className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-foreground"
         >
-          <div className="flex items-start gap-4 grow">
-            <div
-              className={`p-2 rounded-md bg-linear-to-br ${feature.color} text-white`}
-            >
-              {feature.icon}
-            </div>
-            <div className="flex-1">
-              <h3
-                className={`text-xl font-semibold mb-2 transition-all duration-300 ${isHovering ? "text-gradient" : ""}`}
-              >
-                {feature.title}
-              </h3>
-              <p className="text-muted-foreground mb-2">
-                {feature.description}
-              </p>
-            </div>
-          </div>
+          {feature.title}
+        </CardItem>
 
-          <div className="mt-4 pt-4 border-t border-border/50">
-            <div
-              className={`text-primary inline-flex items-center transition-all duration-300 ${isHovering ? "text-gradient font-medium" : ""}`}
-            >
-              Learn more
-              <div
-                className={`ml-1 transition-transform duration-300 ${isHovering ? "translate-x-2" : ""}`}
-              >
-                <svg
-                  className="h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+        <CardItem
+          translateZ="40"
+          className="text-muted-foreground leading-relaxed text-sm flex-1"
+        >
+          {feature.description}
+        </CardItem>
 
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <div
-                className={`p-2 rounded-md bg-linear-to-br ${feature.color} text-white`}
-              >
-                {feature.icon}
-              </div>
-              {feature.title}
-            </DialogTitle>
-            <DialogDescription>{feature.description}</DialogDescription>
-          </DialogHeader>
-
-          {/* Content outside of DialogDescription to avoid nesting issues */}
-          <div className="mt-4 space-y-4">
-            <p className="text-muted-foreground">{feature.details}</p>
-
-            <div className="mt-6 p-4 rounded-lg bg-muted/30 border border-border">
-              <h4 className="text-sm font-semibold mb-2">Key Benefits:</h4>
-              <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
-                {feature.benefits.map((benefit, i) => (
-                  <li key={i}>{benefit}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <style jsx global>{`
-        @keyframes moveGradient {
-          0% {
-            background-position: 0% 0%;
-          }
-          100% {
-            background-position: 200% 0%;
-          }
-        }
-
-        .text-gradient {
-          background: linear-gradient(to right, #6366f1, #a855f7);
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-        }
-      `}</style>
-    </>
+        <CardItem
+          translateZ="30"
+          className="text-primary text-sm font-medium mt-4"
+        >
+          <button
+            onClick={onClick}
+            className="hover:underline touch-manipulation py-2"
+          >
+            Click to learn more →
+          </button>
+        </CardItem>
+      </CardBody>
+    </CardContainer>
   );
 };
 
 const Features = () => {
-  const shouldReduceMotion = useReducedMotion();
+  const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const id = useId();
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setSelectedFeature(null);
+      }
+    }
+
+    if (selectedFeature) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [selectedFeature]);
+
+  useOutsideClick(ref, () => setSelectedFeature(null));
 
   return (
-    <section className="py-20 relative overflow-hidden content-visibility: auto; contain-intrinsic-size: 0 500px;">
-      <div className="absolute inset-0 grid-pattern opacity-10 z-0" />
-
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="py-20 sm:py-32 relative overflow-hidden bg-muted/20">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
-          className="text-center mb-16"
+          className="max-w-3xl mx-auto text-center mb-12 sm:mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={
-            shouldReduceMotion ? { duration: 0.1 } : { duration: 0.8 }
-          }
-          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="inline-flex items-center px-3 py-1 rounded-full border border-border/50 bg-background/50 backdrop-blur-xs mb-4">
-            <span className="text-xs font-medium text-muted-foreground">
-              Why choose us
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
+            <span className="text-xs sm:text-sm font-semibold text-primary">
+              Why Choose Us
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-5xl md:text-7xl font-black mb-4 sm:mb-6 bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70">
             Powerful Features
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-xl text-muted-foreground leading-relaxed px-4">
             Our platform combines cutting-edge technologies with intuitive
             design to deliver exceptional digital experiences.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {features.map((feature, index) => (
-            <FeatureCard key={index} feature={feature} index={index} />
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <FeatureCard
+                feature={feature}
+                index={index}
+                onClick={() => setSelectedFeature(feature)}
+              />
+            </motion.div>
           ))}
         </div>
       </div>
 
-      <style jsx global>{`
-        @keyframes moveGradient {
-          0% {
-            background-position: 0% 0%;
-          }
-          100% {
-            background-position: 200% 0%;
-          }
-        }
+      <AnimatePresence>
+        {selectedFeature && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50"
+              onClick={() => setSelectedFeature(null)}
+            />
+            <div className="fixed inset-0 grid place-items-center z-[100] p-4">
+              <motion.button
+                key={`button-${selectedFeature.title}-${id}`}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.05 } }}
+                className="flex absolute top-4 right-4 items-center justify-center bg-card rounded-full h-10 w-10 z-10 border border-border hover:bg-muted transition-colors touch-manipulation"
+                onClick={() => setSelectedFeature(null)}
+              >
+                <X className="h-5 w-5" />
+              </motion.button>
+              <motion.div
+                layoutId={`card-${selectedFeature.title}-${id}`}
+                ref={ref}
+                initial={{ opacity: 0, scale: 0.9, y: 50 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 50 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="w-full max-w-2xl h-full md:h-fit md:max-h-[90%] flex flex-col bg-card rounded-3xl overflow-hidden border border-primary/20 shadow-2xl"
+              >
+                <div className="p-6 sm:p-8 overflow-y-auto">
+                  <div className="flex items-start gap-4 mb-6">
+                    <motion.div
+                      layoutId={`icon-${selectedFeature.title}-${id}`}
+                      className="p-3 sm:p-4 rounded-xl bg-primary/10 text-primary flex-shrink-0"
+                    >
+                      {selectedFeature.icon}
+                    </motion.div>
+                    <div className="flex-1">
+                      <motion.h3
+                        layoutId={`title-${selectedFeature.title}-${id}`}
+                        className="font-bold text-xl sm:text-2xl text-foreground mb-2"
+                      >
+                        {selectedFeature.title}
+                      </motion.h3>
+                      <motion.p
+                        layoutId={`description-${selectedFeature.description}-${id}`}
+                        className="text-sm sm:text-base text-muted-foreground"
+                      >
+                        {selectedFeature.description}
+                      </motion.p>
+                    </div>
+                  </div>
 
-        .text-gradient {
-          background: linear-gradient(to right, #6366f1, #a855f7);
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-        }
-      `}</style>
+                  <motion.div
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="space-y-3"
+                  >
+                    <h4 className="text-base sm:text-lg font-semibold mb-4">
+                      Key Benefits:
+                    </h4>
+                    {selectedFeature.details.map((detail, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-start gap-3 p-3 rounded-lg bg-muted/50"
+                      >
+                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+                        <p className="text-sm">{detail}</p>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

@@ -1,6 +1,6 @@
 import type React from "react";
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Navbar from "@/components/Navbar";
@@ -9,14 +9,13 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 
-// Optimize font loading
-const inter = Inter({
+const geist = Geist({
   subsets: ["latin"],
   display: "swap",
   preload: true,
   fallback: ["system-ui", "sans-serif"],
   adjustFontFallback: true,
-  variable: "--font-inter",
+  variable: "--font-geist",
 });
 
 export const viewport = {
@@ -34,7 +33,7 @@ export const metadata = {
   ),
   icons: {
     icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
-    apple: "/apple-touch-icon.png",
+    apple: "/apple-touch-icon.jpg",
   },
   openGraph: {
     type: "website",
@@ -45,7 +44,7 @@ export const metadata = {
       "Cutting-edge web design and reliable hosting solutions for businesses that want to stand out in the digital landscape.",
     images: [
       {
-        url: "/opengraph-image.png",
+        url: "/opengraph-image.jpg",
         width: 1200,
         height: 630,
         alt: "mdesk.tech - Designing and hosting your digital future",
@@ -57,7 +56,7 @@ export const metadata = {
     title: "mdesk.tech - Designing and hosting your digital future",
     description:
       "Cutting-edge web design and reliable hosting solutions for businesses that want to stand out in the digital landscape.",
-    images: ["/twitter-image.png"],
+    images: ["/twitter-image.jpg"],
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://mdesk.tech",
@@ -76,7 +75,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} dark`}
+      className={`${geist.variable} dark`}
       style={{ colorScheme: "dark" }}
     >
       <head>
@@ -93,7 +92,7 @@ export default function RootLayout({
         <style
           dangerouslySetInnerHTML={{
             __html: `
-              :root { --font-inter: '__Inter_Fallback_${inter.variable}'; }
+              :root { --font-geist: '__Geist_Fallback_${geist.variable}'; }
               .critical-content { opacity: 1 !important; }
               
               /* Critical CSS for LCP */
@@ -140,7 +139,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${geist.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -150,7 +149,7 @@ export default function RootLayout({
         >
           <div className="relative min-h-screen flex flex-col">
             <Navbar />
-            <main className="flex-grow">
+            <main className="grow">
               {/* Add priority hint for LCP content */}
               <div className="critical-content" data-priority="high">
                 {children}

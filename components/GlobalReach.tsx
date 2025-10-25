@@ -1,0 +1,92 @@
+"use client";
+
+import WorldMap from "@/components/ui/world-map";
+import { motion } from "motion/react";
+import { TextHoverEffect } from "@/components/ui/text-hover-effect";
+
+export default function GlobalReach() {
+  return (
+    <div className="py-16 sm:py-20 md:py-32 bg-background w-full relative overflow-hidden">
+      <div className="absolute inset-0 bg-linear-to-b from-primary/5 via-transparent to-primary/5" />
+      <div className="absolute inset-0 grid-pattern opacity-10" />
+
+      <div className="max-w-7xl mx-auto text-center px-4 sm:px-6 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6"
+        >
+          <span className="text-xs sm:text-sm font-semibold text-primary">
+            Global Reach
+          </span>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="h-32 sm:h-40 md:h-48 flex items-center justify-center mb-6 sm:mb-8"
+        >
+          <div className="block sm:hidden">
+            <h2 className="text-5xl font-black bg-clip-text text-transparent bg-linear-to-r from-primary to-accent">
+              GLOBAL
+            </h2>
+          </div>
+          <div className="hidden h-52 sm:block">
+            <TextHoverEffect text="GLOBAL" />
+          </div>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="text-base sm:text-xl text-muted-foreground max-w-3xl mx-auto py-4 leading-relaxed px-4"
+        >
+          Serving clients across continents with lightning-fast hosting and
+          world-class web solutions. Our global infrastructure ensures your
+          digital presence is always accessible, anywhere.
+        </motion.p>
+      </div>
+
+      <div className="hidden sm:block">
+        <WorldMap
+          dots={[
+            {
+              start: { lat: 40.7128, lng: -74.006 },
+              end: { lat: 51.5074, lng: -0.1278 },
+            },
+            {
+              start: { lat: 51.5074, lng: -0.1278 },
+              end: { lat: 35.6762, lng: 139.6503 },
+            },
+            {
+              start: { lat: 35.6762, lng: 139.6503 },
+              end: { lat: 1.3521, lng: 103.8198 },
+            },
+            {
+              start: { lat: 1.3521, lng: 103.8198 },
+              end: { lat: -33.8688, lng: 151.2093 },
+            },
+            {
+              start: { lat: 40.7128, lng: -74.006 },
+              end: { lat: 37.7749, lng: -122.4194 },
+            },
+            {
+              start: { lat: 51.5074, lng: -0.1278 },
+              end: { lat: 52.52, lng: 13.405 },
+            },
+            {
+              start: { lat: 19.076, lng: 72.8777 },
+              end: { lat: 1.3521, lng: 103.8198 },
+            },
+          ]}
+        />
+      </div>
+    </div>
+  );
+}

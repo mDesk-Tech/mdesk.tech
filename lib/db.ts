@@ -34,7 +34,7 @@ export async function getCollection() {
   }
 }
 
-export async function cleanup() {
+async function cleanup() {
   try {
     const coll = await getCollection();
 

@@ -11,9 +11,8 @@ const NotFoundPage = () => {
       <div className="absolute inset-0 grid-pattern opacity-10 z-0" />
       <div className="absolute inset-0 noise z-0" />
 
-      {/* Animated gradient orbs */}
       <motion.div
-        className="absolute w-[500px] h-[500px] rounded-full bg-linear-to-r from-indigo-500/10 to-purple-500/10 blur-3xl"
+        className="absolute w-[500px] h-[500px] rounded-full bg-linear-to-r from-cyan-500/10 to-teal-500/10 blur-3xl"
         animate={{
           x: [0, 100, 0],
           y: [0, 50, 0],
@@ -26,7 +25,7 @@ const NotFoundPage = () => {
       />
 
       <motion.div
-        className="absolute w-[300px] h-[300px] rounded-full bg-linear-to-r from-purple-500/10 to-pink-500/10 blur-3xl"
+        className="absolute w-[300px] h-[300px] rounded-full bg-linear-to-r from-teal-500/10 to-cyan-500/10 blur-3xl"
         animate={{
           x: [0, -100, 0],
           y: [0, -50, 0],
@@ -42,7 +41,7 @@ const NotFoundPage = () => {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8">
             <motion.div
-              className="inline-block text-9xl font-bold bg-clip-text text-transparent bg-linear-to-r from-indigo-500 to-purple-500"
+              className="inline-block text-9xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-500 to-teal-500"
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{
@@ -66,8 +65,8 @@ const NotFoundPage = () => {
               Page Not Found
             </h1>
             <p className="text-muted-foreground text-lg max-w-lg mx-auto">
-              We couldn't find the page you're looking for. It might have been
-              moved, deleted, or never existed.
+              We couldn&apos;t find the page you&apos;re looking for. It might
+              have been moved, deleted, or never existed.
             </p>
           </motion.div>
 
@@ -107,8 +106,7 @@ const NotFoundPage = () => {
             transition={{ duration: 0.8, delay: 0.7 }}
           >
             <div className="relative aspect-square">
-              {/* Abstract 404 visualization */}
-              <div className="absolute inset-0 rounded-full bg-linear-to-br from-indigo-500/20 to-purple-500/20 animate-pulse" />
+              <div className="absolute inset-0 rounded-full bg-linear-to-br from-cyan-500/20 to-teal-500/20 animate-pulse" />
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative w-3/4 h-3/4">

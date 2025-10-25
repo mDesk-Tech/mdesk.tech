@@ -26,7 +26,7 @@ export default async function OGImage() {
           height: "100%",
           backgroundColor: "#0f1117",
           backgroundImage:
-            "radial-gradient(circle at 25px 25px, rgba(99, 102, 241, 0.15) 2%, transparent 0%), radial-gradient(circle at 75px 75px, rgba(168, 85, 247, 0.15) 2%, transparent 0%)",
+            "radial-gradient(circle at 25px 25px, rgba(6, 182, 212, 0.15) 2%, transparent 0%), radial-gradient(circle at 75px 75px, rgba(20, 184, 166, 0.15) 2%, transparent 0%)",
           backgroundSize: "100px 100px",
           position: "relative",
         }}
@@ -69,7 +69,7 @@ export default async function OGImage() {
                   width: "80px",
                   height: "80px",
                   background:
-                    "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+                    "linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%)",
                   borderRadius: "8px",
                   transform: "rotate(45deg)",
                 }}
@@ -80,7 +80,7 @@ export default async function OGImage() {
                   width: "80px",
                   height: "80px",
                   background:
-                    "linear-gradient(45deg, #6366f1 0%, #a855f7 100%)",
+                    "linear-gradient(45deg, #06b6d4 0%, #14b8a6 100%)",
                   borderRadius: "8px",
                   transform: "rotate(12deg)",
                   opacity: 0.7,
@@ -113,7 +113,7 @@ export default async function OGImage() {
               style={{
                 fontSize: "48px",
                 fontWeight: "bold",
-                background: "linear-gradient(to right, #6366f1, #a855f7)",
+                background: "linear-gradient(to right, #06b6d4, #14b8a6)",
                 backgroundClip: "text",
                 color: "transparent",
               }}
@@ -149,7 +149,6 @@ export default async function OGImage() {
           </p>
         </div>
 
-        {/* Background elements - positioned absolutely */}
         <div
           style={{
             position: "absolute",
@@ -159,7 +158,7 @@ export default async function OGImage() {
             height: "400px",
             borderRadius: "100%",
             background:
-              "radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.1) 50%, transparent 80%)",
+              "radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, rgba(20, 184, 166, 0.1) 50%, transparent 80%)",
             transform: "translate(-50%, -50%)",
             opacity: 0.6,
             zIndex: 1,
@@ -174,7 +173,7 @@ export default async function OGImage() {
             height: "300px",
             borderRadius: "100%",
             background:
-              "radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(99, 102, 241, 0.1) 50%, transparent 80%)",
+              "radial-gradient(circle, rgba(20, 184, 166, 0.2) 0%, rgba(6, 182, 212, 0.1) 50%, transparent 80%)",
             opacity: 0.5,
             zIndex: 1,
           }}

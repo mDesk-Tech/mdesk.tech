@@ -18,13 +18,15 @@ export default function TermsOfService() {
         >
           <Link
             href="/"
-            className="inline-flex items-center text-muted-foreground hover:text-primary mb-8"
+            className="inline-flex items-center text-muted-foreground hover:text-primary mb-8 transition-colors"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Home
           </Link>
 
-          <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
+          <h1 className="text-4xl font-bold mb-8 bg-linear-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">
+            Terms of Service
+          </h1>
 
           <div className="prose prose-invert max-w-none">
             <p className="text-muted-foreground">Last updated: March 8, 2024</p>
@@ -61,8 +63,8 @@ export default function TermsOfService() {
                   materials
                 </li>
                 <li>
-                  Transfer the materials to another person or "mirror" the
-                  materials on any other server
+                  Transfer the materials to another person or &quot;mirror&quot;
+                  the materials on any other server
                 </li>
               </ul>
             </section>
@@ -102,12 +104,12 @@ export default function TermsOfService() {
             <section className="mt-8">
               <h2 className="text-2xl font-semibold mb-4">6. Disclaimer</h2>
               <p>
-                The materials on mdesk.tech are provided on an 'as is' basis. We
-                make no warranties, expressed or implied, and hereby disclaim
-                and negate all other warranties including, without limitation,
-                implied warranties or conditions of merchantability, fitness for
-                a particular purpose, or non-infringement of intellectual
-                property or other violation of rights.
+                The materials on mdesk.tech are provided on an &apos;as is&apos;
+                basis. We make no warranties, expressed or implied, and hereby
+                disclaim and negate all other warranties including, without
+                limitation, implied warranties or conditions of merchantability,
+                fitness for a particular purpose, or non-infringement of
+                intellectual property or other violation of rights.
               </p>
             </section>
 
@@ -143,7 +145,7 @@ export default function TermsOfService() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">
+              <h2 className="text-2xl font-semibold mb-4 text-cyan-400">
                 10. Contact Information
               </h2>
               <p>
@@ -151,7 +153,7 @@ export default function TermsOfService() {
                 contact us at{" "}
                 <a
                   href="mailto:hello@mdesk.tech"
-                  className="text-primary hover:underline"
+                  className="text-cyan-400 hover:text-teal-400 underline transition-colors"
                 >
                   hello@mdesk.tech
                 </a>

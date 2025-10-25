@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getCollection } from "@/lib/db";
 
-// Rate limit window (1 hour in milliseconds)
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000;
 
 export async function POST(request: NextRequest) {
