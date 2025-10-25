@@ -1,13 +1,11 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import { motion, useTransform, useScroll, useMotionValue } from "framer-motion";
+import { useRef, useEffect, useState, useCallback } from "react";
+import { motion, useTransform, useScroll } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -16,59 +14,37 @@ const Hero = () => {
     offset: ["start start", "end start"],
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.5], [0, 50]);
 
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+    // Call setIsMounted in a microtask to avoid cascading renders
+    Promise.resolve().then(() => setIsMounted(true));
 
-    const mountTimer = setTimeout(() => {
-      setIsMounted(true);
-    }, 100);
-
-    let mouseMoveHandler: ((e: MouseEvent) => void) | null = null;
-
-    const deferAnimations = () => {
-      if (typeof window !== "undefined" && !isMobile) {
-        window.requestAnimationFrame(() => {
-          if (containerRef.current) {
-            mouseMoveHandler = (e: MouseEvent) => {
-              if (!containerRef.current) return;
-              const { clientX, clientY } = e;
-              const { left, top, width, height } =
-                containerRef.current.getBoundingClientRect();
-              const x = (clientX - left) / width;
-              const y = (clientY - top) / height;
-              mouseX.set(x);
-              mouseY.set(y);
-            };
-            window.addEventListener("mousemove", mouseMoveHandler, {
-              passive: true,
-            });
-          }
-        });
-      }
+    let resizeTimeout: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(checkMobile, 150);
     };
 
-    if ("requestIdleCallback" in window) {
-      window.requestIdleCallback(deferAnimations);
-    } else {
-      setTimeout(deferAnimations, 200);
-    }
+    window.addEventListener("resize", debouncedResize, { passive: true });
 
     return () => {
-      clearTimeout(mountTimer);
-      if (mouseMoveHandler) {
-        window.removeEventListener("mousemove", mouseMoveHandler);
-      }
-      window.removeEventListener("resize", checkMobile);
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", debouncedResize);
     };
-  }, [mouseX, mouseY, isMobile]);
+  }, []);
+
+  const scrollToSection = useCallback((id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
 
   return (
     <section
@@ -84,7 +60,7 @@ const Hero = () => {
       {isMounted && !isMobile && (
         <>
           <motion.div
-            className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none"
+            className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none will-change-transform"
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.2, 0.4, 0.2],
@@ -96,7 +72,7 @@ const Hero = () => {
             }}
           />
           <motion.div
-            className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl pointer-events-none"
+            className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl pointer-events-none will-change-transform"
             animate={{
               scale: [1.2, 1, 1.2],
               opacity: [0.4, 0.2, 0.4],
@@ -157,11 +133,7 @@ const Hero = () => {
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4"
           >
             <button
-              onClick={() => {
-                document
-                  .getElementById("contact")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
+              onClick={() => scrollToSection("contact")}
               className="group relative inline-flex items-center justify-center px-6 sm:px-10 py-4 sm:py-5 rounded-full bg-primary text-primary-foreground font-bold text-base sm:text-lg transition-all hover:scale-105 hover:shadow-2xl hover:shadow-primary/50 overflow-hidden cursor-pointer touch-manipulation"
             >
               <span className="relative z-10 flex items-center gap-2">
@@ -171,11 +143,7 @@ const Hero = () => {
               <div className="absolute inset-0 bg-linear-to-r from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
             <button
-              onClick={() => {
-                document
-                  .getElementById("services")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
+              onClick={() => scrollToSection("services")}
               className="inline-flex items-center justify-center px-6 sm:px-10 py-4 sm:py-5 rounded-full border-2 border-primary/20 bg-transparent text-foreground font-bold text-base sm:text-lg transition-all hover:bg-primary/10 hover:border-primary cursor-pointer touch-manipulation"
             >
               Explore Services
@@ -190,7 +158,7 @@ const Hero = () => {
               transition={{ delay: 0.8 }}
             >
               <motion.div
-                className="w-6 h-10 sm:w-8 sm:h-12 rounded-full border-2 border-primary/30 flex items-start justify-center p-2"
+                className="w-6 h-10 sm:w-8 sm:h-12 rounded-full border-2 border-primary/30 flex items-start justify-center p-2 will-change-transform"
                 animate={{ y: [0, 10, 0] }}
                 transition={{
                   duration: 1.5,
@@ -199,7 +167,7 @@ const Hero = () => {
                 }}
               >
                 <motion.div
-                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary"
+                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary will-change-transform"
                   animate={{ y: [0, 16, 0] }}
                   transition={{
                     duration: 1.5,

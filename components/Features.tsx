@@ -4,7 +4,7 @@ import type React from "react";
 import { motion } from "motion/react";
 import { Code, Zap, Layers, Globe, Lock, Users } from "lucide-react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/magic-card";
-import { useState, useEffect, useId, useRef } from "react";
+import { useState, useEffect, useId, useRef, useCallback } from "react";
 import { AnimatePresence } from "motion/react";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { X } from "lucide-react";
@@ -99,6 +99,10 @@ const FeatureCard = ({
   index: number;
   onClick: () => void;
 }) => {
+  const handleClick = useCallback(() => {
+    onClick();
+  }, [onClick]);
+
   return (
     <CardContainer containerClassName="py-0">
       <CardBody className="relative group/card w-full h-auto min-h-[280px] sm:h-[320px] rounded-2xl p-6 sm:p-8 border border-border bg-card flex flex-col cursor-pointer hover:border-primary/50 transition-colors touch-manipulation">
@@ -127,7 +131,7 @@ const FeatureCard = ({
           className="text-primary text-sm font-medium mt-4"
         >
           <button
-            onClick={onClick}
+            onClick={handleClick}
             className="hover:underline touch-manipulation py-2"
           >
             Click to learn more →
@@ -145,22 +149,30 @@ const Features = () => {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && selectedFeature) {
         setSelectedFeature(null);
       }
     }
 
     if (selectedFeature) {
-      document.body.style.overflow = "hidden";
+      requestAnimationFrame(() => {
+        document.body.style.overflow = "hidden";
+      });
     } else {
-      document.body.style.overflow = "auto";
+      requestAnimationFrame(() => {
+        document.body.style.overflow = "auto";
+      });
     }
 
-    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keydown", onKeyDown, { passive: true });
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [selectedFeature]);
 
-  useOutsideClick(ref, () => setSelectedFeature(null));
+  const closeModal = useCallback(() => {
+    setSelectedFeature(null);
+  }, []);
+
+  useOutsideClick(ref, closeModal);
 
   return (
     <section className="py-20 sm:py-32 relative overflow-hidden bg-muted/20">
@@ -213,7 +225,7 @@ const Features = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50"
-              onClick={() => setSelectedFeature(null)}
+              onClick={closeModal}
             />
             <div className="fixed inset-0 grid place-items-center z-100 p-4">
               <motion.button
@@ -223,7 +235,7 @@ const Features = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0.05 } }}
                 className="flex absolute top-4 right-4 items-center justify-center bg-card rounded-full h-10 w-10 z-10 border border-border hover:bg-muted transition-colors touch-manipulation"
-                onClick={() => setSelectedFeature(null)}
+                onClick={closeModal}
               >
                 <X className="h-5 w-5" />
               </motion.button>

@@ -2,11 +2,12 @@
 
 import type React from "react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { debounce } from "@/lib/use-debounce";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -22,9 +23,10 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = debounce(() => {
       setIsScrolled(window.scrollY > 10);
-    };
+    }, 50);
+
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -32,27 +34,35 @@ const Navbar = () => {
 
   useEffect(() => {
     if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
+      requestAnimationFrame(() => {
+        document.body.style.overflow = "hidden";
+      });
     } else {
-      document.body.style.overflow = "auto";
+      requestAnimationFrame(() => {
+        document.body.style.overflow = "auto";
+      });
     }
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isMobileMenuOpen]);
 
-  const handleLinkClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    path: string,
-  ) => {
-    if (path.startsWith("#")) {
-      e.preventDefault();
-      const element = document.querySelector(path);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+  const handleLinkClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+      if (path.startsWith("#")) {
+        e.preventDefault();
+        const element = document.querySelector(path);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
       }
-    }
-  };
+    },
+    [],
+  );
+
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen((prev) => !prev);
+  }, []);
 
   return (
     <nav
@@ -97,7 +107,7 @@ const Navbar = () => {
 
         <button
           className="md:hidden text-foreground p-2 -mr-2 touch-manipulation"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={toggleMobileMenu}
           aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={isMobileMenuOpen}
         >
