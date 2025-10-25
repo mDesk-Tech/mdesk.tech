@@ -1,5 +1,4 @@
-import HeroStatic from "@/components/HeroStatic";
-import ClientHeroAnimations from "@/components/ClientHeroAnimations";
+import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Services from "@/components/Services";
 import GlobalReach from "@/components/GlobalReach";
@@ -43,9 +42,7 @@ export default async function Home({
         </AlertDialog>
       )}
 
-      <HeroStatic />
-      <ClientHeroAnimations />
-
+      <Hero />
       <Features />
       <Services />
       <GlobalReach />
