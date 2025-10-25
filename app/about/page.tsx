@@ -5,21 +5,142 @@ import {
   Calendar,
   Users,
   Award,
-  CheckCircle,
-  ArrowRight,
-  Star,
-  Code,
-  Zap,
-  Globe,
-  Palette,
+  Target,
   Rocket,
+  Heart,
+  ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import Logo from "@/components/Logo";
+import { HyperText } from "@/components/ui/hyper-text";
+import { Timeline } from "@/components/ui/timeline";
+import {
+  DraggableCardBody,
+  DraggableCardContainer,
+} from "@/components/ui/draggable-card";
 
-export default function About() {
+export default function AboutPage() {
   const [activeSection, setActiveSection] = useState("mission");
+
+  const draggableCards = [
+    {
+      title: "Our Mission",
+      icon: Target,
+      description:
+        "Empowering businesses with cutting-edge web solutions that drive growth and success.",
+      gradient: "from-cyan-500/20 to-teal-500/20",
+    },
+    {
+      title: "Founded 2023",
+      icon: Calendar,
+      description:
+        "Started with a vision to bridge the gap between complex technology and beautiful design.",
+      gradient: "from-teal-500/20 to-cyan-500/20",
+    },
+    {
+      title: "15+ Team Members",
+      icon: Users,
+      description:
+        "A diverse team of passionate developers, designers, and strategists.",
+      gradient: "from-cyan-500/20 to-teal-500/20",
+    },
+    {
+      title: "100+ Projects",
+      icon: Award,
+      description:
+        "Successfully delivered projects for clients worldwide across various industries.",
+      gradient: "from-teal-500/20 to-cyan-500/20",
+    },
+    {
+      title: "Innovation First",
+      icon: Rocket,
+      description:
+        "We stay ahead of the curve with the latest technologies and best practices.",
+      gradient: "from-cyan-500/20 to-teal-500/20",
+    },
+  ];
+
+  const timelineData = [
+    {
+      title: "2023",
+      content: (
+        <div>
+          <p className="mb-8 text-xs font-normal text-muted-foreground md:text-sm">
+            mdesk.tech was founded with a vision to create exceptional digital
+            experiences that transform businesses.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+              <Calendar className="h-12 w-12 text-primary" />
+            </div>
+            <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+              <Target className="h-12 w-12 text-primary" />
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Early 2023",
+      content: (
+        <div>
+          <p className="mb-4 text-xs font-normal text-muted-foreground md:text-sm">
+            Secured our first major client and delivered a project that exceeded
+            expectations.
+          </p>
+          <p className="mb-8 text-xs font-normal text-muted-foreground md:text-sm">
+            Established our remote-first culture, enabling us to work with
+            talent worldwide.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+              <Users className="h-12 w-12 text-primary" />
+            </div>
+            <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+              <Award className="h-12 w-12 text-primary" />
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "2024",
+      content: (
+        <div>
+          <p className="mb-4 text-xs font-normal text-muted-foreground md:text-sm">
+            Major milestones achieved this year
+          </p>
+          <div className="mb-8 space-y-2">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
+              <div className="h-2 w-2 rounded-full bg-primary" />
+              Started working with clients across Europe, Asia, and North
+              America
+            </div>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
+              <div className="h-2 w-2 rounded-full bg-primary" />
+              Expanded service offerings with cutting-edge technologies
+            </div>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
+              <div className="h-2 w-2 rounded-full bg-primary" />
+              Grew team to 15+ talented professionals
+            </div>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
+              <div className="h-2 w-2 rounded-full bg-primary" />
+              Delivered 100+ successful projects
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+              <Rocket className="h-12 w-12 text-primary" />
+            </div>
+            <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+              <Heart className="h-12 w-12 text-primary" />
+            </div>
+          </div>
+        </div>
+      ),
+    },
+  ];
 
   const steps = [
     {
@@ -27,168 +148,126 @@ export default function About() {
       title: "Discovery",
       description:
         "We start by understanding your business, goals, and audience to ensure our solution addresses your specific needs.",
-      gradient: "from-indigo-500 to-purple-500",
     },
     {
       number: "02",
       title: "Strategy",
       description:
         "Based on our findings, we develop a comprehensive strategy that outlines the approach, technologies, and timeline.",
-      gradient: "from-purple-500 to-indigo-500",
     },
     {
       number: "03",
       title: "Design",
       description:
         "Our designers create intuitive, engaging interfaces that reflect your brand and resonate with your audience.",
-      gradient: "from-indigo-500 to-purple-500",
     },
     {
       number: "04",
       title: "Development",
       description:
         "Our development team brings the designs to life with clean, efficient code and cutting-edge technologies.",
-      gradient: "from-purple-500 to-indigo-500",
     },
     {
       number: "05",
       title: "Testing & Launch",
       description:
         "We rigorously test every aspect of your project before launch to ensure a flawless user experience.",
-      gradient: "from-indigo-500 to-purple-500",
     },
     {
       number: "06",
       title: "Ongoing Support",
       description:
         "Our relationship doesn't end at launch. We provide ongoing support and optimization to ensure long-term success.",
-      gradient: "from-purple-500 to-indigo-500",
     },
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Background elements - using a different style than home page */}
-      <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/30 via-background to-background z-0" />
-      <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage: `radial-gradient(circle at 25px 25px, rgba(99, 102, 241, 0.15) 2%, transparent 0%), 
-                       radial-gradient(circle at 75px 75px, rgba(168, 85, 247, 0.15) 2%, transparent 0%)`,
-          backgroundSize: "100px 100px",
-        }}
-      />
+    <div className="min-h-screen relative overflow-hidden bg-background">
+      {/* Background elements */}
+      <div className="absolute inset-0 bg-linear-to-b from-primary/5 via-background to-background z-0" />
+      <div className="absolute inset-0 opacity-20 grid-pattern" />
 
-      {/* Hero Section - Horizontal layout instead of vertical */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            <motion.div
-              className="lg:w-1/2"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="inline-flex items-center px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 backdrop-blur-sm mb-4">
-                <span className="text-xs font-medium text-indigo-300">
-                  Our Story
-                </span>
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                We're building the future of{" "}
-                <span className="text-gradient">digital experiences</span>
-              </h1>
-              <p className="text-lg text-muted-foreground mb-8 max-w-lg">
-                Founded in 2023, mdesk.tech began with a simple vision: to
-                bridge the gap between complex technology and beautiful design.
-                What started as a small team of passionate developers has grown
-                into a full-service digital agency.
-              </p>
+      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <motion.div
+            className="max-w-4xl mx-auto text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
+              <span className="text-xs sm:text-sm font-semibold text-primary">
+                Our Story
+              </span>
+            </div>
 
-              <div className="flex flex-wrap gap-4">
-                {["Innovative", "Reliable", "Passionate", "Client-focused"].map(
-                  (value, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50"
-                    >
-                      <Star className="h-3.5 w-3.5 text-indigo-400" />
-                      <span className="text-xs font-medium">{value}</span>
-                    </div>
-                  ),
-                )}
-              </div>
-            </motion.div>
+            <div className="mb-6 sm:mb-8">
+              <HyperText className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground">
+                ABOUT US
+              </HyperText>
+            </div>
 
-            <motion.div
-              className="lg:w-1/2"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <div className="relative aspect-square max-w-md mx-auto">
-                {/* Simple gradient background */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 blur-xl" />
-
-                {/* Simple visual element */}
-                <div className="relative h-full w-full flex items-center justify-center">
-                  <div className="w-full h-full p-12">
-                    <div className="w-full h-full rounded-xl border border-indigo-500/20 bg-card/50 backdrop-blur-sm p-8 flex flex-col items-center justify-center text-center">
-                      <div className="mb-6">
-                        <Logo hideText={true} />
-                      </div>
-
-                      <h3 className="text-xl font-bold mb-3">Our Vision</h3>
-                      <p className="text-muted-foreground text-sm">
-                        Creating exceptional digital experiences that transform
-                        businesses and delight users.
-                      </p>
-
-                      <div className="mt-6 relative">
-                        <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 transform -translate-y-1/2 z-0"></div>
-
-                        <div className="relative z-10 flex justify-between">
-                          {[
-                            {
-                              step: "Design",
-                              icon: <Palette className="h-3.5 w-3.5" />,
-                            },
-                            {
-                              step: "Develop",
-                              icon: <Code className="h-3.5 w-3.5" />,
-                            },
-                            {
-                              step: "Deploy",
-                              icon: <Rocket className="h-3.5 w-3.5" />,
-                            },
-                          ].map((item, i) => (
-                            <div key={i} className="flex flex-col items-center">
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 flex items-center justify-center mb-2">
-                                {item.icon}
-                              </div>
-                              <span className="text-xs font-medium text-indigo-400">
-                                {item.step}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className="mt-4 text-xs text-muted-foreground text-center">
-                          Our seamless end-to-end process
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+            <p className="text-base sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto px-4">
+              We&apos;re passionate about creating exceptional digital
+              experiences that transform businesses.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Navigation Tabs - Horizontal scrolling tabs */}
-      <section className="py-8 border-y border-border/30 sticky top-20 bg-background/80 backdrop-blur-md z-20">
-        <div className="container mx-auto px-6">
+      <section className="py-12 sm:py-20 relative overflow-hidden hidden md:block">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+              Explore Our Story
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base px-4">
+              Drag the cards around to explore different aspects of our company.
+              They&apos;re interactive and fun to play with.
+            </p>
+          </motion.div>
+
+          <DraggableCardContainer className="relative flex min-h-[600px] w-full items-center justify-center overflow-clip">
+            {draggableCards.map((card, index) => (
+              <DraggableCardBody
+                key={card.title}
+                className={`absolute ${
+                  index === 0
+                    ? "top-10 left-[10%] rotate-[-5deg]"
+                    : index === 1
+                      ? "top-40 left-[20%] rotate-[-7deg]"
+                      : index === 2
+                        ? "top-5 left-[40%] rotate-[8deg]"
+                        : index === 3
+                          ? "top-32 left-[55%] rotate-10"
+                          : "top-20 right-[20%] rotate-2"
+                }`}
+              >
+                <div
+                  className={`h-80 w-full rounded-lg bg-linear-to-br ${card.gradient} border border-primary/20 flex flex-col items-center justify-center p-6`}
+                >
+                  <card.icon className="h-16 w-16 text-primary mb-4" />
+                  <h3 className="text-2xl font-bold text-white mb-3 text-center">
+                    {card.title}
+                  </h3>
+                  <p className="text-neutral-200 text-center text-sm leading-relaxed">
+                    {card.description}
+                  </p>
+                </div>
+              </DraggableCardBody>
+            ))}
+          </DraggableCardContainer>
+        </div>
+      </section>
+
+      <section className="py-4 sm:py-8 border-y border-border/30 sticky top-14 sm:top-20 bg-background/80 backdrop-blur-md z-20">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="flex space-x-1 overflow-x-auto pb-2 scrollbar-hide">
             {[
               { id: "mission", label: "Our Mission" },
@@ -199,9 +278,9 @@ export default function About() {
               <button
                 key={tab.id}
                 onClick={() => setActiveSection(tab.id)}
-                className={`px-5 py-2.5 whitespace-nowrap rounded-full text-sm font-medium transition-all ${
+                className={`px-4 sm:px-5 py-2 sm:py-2.5 whitespace-nowrap rounded-full text-xs sm:text-sm font-medium transition-all touch-manipulation ${
                   activeSection === tab.id
-                    ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/30"
+                    ? "bg-primary/10 text-primary border border-primary/30"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -212,7 +291,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Mission Section */}
       <section
         id="mission"
         className={`py-16 ${activeSection === "mission" ? "block" : "hidden"}`}
@@ -228,17 +306,17 @@ export default function About() {
             >
               <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
               <p className="text-muted-foreground mb-6">
-                At mdesk.tech, we're on a mission to transform how businesses
-                connect with their audiences in the digital world. We believe
-                that exceptional digital experiences are built at the
+                At mdesk.tech, we&apos;re on a mission to transform how
+                businesses connect with their audiences in the digital world. We
+                believe that exceptional digital experiences are built at the
                 intersection of cutting-edge technology, beautiful design, and
                 strategic thinking.
               </p>
               <p className="text-muted-foreground mb-8">
-                We're committed to creating digital solutions that not only look
-                stunning but also drive real business results. Our approach
+                We&apos;re committed to creating digital solutions that not only
+                look stunning but also drive real business results. Our approach
                 combines technical expertise with creative innovation to deliver
-                websites and applications that stand out in today's crowded
+                websites and applications that stand out in today&apos;s crowded
                 digital landscape.
               </p>
 
@@ -250,8 +328,8 @@ export default function About() {
                   "Push the boundaries of what's possible in web design and development",
                 ].map((item, index) => (
                   <div key={index} className="flex items-start gap-3">
-                    <div className="mt-1 h-5 w-5 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle className="h-3 w-3 text-indigo-400" />
+                    <div className="mt-1 h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                      <Target className="h-3 w-3 text-primary" />
                     </div>
                     <span className="text-sm">{item}</span>
                   </div>
@@ -266,29 +344,29 @@ export default function About() {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-2xl blur-xl" />
-              <div className="relative bg-card/80 backdrop-blur-sm border border-indigo-500/20 rounded-2xl p-8 overflow-hidden">
-                <div className="absolute -right-20 -top-20 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl" />
-                <div className="absolute -left-20 -bottom-20 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl" />
+              <div className="absolute inset-0 bg-linear-to-br from-primary/20 to-accent/20 rounded-2xl blur-xl" />
+              <div className="relative bg-card/80 backdrop-blur-sm border border-primary/20 rounded-2xl p-8 overflow-hidden">
+                <div className="absolute -right-20 -top-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />
+                <div className="absolute -left-20 -bottom-20 w-40 h-40 bg-accent/10 rounded-full blur-3xl" />
 
                 <h3 className="text-xl font-bold mb-4">Why We Exist</h3>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center flex-shrink-0">
-                      <Star className="h-5 w-5 text-indigo-400" />
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <Heart className="h-5 w-5 text-primary" />
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Excellence</h4>
                       <p className="text-sm text-muted-foreground">
-                        We're committed to delivering work that exceeds
+                        We&apos;re committed to delivering work that exceeds
                         expectations in every detail.
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center flex-shrink-0">
-                      <Users className="h-5 w-5 text-purple-400" />
+                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                      <Users className="h-5 w-5 text-primary" />
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Partnership</h4>
@@ -300,14 +378,14 @@ export default function About() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center flex-shrink-0">
-                      <Zap className="h-5 w-5 text-indigo-400" />
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <Rocket className="h-5 w-5 text-primary" />
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Innovation</h4>
                       <p className="text-sm text-muted-foreground">
                         We constantly explore new technologies and approaches to
-                        solve complex problems.
+                        solve complex problems and create better solutions.
                       </p>
                     </div>
                   </div>
@@ -318,123 +396,13 @@ export default function About() {
         </div>
       </section>
 
-      {/* Journey Section - Timeline */}
       <section
         id="journey"
-        className={`py-16 ${activeSection === "journey" ? "block" : "hidden"}`}
+        className={`${activeSection === "journey" ? "block" : "hidden"}`}
       >
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center mb-12 bg-background/80 backdrop-blur-md py-6 px-8 rounded-lg border border-indigo-500/20"
-          >
-            <h2 className="text-3xl font-bold mb-4">Our Journey</h2>
-            <p className="text-muted-foreground">
-              From our humble beginnings to where we are today, our journey has
-              been defined by growth, learning, and a relentless pursuit of
-              excellence.
-            </p>
-          </motion.div>
-
-          <div className="relative max-w-3xl mx-auto">
-            {/* Timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-indigo-500/50 via-purple-500/50 to-indigo-500/50" />
-
-            {/* Timeline items */}
-            {[
-              {
-                year: "2023",
-                title: "Founded",
-                description:
-                  "mdesk.tech was founded with a vision to create exceptional digital experiences.",
-                icon: <Calendar className="h-5 w-5" />,
-                position: "left",
-              },
-              {
-                year: "2023",
-                title: "First Client",
-                description:
-                  "Secured our first major client and delivered a project that exceeded expectations.",
-                icon: <Star className="h-5 w-5" />,
-                position: "right",
-              },
-              {
-                year: "2023",
-                title: "Remote-First Culture",
-                description:
-                  "Established our remote-first culture, enabling us to work with talent worldwide.",
-                icon: <Globe className="h-5 w-5" />,
-                position: "left",
-              },
-              {
-                year: "2024",
-                title: "Global Reach",
-                description:
-                  "Started working with clients across Europe, Asia, and North America.",
-                icon: <Globe className="h-5 w-5" />,
-                position: "right",
-              },
-              {
-                year: "2024",
-                title: "Innovation Focus",
-                description:
-                  "Expanded our service offerings with cutting-edge technologies and approaches.",
-                icon: <Award className="h-5 w-5" />,
-                position: "left",
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                className={`relative mb-12 ${
-                  item.position === "left"
-                    ? "ml-0 mr-auto pr-12 text-right"
-                    : "ml-auto mr-0 pl-12 text-left"
-                } w-1/2`}
-                initial={{
-                  opacity: 0,
-                  y: 20,
-                  x: item.position === "left" ? -20 : 20,
-                }}
-                whileInView={{ opacity: 1, y: 0, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                {/* Timeline dot */}
-                <div
-                  className="absolute top-0 w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center z-10"
-                  style={{
-                    [item.position === "left" ? "right" : "left"]: "-20px",
-                  }}
-                >
-                  {item.icon}
-                </div>
-
-                {/* Content */}
-                <div
-                  className={`bg-background/90 backdrop-blur-md border border-indigo-500/30 rounded-lg p-6 shadow-lg ${
-                    item.position === "left"
-                      ? "rounded-tr-none"
-                      : "rounded-tl-none"
-                  }`}
-                >
-                  <div className="text-sm font-medium text-indigo-400 mb-1">
-                    {item.year}
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 text-white">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-300">{item.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        <Timeline data={timelineData} />
       </section>
 
-      {/* Values Section */}
       <section
         id="values"
         className={`py-16 ${activeSection === "values" ? "block" : "hidden"}`}
@@ -445,7 +413,7 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center mb-12 bg-background/80 backdrop-blur-md py-6 px-8 rounded-lg border border-indigo-500/20"
+            className="max-w-3xl mx-auto text-center mb-12 bg-background/80 backdrop-blur-md py-6 px-8 rounded-lg border border-primary/20"
           >
             <h2 className="text-3xl font-bold mb-4">Our Values</h2>
             <p className="text-muted-foreground">
@@ -460,34 +428,34 @@ export default function About() {
                 title: "Excellence",
                 description:
                   "We strive for excellence in everything we do, from the code we write to the designs we create.",
-                icon: <Star className="h-6 w-6" />,
-                color: "bg-indigo-500/10 text-indigo-400",
+                icon: <Heart className="h-6 w-6" />,
+                color: "bg-primary/10 text-primary",
               },
               {
                 title: "Innovation",
                 description:
                   "We embrace new technologies and approaches to solve complex problems and create better solutions.",
-                icon: <Zap className="h-6 w-6" />,
-                color: "bg-purple-500/10 text-purple-400",
+                icon: <Target className="h-6 w-6 text-white" />,
+                color: "bg-accent/10 text-accent",
               },
               {
                 title: "Collaboration",
                 description:
                   "We believe the best work happens when diverse perspectives come together toward a common goal.",
                 icon: <Users className="h-6 w-6" />,
-                color: "bg-indigo-500/10 text-indigo-400",
+                color: "bg-primary/10 text-primary",
               },
               {
                 title: "Integrity",
                 description:
                   "We're honest, transparent, and committed to doing what's right for our clients and our team.",
-                icon: <Award className="h-6 w-6" />,
-                color: "bg-purple-500/10 text-purple-400",
+                icon: <Award className="h-6 w-6 text-white" />,
+                color: "bg-accent/10 text-accent",
               },
             ].map((value, index) => (
               <motion.div
                 key={index}
-                className="bg-background/90 backdrop-blur-md border border-indigo-500/30 rounded-lg p-6 shadow-lg"
+                className="bg-background/90 backdrop-blur-md border border-primary/30 rounded-lg p-6 shadow-lg"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -509,8 +477,8 @@ export default function About() {
                   </h4>
                   <ul className="space-y-2">
                     {[1, 2, 3].map((item, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <div className="mt-1 h-2 w-2 rounded-full bg-indigo-500/50 flex-shrink-0" />
+                      <li key={i} className="flex gap-2 items-start">
+                        <div className="mt-1 h-2 w-2 rounded-full bg-primary/50 shrink-0" />
                         <span className="text-sm text-gray-300">
                           {index === 0 &&
                             i === 0 &&
@@ -562,7 +530,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Approach Section */}
       <section
         id="approach"
         className={`py-16 ${activeSection === "approach" ? "block" : "hidden"}`}
@@ -573,7 +540,7 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center mb-12 bg-background/80 backdrop-blur-md py-6 px-8 rounded-lg border border-indigo-500/20"
+            className="max-w-4xl mx-auto text-center mb-12 bg-background/80 backdrop-blur-md py-6 px-8 rounded-lg border border-primary/20"
           >
             <h2 className="text-3xl font-bold mb-4">Our Approach</h2>
             <p className="text-muted-foreground">
@@ -582,15 +549,14 @@ export default function About() {
             </p>
           </motion.div>
 
-          {/* Process steps */}
           <div className="relative max-w-4xl mx-auto">
-            {/* Timeline line - centered and starts below the first circle */}
             <div
-              className="absolute left-8 top-8 bottom-8 w-[1px] z-0"
+              className="absolute left-8 top-8 bottom-8 w-px z-0"
               style={{
                 background:
-                  "linear-gradient(to bottom, rgba(99, 102, 241, 0.6) 50%, transparent 50%)",
+                  "linear-gradient(to bottom, hsl(var(--primary)) 50%, transparent 50%)",
                 backgroundSize: "1px 8px",
+                opacity: 0.6,
               }}
             />
 
@@ -603,24 +569,22 @@ export default function About() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                {/* Step number - with solid background to hide line */}
                 <div className="relative z-10">
-                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full opacity-20 blur-sm" />
-                  <div className="relative flex-shrink-0 w-16 h-16 rounded-full bg-background border border-indigo-500/30 flex items-center justify-center">
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500/10 to-purple-500/10" />
-                    <span className="relative z-10 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
+                  <div className="absolute inset-0 bg-linear-to-br from-primary to-accent rounded-full opacity-20 blur-sm" />
+                  <div className="relative shrink-0 w-16 h-16 rounded-full bg-background border border-primary/30 flex items-center justify-center">
+                    <div className="absolute inset-0 rounded-full bg-linear-to-br from-primary/10 to-accent/10" />
+                    <span className="relative z-10 text-xl font-bold bg-clip-text text-transparent bg-linear-to-r from-primary to-accent">
                       {step.number}
                     </span>
                   </div>
                 </div>
 
-                {/* Step content - updated with better spacing */}
-                <div className="flex-1 pt-3 bg-background/90 backdrop-blur-md rounded-lg p-6 border border-indigo-500/30 shadow-lg">
+                <div className="flex-1 pt-3 bg-background/90 backdrop-blur-md rounded-lg p-6 border border-primary/30 shadow-lg">
                   <h3 className="text-xl font-bold mb-2 text-white">
                     {step.title}
                   </h3>
                   <p className="text-gray-300">{step.description}</p>
-                  <div className="mt-4 h-1 w-24 rounded-full bg-gradient-to-r from-indigo-500/40 to-purple-500/40" />
+                  <div className="mt-4 h-1 w-24 rounded-full bg-linear-to-r from-primary/40 to-accent/40" />
                 </div>
               </motion.div>
             ))}
@@ -628,56 +592,38 @@ export default function About() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/20 to-purple-900/20 backdrop-blur-sm" />
+      <section className="py-12 sm:py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-accent/10" />
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto bg-card/80 backdrop-blur-sm border border-indigo-500/20 rounded-2xl p-12 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl font-bold mb-4">
-                Ready to work with us?
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Let's create something amazing together. Contact us today to
-                discuss your project and see how we can help bring your vision
-                to life.
-              </p>
-
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <motion.div
+            className="max-w-4xl mx-auto p-6 sm:p-8 md:p-10 rounded-3xl border border-primary/20 bg-linear-to-br from-primary/5 to-accent/5 backdrop-blur-sm"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-bold mb-2 flex items-center gap-3">
+                  <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+                  Ready to work with us?
+                </h3>
+                <p className="text-muted-foreground text-base sm:text-lg">
+                  Let&apos;s create something amazing together.
+                </p>
+              </div>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium transition-all hover:from-indigo-600 hover:to-purple-600"
+                className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-linear-to-r from-cyan-500 to-teal-500 text-white font-bold transition-all hover:scale-105 hover:shadow-lg hover:shadow-primary/50 whitespace-nowrap touch-manipulation w-full md:w-auto text-sm sm:text-base"
               >
                 Get in Touch
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
               </Link>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </section>
-
-      <style jsx global>{`
-        .text-gradient {
-          background: linear-gradient(to right, #6366f1, #a855f7);
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-        }
-
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </div>
   );
 }

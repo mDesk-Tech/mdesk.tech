@@ -3,11 +3,12 @@ packages:
   - components/*
   - packages/*
 
+ignore-workspace-root-check: true
+
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"
+  - "@tsparticles/engine"
   - "@vercel/speed-insights"
   - canvas
   - sharp
   - unrs-resolver
-
-ignore-workspace-root-check: true

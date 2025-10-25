@@ -1,13 +1,8 @@
-"use client";
-
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Services from "@/components/Services";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
-import PerformanceOptimizer from "@/components/PerformanceOptimizer";
-import LcpOptimizer from "@/components/LcpOptimizer";
-import { useState, useEffect } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,24 +14,18 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-export default function Home() {
-  const [showDialog, setShowDialog] = useState(false);
-
-  useEffect(() => {
-    if (
-      new URLSearchParams(window.location.search).get("ref") === "miyuki-home"
-    ) {
-      setShowDialog(true);
-    }
-  }, []);
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ ref?: string }>;
+}) {
+  const params = await searchParams;
+  const showDialog = params?.ref === "miyuki-home";
 
   return (
     <div className="bg-background text-foreground">
-      <LcpOptimizer />
-      <PerformanceOptimizer />
-
       {showDialog && (
-        <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
+        <AlertDialog open={showDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>What</AlertDialogTitle>

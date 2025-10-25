@@ -1,121 +1,75 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { Mail, ArrowRight } from "lucide-react";
+import { Mail, ArrowRight, Send } from "lucide-react";
+import { TextAnimate } from "@/components/ui/text-animate";
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-linear-to-b from-background via-background/90 to-background z-0" />
+    <section
+      id="contact"
+      className="py-16 sm:py-20 md:py-32 relative overflow-hidden bg-muted/20"
+    >
+      <div className="absolute inset-0 bg-linear-to-b from-background via-primary/5 to-background z-0" />
+      <div className="absolute inset-0 grid-pattern opacity-20 z-0" />
       <div className="absolute inset-0 noise z-0" />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <motion.div
-          className="max-w-3xl mx-auto text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="inline-flex items-center px-3 py-1 rounded-full border border-border/50 bg-background/50 backdrop-blur-xs mb-4">
-            <span className="text-xs font-medium text-muted-foreground">
-              Let's talk
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16 md:mb-20">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
+            <span className="text-xs sm:text-sm font-semibold text-primary">
+              Let&apos;s Connect
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Get in Touch</h2>
-          <p className="text-muted-foreground">
-            Ready to start your next project? We'd love to hear from you!
+          <h2 className="text-3xl sm:text-5xl md:text-7xl font-black mb-4 sm:mb-6">
+            <TextAnimate animation="blurInUp" by="character" once>
+              Get in Touch
+            </TextAnimate>
+          </h2>
+          <p className="text-base sm:text-xl text-muted-foreground leading-relaxed px-4">
+            Ready to start your next project? We&apos;d love to hear from you
+            and discuss how we can help bring your vision to life.
           </p>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 gap-8 max-w-4xl mx-auto">
-          <motion.div
-            className="relative group"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            {/* Animated border */}
-            <div className="absolute inset-0 rounded-lg overflow-hidden z-0 pointer-events-none">
-              <div
-                className="absolute inset-0 rounded-lg"
-                style={{
-                  background: `linear-gradient(90deg, 
-        rgba(99, 102, 241, 0) 0%, 
-        rgba(99, 102, 241, 1) 25%, 
-        rgba(168, 85, 247, 1) 50%, 
-        rgba(99, 102, 241, 1) 75%, 
-        rgba(99, 102, 241, 0) 100%)`,
-                  backgroundSize: "200% 100%",
-                  animation: "moveGradient 2s linear infinite",
-                }}
-              />
-              <div className="absolute inset-[2px] rounded-lg bg-card" />
+        <div className="max-w-5xl mx-auto text-center gap-6">
+          <div className="group relative p-6 sm:p-8 rounded-2xl border border-border bg-card hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
+            <div className="inline-flex p-3 sm:p-4 rounded-2xl bg-primary/10 text-primary w-fit mb-4 group-hover:scale-110 transition-transform">
+              <Mail className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
+            <h3 className="text-lg sm:text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+              Email
+            </h3>
+            <p className="text-muted-foreground text-sm mb-4">
+              Send us an email anytime
+            </p>
+            <a
+              href="mailto:hello@mdesk.tech"
+              className="inline-flex items-center text-primary font-semibold group-hover:gap-2 transition-all text-sm sm:text-base break-all touch-manipulation"
+            >
+              hello@mdesk.tech
+              <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1 shrink-0" />
+            </a>
+          </div>
+        </div>
 
-            {/* Glow effect */}
-            <div
-              className="absolute inset-0 bg-linear-to-r from-indigo-500 to-purple-500 opacity-0 blur-xl transition-opacity duration-500 -z-10 group-hover:opacity-30 rounded-lg"
-              style={{
-                animation: "slowGlow 4s ease-in-out infinite",
-              }}
-            />
-
-            <div className="bg-card border border-transparent rounded-lg p-6 relative z-10">
-              <div className="p-3 rounded-full bg-linear-to-br from-indigo-500 to-purple-500 text-white inline-block mb-4">
-                <Mail className="h-6 w-6" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2 group-hover:text-gradient transition-all duration-300">
-                Email Us
-              </h3>
-              <p className="text-muted-foreground mb-4">
-                Our friendly team is here to help with any questions you might
-                have.
-              </p>
-              <a
-                href="mailto:hello@mdesk.tech"
-                className="inline-flex items-center text-primary hover:text-gradient group-hover:font-medium transition-all duration-300"
-                aria-label="Email us at hello@mdesk.tech"
-              >
-                hello@mdesk.tech
-                <div className="ml-2 transition-transform duration-300 group-hover:translate-x-1">
-                  <ArrowRight className="h-4 w-4" />
-                </div>
-              </a>
-            </div>
-          </motion.div>
+        <div className="max-w-3xl mx-auto mt-12 sm:mt-16 text-center">
+          <div className="p-6 sm:p-8 md:p-10 rounded-2xl border border-primary/20 bg-linear-to-br from-primary/5 to-transparent backdrop-blur-sm">
+            <Send className="h-10 w-10 sm:h-12 sm:w-12 text-primary mx-auto mb-4" />
+            <h3 className="text-xl sm:text-2xl font-bold mb-3">
+              Ready to get started?
+            </h3>
+            <p className="text-muted-foreground mb-6 text-sm sm:text-base px-4">
+              Let&apos;s discuss your project and see how we can help you
+              achieve your goals.
+            </p>
+            <a
+              href="mailto:hello@mdesk.tech"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all hover:scale-105 touch-manipulation text-sm sm:text-base"
+            >
+              Send us a message
+              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
+            </a>
+          </div>
         </div>
       </div>
-      <style jsx global>{`
-        @keyframes moveGradient {
-          0% {
-            background-position: 0% 0%;
-          }
-          100% {
-            background-position: 200% 0%;
-          }
-        }
-
-        .text-gradient {
-          background: linear-gradient(to right, #6366f1, #a855f7);
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-        }
-
-        @keyframes slowGlow {
-          0% {
-            opacity: 0.1;
-          }
-          50% {
-            opacity: 0.3;
-          }
-          100% {
-            opacity: 0.1;
-          }
-        }
-      `}</style>
     </section>
   );
 };

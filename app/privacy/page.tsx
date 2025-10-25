@@ -18,13 +18,15 @@ export default function PrivacyPolicy() {
         >
           <Link
             href="/"
-            className="inline-flex items-center text-muted-foreground hover:text-primary mb-8"
+            className="inline-flex items-center text-muted-foreground hover:text-primary mb-8 transition-colors"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Home
           </Link>
 
-          <h1 className="text-4xl font-bold mb-8">Privacy Policy</h1>
+          <h1 className="text-4xl font-bold mb-8 bg-linear-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">
+            Privacy Policy
+          </h1>
 
           <div className="prose prose-invert max-w-none">
             <p className="text-muted-foreground">Last updated: March 8, 2024</p>
@@ -109,13 +111,15 @@ export default function PrivacyPolicy() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">6. Contact Us</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-cyan-400">
+                6. Contact Us
+              </h2>
               <p>
                 If you have any questions about this Privacy Policy, please
                 contact us at{" "}
                 <a
                   href="mailto:hello@mdesk.tech"
-                  className="text-primary hover:underline"
+                  className="text-cyan-400 hover:text-teal-400 underline transition-colors"
                 >
                   hello@mdesk.tech
                 </a>

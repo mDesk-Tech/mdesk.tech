@@ -5,9 +5,9 @@ import type React from "react";
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Logo from "@/components/Logo";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { debounce } from "@/lib/debounce-util";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -22,53 +22,63 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Memoize the scroll handler to prevent unnecessary re-renders
-  const handleScroll = useCallback(() => {
-    setIsScrolled(window.scrollY > 10);
+  useEffect(() => {
+    const handleScroll = debounce(() => {
+      setIsScrolled(window.scrollY > 10);
+    }, 50);
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    // Initial check
-    handleScroll();
-
-    // Add event listener
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // Cleanup function
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
-
-  // Close mobile menu when pathname changes
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
-
-  const handleLinkClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    path: string,
-  ) => {
-    if (path.startsWith("#")) {
-      e.preventDefault();
-      const element = document.querySelector(path);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+    if (isMobileMenuOpen) {
+      requestAnimationFrame(() => {
+        document.body.style.overflow = "hidden";
+      });
+    } else {
+      requestAnimationFrame(() => {
+        document.body.style.overflow = "auto";
+      });
     }
-  };
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isMobileMenuOpen]);
+
+  const handleLinkClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+      if (path.startsWith("#")) {
+        e.preventDefault();
+        const element = document.querySelector(path);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    },
+    [],
+  );
+
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen((prev) => !prev);
+  }, []);
 
   return (
-    <motion.nav
-      className={`fixed top-0 left-0 right-0 z-100 transition-all duration-300 ${
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? "bg-background/80 backdrop-blur-md border-b border-border/40"
           : "bg-background/50 backdrop-blur-xs"
       }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
     >
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <Logo />
+      <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
+        <Link
+          href="/"
+          className="text-xl sm:text-2xl font-bold bg-linear-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent hover:from-cyan-300 hover:to-teal-300 transition-all"
+        >
+          mdesk.tech
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-8">
@@ -95,10 +105,9 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-foreground"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="md:hidden text-foreground p-2 -mr-2 touch-manipulation"
+          onClick={toggleMobileMenu}
           aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={isMobileMenuOpen}
         >
@@ -106,39 +115,44 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Navigation */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            className="md:hidden fixed inset-0 top-[57px] sm:top-[65px] bg-background z-40"
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <div className="container mx-auto px-6 py-4 flex flex-col space-y-4">
-              {navLinks.map((link) => (
-                <Link
+            <div className="container mx-auto px-4 sm:px-6 py-8 flex flex-col space-y-6">
+              {navLinks.map((link, index) => (
+                <motion.div
                   key={link.path}
-                  href={link.path}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    pathname === link.path
-                      ? "text-primary"
-                      : "text-muted-foreground"
-                  }`}
-                  onClick={(e) => {
-                    setIsMobileMenuOpen(false);
-                    handleLinkClick(e, link.path);
-                  }}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  {link.name}
-                </Link>
+                  <Link
+                    href={link.path}
+                    className={`block text-2xl font-bold transition-colors hover:text-primary py-3 touch-manipulation ${
+                      pathname === link.path
+                        ? "text-primary"
+                        : "text-foreground"
+                    }`}
+                    onClick={(e) => {
+                      setIsMobileMenuOpen(false);
+                      handleLinkClick(e, link.path);
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </nav>
   );
 };
 

@@ -1,441 +1,186 @@
 "use client";
 
-import { useRef, useEffect, useMemo, useState } from "react";
-import { motion, useTransform, useMotionValue, useSpring } from "framer-motion";
-import { ArrowRight, Code, Globe, Zap } from "lucide-react";
-import Link from "next/link";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { useRef, useEffect, useState, useCallback } from "react";
+import { motion, useTransform, useScroll } from "framer-motion";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const shouldReduceMotion = useReducedMotion();
-  const [isClient, setIsClient] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Only enable client-side features after hydration
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.5], [0, 50]);
+
   useEffect(() => {
-    // Mark LCP element as visible immediately
-    const lcpElement = document.querySelector("[data-lcp-element]");
-    if (lcpElement && lcpElement instanceof HTMLElement) {
-      lcpElement.style.opacity = "1";
-      lcpElement.style.visibility = "visible";
-    }
-
-    // Set isClient state to true after hydration
-    setIsClient(true);
-
-    // Check if on mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    // Initial check
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+    // Call setIsMounted in a microtask to avoid cascading renders
+    Promise.resolve().then(() => setIsMounted(true));
 
-    // Store mousemove handler reference for cleanup
-    let mouseMoveHandler: ((e: MouseEvent) => void) | null = null;
-
-    // Defer non-critical animations
-    const deferAnimations = () => {
-      if (typeof window !== "undefined") {
-        window.requestAnimationFrame(() => {
-          // Now initialize animations after LCP is rendered
-          if (containerRef.current) {
-            mouseMoveHandler = (e: MouseEvent) => {
-              if (!containerRef.current) return;
-              const { clientX, clientY } = e;
-              const { left, top, width, height } =
-                containerRef.current.getBoundingClientRect();
-              const x = (clientX - left) / width;
-              const y = (clientY - top) / height;
-              mouseX.set(x);
-              mouseY.set(y);
-            };
-            window.addEventListener("mousemove", mouseMoveHandler, {
-              passive: true,
-            });
-          }
-        });
-      }
+    let resizeTimeout: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(checkMobile, 150);
     };
 
-    // Use requestIdleCallback to defer non-critical work
-    if ("requestIdleCallback" in window) {
-      window.requestIdleCallback(deferAnimations);
-    } else {
-      setTimeout(deferAnimations, 50);
-    }
+    window.addEventListener("resize", debouncedResize, { passive: true });
 
-    // Cleanup function
     return () => {
-      if (mouseMoveHandler) {
-        window.removeEventListener("mousemove", mouseMoveHandler);
-      }
-      window.removeEventListener("resize", checkMobile);
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", debouncedResize);
     };
-  }, [mouseX, mouseY]);
+  }, []);
 
-  const springConfig = useMemo(() => ({ damping: 40, stiffness: 300 }), []);
-  const xSpring = useSpring(mouseX, springConfig);
-  const ySpring = useSpring(mouseY, springConfig);
-
-  const xTransform = useTransform(xSpring, [0, 1], [-100, 100]);
-  const yTransform1 = useTransform(ySpring, [0, 1], [-100, 100]);
-  const yTransform2 = useTransform(ySpring, [0, 1], [100, -100]);
-  const xTransform2 = useTransform(xSpring, [0, 1], [100, -100]);
+  const scrollToSection = useCallback((id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
 
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32 sm:pt-28 md:pt-20 composite-layer"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background"
       style={{
-        contain: "layout size",
+        contain: "layout style paint",
         containIntrinsicSize: "0 100vh",
       }}
     >
-      {/* Background elements with pre-allocated space */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background to-background/80 z-0" />
-      <div
-        className="absolute inset-0 grid-pattern opacity-20 z-0"
-        style={{
-          height: "100%",
-          width: "100%",
-          position: "absolute",
-          top: "0",
-          left: "0",
-          contain: "strict",
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h60v60H0z' fill='none' stroke='rgba(255,255,255,0.05)' strokeWidth='1'/%3E%3C/svg%3E")`,
-          backgroundSize: "40px 40px",
-        }}
-      />
-      <div className="absolute inset-0 noise z-0" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none" />
 
-      {/* Animated gradient orbs - consistent across all devices */}
-      {isClient && (
+      {isMounted && !isMobile && (
         <>
           <motion.div
-            className="absolute rounded-full bg-linear-to-r from-indigo-500/20 to-purple-500/20 blur-3xl w-[500px] h-[500px]"
-            style={{
-              x: xTransform,
-              y: yTransform1,
-              willChange: "transform, opacity",
+            className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none will-change-transform"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.2, 0.4, 0.2],
             }}
-            animate={
-              isMobile
-                ? {
-                    x: [0, 50, -50, 0],
-                    y: [0, -30, 30, 0],
-                    opacity: [0.2, 0.3, 0.2],
-                  }
-                : undefined
-            }
-            transition={
-              isMobile
-                ? {
-                    duration: 8,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                  }
-                : undefined
-            }
+            transition={{
+              duration: 8,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "easeInOut",
+            }}
           />
-
           <motion.div
-            className="absolute rounded-full bg-linear-to-r from-purple-500/20 to-pink-500/20 blur-3xl w-[300px] h-[300px]"
-            style={{
-              x: xTransform2,
-              y: yTransform2,
-              willChange: "transform, opacity",
+            className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl pointer-events-none will-change-transform"
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.4, 0.2, 0.4],
             }}
-            animate={
-              isMobile
-                ? {
-                    x: [0, -50, 50, 0],
-                    y: [0, 30, -30, 0],
-                    opacity: [0.2, 0.3, 0.2],
-                  }
-                : undefined
-            }
-            transition={
-              isMobile
-                ? {
-                    duration: 10,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                    delay: 0.5,
-                  }
-                : undefined
-            }
+            transition={{
+              duration: 8,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "easeInOut",
+            }}
           />
         </>
       )}
 
-      {/* Content */}
-      <div
-        className="container relative z-10 px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center composite-layer"
-        style={{
-          transform: "translateZ(0)",
-        }}
+      <motion.div
+        className="container relative z-10 px-4 sm:px-6 py-20 sm:py-32"
+        style={{ opacity, y }}
       >
-        <div>
-          <div className="inline-flex items-center px-3 py-1 rounded-full border border-border/50 bg-background/50 backdrop-blur-xs mb-6">
-            <span className="text-xs font-medium text-muted-foreground">
-              Cutting-edge web solutions
-            </span>
-          </div>
-
-          <h1
-            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight will-change-transform"
-            data-lcp-element="true"
-            style={{
-              opacity: 1,
-              visibility: "visible",
-              contentVisibility: "visible",
-            }}
+        <div className="max-w-6xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-6 sm:mb-8"
           >
-            Designing Your{" "}
-            <span className="text-gradient glow-text">Digital Future</span>
-          </h1>
+            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
+            <span className="text-xs sm:text-sm font-semibold text-primary">
+              Next-Generation Web Solutions
+            </span>
+          </motion.div>
 
-          <p
-            className="text-xl text-muted-foreground mb-8 max-w-lg"
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 tracking-tight leading-tight"
             data-lcp-element="true"
-            style={{
-              contentVisibility: "visible",
-              containIntrinsicSize: "0 50px",
-            }}
+          >
+            <span className="block">Designing Your</span>
+            <span className="block bg-clip-text text-transparent bg-linear-to-b from-primary to-accent">
+              Digital Future
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="text-base sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed font-light px-4"
           >
             Cutting-edge web design and reliable hosting solutions for
             businesses that want to stand out in the digital landscape.
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4"
+          >
             <button
-              onClick={() => {
-                const contactSection = document.getElementById("contact");
-                if (contactSection) {
-                  contactSection.scrollIntoView({
-                    behavior: shouldReduceMotion ? "auto" : "smooth",
-                  });
-                }
-              }}
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium transition-all hover:bg-primary/90 hover:scale-105"
+              onClick={() => scrollToSection("contact")}
+              className="group relative inline-flex items-center justify-center px-6 sm:px-10 py-4 sm:py-5 rounded-full bg-primary text-primary-foreground font-bold text-base sm:text-lg transition-all hover:scale-105 hover:shadow-2xl hover:shadow-primary/50 overflow-hidden cursor-pointer touch-manipulation"
             >
-              Get Started
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <span className="relative z-10 flex items-center gap-2">
+                Get Started
+                <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:translate-x-1" />
+              </span>
+              <div className="absolute inset-0 bg-linear-to-r from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
-            <Link
-              href="#services"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium transition-all hover:bg-secondary/80"
+            <button
+              onClick={() => scrollToSection("services")}
+              className="inline-flex items-center justify-center px-6 sm:px-10 py-4 sm:py-5 rounded-full border-2 border-primary/20 bg-transparent text-foreground font-bold text-base sm:text-lg transition-all hover:bg-primary/10 hover:border-primary cursor-pointer touch-manipulation"
             >
-              Our Services
-            </Link>
-          </div>
+              Explore Services
+            </button>
+          </motion.div>
 
-          <div className="flex items-center gap-4 mt-12">
-            <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-primary" />
-              <span className="text-sm text-muted-foreground">Fast</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Code className="h-4 w-4 text-primary" />
-              <span className="text-sm text-muted-foreground">Modern</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Globe className="h-4 w-4 text-primary" />
-              <span className="text-sm text-muted-foreground">Reliable</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Only render browser mockup on client and non-mobile */}
-        <div className="relative">
-          {isClient ? (
-            <BrowserMockup
-              shouldReduceMotion={shouldReduceMotion}
-              isMobile={isMobile}
-            />
-          ) : (
-            <div className="lg:block" style={{ height: "400px" }} />
+          {isMounted && !isMobile && (
+            <motion.div
+              className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:block"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+            >
+              <motion.div
+                className="w-6 h-10 sm:w-8 sm:h-12 rounded-full border-2 border-primary/30 flex items-start justify-center p-2 will-change-transform"
+                animate={{ y: [0, 10, 0] }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "easeInOut",
+                }}
+              >
+                <motion.div
+                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary will-change-transform"
+                  animate={{ y: [0, 16, 0] }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: "easeInOut",
+                  }}
+                />
+              </motion.div>
+            </motion.div>
           )}
         </div>
-      </div>
-
-      {/* Scroll indicator - only on desktop and client */}
-      {isClient && !isMobile && (
-        <motion.div
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-          initial={{ opacity: 0, y: -20 }}
-          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-          transition={
-            shouldReduceMotion ? { duration: 0.1 } : { duration: 0.5, delay: 1 }
-          }
-        >
-          <motion.div
-            className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-center justify-center"
-            animate={shouldReduceMotion ? { opacity: 1 } : { y: [0, 8, 0] }}
-            transition={
-              shouldReduceMotion
-                ? { duration: 0.1 }
-                : {
-                    repeat: Number.POSITIVE_INFINITY,
-                    duration: 1.5,
-                    ease: "easeInOut",
-                  }
-            }
-          >
-            <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-          </motion.div>
-        </motion.div>
-      )}
+      </motion.div>
     </section>
-  );
-};
-
-// Browser mockup with consistent animations for all devices
-const BrowserMockup = ({}: {
-  shouldReduceMotion: boolean;
-  isMobile?: boolean;
-}) => {
-  return (
-    <motion.div
-      className="relative w-full aspect-4/3 bg-linear-to-br from-indigo-500/10 to-purple-500/10 rounded-lg border border-border/50 backdrop-blur-xs p-4 shadow-xl"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-    >
-      {/* Browser chrome */}
-      <div className="absolute top-0 left-0 right-0 h-8 bg-background/80 border-b border-border/50 rounded-t-lg flex items-center px-4">
-        <div className="flex space-x-2">
-          <div className="w-3 h-3 rounded-full bg-destructive/70" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
-          <div className="w-3 h-3 rounded-full bg-green-500/70" />
-        </div>
-        <div className="ml-4 h-5 w-1/2 bg-muted rounded-full text-xs flex items-center justify-center text-muted-foreground overflow-hidden">
-          <span className="truncate px-2">https://mdesk.tech</span>
-        </div>
-      </div>
-
-      {/* Browser content - simplified for better performance */}
-      <div className="mt-8 space-y-4">
-        <motion.div
-          className="h-8 w-3/4 bg-muted/80 rounded-md"
-          animate={{ width: ["60%", "75%", "60%"] }}
-          transition={{
-            duration: 8,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          }}
-        />
-
-        <motion.div
-          className="h-4 w-1/2 bg-muted/80 rounded-md"
-          animate={{ width: ["40%", "50%", "40%"] }}
-          transition={{
-            duration: 6,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-            delay: 0.5,
-          }}
-        />
-
-        <motion.div
-          className="h-4 w-2/3 bg-muted/80 rounded-md"
-          animate={{ width: ["55%", "65%", "55%"] }}
-          transition={{
-            duration: 7,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-        />
-
-        <div className="grid grid-cols-3 gap-3 mt-6">
-          {[0, 1, 2].map((i) => (
-            <motion.div
-              key={i}
-              className="aspect-video bg-muted/60 rounded-md"
-              animate={{ opacity: [0.6, 0.8, 0.6] }}
-              transition={{
-                duration: 4,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "easeInOut",
-                delay: i * 0.7,
-              }}
-            />
-          ))}
-        </div>
-
-        <motion.div
-          className="h-20 w-full bg-linear-to-r from-indigo-500/40 to-purple-500/40 rounded-md mt-6"
-          animate={{
-            background: [
-              "linear-gradient(to right, rgba(99, 102, 241, 0.4), rgba(168, 85, 247, 0.4))",
-              "linear-gradient(to right, rgba(168, 85, 247, 0.4), rgba(99, 102, 241, 0.4))",
-              "linear-gradient(to right, rgba(99, 102, 241, 0.4), rgba(168, 85, 247, 0.4))",
-            ],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          }}
-        >
-          <div className="h-full flex items-center justify-center">
-            <motion.div
-              className="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center"
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{
-                duration: 2,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "easeInOut",
-              }}
-            >
-              <ArrowRight className="h-4 w-4 text-primary" />
-            </motion.div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Floating elements */}
-      <motion.div
-        className="absolute -top-4 -right-4 w-16 h-16 bg-linear-to-br from-indigo-500 to-purple-500 rounded-lg shadow-lg"
-        animate={{
-          rotate: [0, 10, -10, 0],
-          scale: [1, 1.05, 0.95, 1],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      >
-        <div className="absolute inset-1 bg-background rounded-md flex items-center justify-center">
-          <Code className="h-6 w-6 text-primary" />
-        </div>
-      </motion.div>
-
-      <motion.div
-        className="absolute -bottom-6 -left-6 w-20 h-20 bg-linear-to-br from-purple-500 to-pink-500 rounded-full shadow-lg"
-        animate={{
-          rotate: [0, -10, 10, 0],
-          scale: [1, 1.05, 0.95, 1],
-        }}
-        transition={{
-          duration: 7,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-          delay: 0.5,
-        }}
-      >
-        <div className="absolute inset-1 bg-background rounded-full flex items-center justify-center">
-          <Globe className="h-8 w-8 text-primary" />
-        </div>
-      </motion.div>
-    </motion.div>
   );
 };
 

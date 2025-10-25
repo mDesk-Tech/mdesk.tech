@@ -32,7 +32,7 @@ export default async function Icon() {
             position: "absolute",
             width: "120px",
             height: "120px",
-            background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+            background: "linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%)",
             borderRadius: "16px",
             transform: "rotate(45deg)",
           }}
@@ -42,7 +42,7 @@ export default async function Icon() {
             position: "absolute",
             width: "120px",
             height: "120px",
-            background: "linear-gradient(45deg, #6366f1 0%, #a855f7 100%)",
+            background: "linear-gradient(45deg, #06b6d4 0%, #14b8a6 100%)",
             borderRadius: "16px",
             transform: "rotate(12deg)",
             opacity: 0.7,
