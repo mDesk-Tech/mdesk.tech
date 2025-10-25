@@ -145,7 +145,7 @@ export default function TermsOfService() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4 text-cyan-400">
+              <h2 className="text-2xl font-semibold mb-4 text-primary">
                 10. Contact Information
               </h2>
               <p>
