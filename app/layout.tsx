@@ -16,6 +16,7 @@ const geist = Geist({
   fallback: ["system-ui", "sans-serif"],
   adjustFontFallback: true,
   variable: "--font-geist",
+  weight: ["400", "500", "700", "900"], // Only load weights we use
 });
 
 export const viewport = {
@@ -88,22 +89,39 @@ export default function RootLayout({
         />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
-        {/* Inline critical CSS */}
+        {/* Preload critical font for LCP */}
+        <link
+          rel="preload"
+          href="/fonts/GeistVF.woff"
+          as="font"
+          type="font/woff"
+          crossOrigin="anonymous"
+        />
+
         <style
           dangerouslySetInnerHTML={{
             __html: `
-              :root { --font-geist: '__Geist_Fallback_${geist.variable}'; }
-              .critical-content { opacity: 1 !important; }
+              /* Instant font rendering */
+              :root { 
+                --font-geist: ${geist.style.fontFamily}, system-ui, sans-serif;
+              }
               
-              /* Critical CSS for LCP */
+              /* LCP element optimization */
               h1, [data-lcp-element="true"] {
                 opacity: 1 !important;
                 visibility: visible !important;
+                font-display: swap;
+              }
+              
+              /* Prevent FOIT (Flash of Invisible Text) */
+              body {
+                font-family: var(--font-geist);
               }
               
               /* Optimize paint performance */
               .composite-layer {
                 will-change: transform;
+                transform: translateZ(0);
               }
               
               /* Prevent layout shifts */
@@ -113,18 +131,10 @@ export default function RootLayout({
                 display: block;
               }
               
-              /* Smart content visibility for mobile */
-              @media (max-width: 768px) {
-                section:not(:first-of-type):not(.in-viewport) {
-                  content-visibility: auto;
-                  contain-intrinsic-size: 0 500px;
-                }
-              }
-              
-              /* Grid pattern - optimized */
-              .grid-pattern {
-                contain: layout style;
-                pointer-events: none;
+              /* Content visibility for below-fold sections */
+              section:not(:first-of-type) {
+                content-visibility: auto;
+                contain-intrinsic-size: 0 500px;
               }
               
               /* Reduced motion support */
@@ -134,6 +144,22 @@ export default function RootLayout({
                   animation-iteration-count: 1 !important;
                   transition-duration: 0.01ms !important;
                 }
+              }
+              
+              /* Instant gradient animation */
+              @keyframes gradient-x {
+                0%, 100% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+              }
+              
+              .animate-gradient-x {
+                animation: gradient-x 15s ease infinite;
+              }
+              
+              /* Float animation for scroll indicator */
+              @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(16px); }
               }
             `,
           }}
@@ -150,25 +176,19 @@ export default function RootLayout({
           <div className="relative min-h-screen flex flex-col">
             <Navbar />
             <main className="grow">
-              {/* Add priority hint for LCP content */}
-              <div className="critical-content" data-priority="high">
-                {children}
-              </div>
+              <div className="critical-content">{children}</div>
             </main>
             <Footer />
           </div>
 
-          {/* Performance optimizers are loaded in page.tsx */}
-
-          {/* Defer non-critical scripts */}
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-            strategy="lazyOnload"
+            strategy="afterInteractive"
             data-priority="low"
           />
           <Script
             id="google-analytics"
-            strategy="lazyOnload"
+            strategy="afterInteractive"
             data-priority="low"
           >
             {`
@@ -183,7 +203,7 @@ export default function RootLayout({
             `}
           </Script>
 
-          {/* Load analytics only in production */}
+          {/* Load analytics only in production, after interaction */}
           {process.env.NODE_ENV === "production" && (
             <>
               <Analytics />

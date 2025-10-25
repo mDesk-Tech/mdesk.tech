@@ -1,4 +1,4 @@
-/* Critical CSS */
+/* Critical CSS - loaded first */
 :root {
   --animate-duration: 0.5s;
   --sidebar: hsl(0 0% 98%);
@@ -11,13 +11,14 @@
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
 
-/* Optimize paint performance */
+/* Optimize paint performance with GPU acceleration */
 .composite-layer {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
 }
 
+/* Content visibility for better rendering performance */
 .content-visibility-auto {
   content-visibility: auto;
   contain-intrinsic-size: 0 500px;
@@ -331,11 +332,13 @@
   opacity: 0.05;
 }
 
+/* Optimize section rendering with content-visibility */
 section {
   content-visibility: auto;
   contain-intrinsic-size: 0 500px;
 }
 
+/* Optimize animations with will-change hints */
 .animate-gradient-x {
   will-change: background-position;
 }
@@ -348,10 +351,10 @@ section {
   will-change: opacity;
 }
 
-/* Performance optimizations */
+/* LCP element optimization */
 [data-lcp-element] {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 auto;
+  content-visibility: visible;
+  contain-intrinsic-size: auto;
 }
 
 /* Optimize paint and composite layers */
