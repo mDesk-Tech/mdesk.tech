@@ -4,7 +4,6 @@ import { useEffect, useId, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
-import { SparklesCore } from "@/components/ui/sparkles";
 
 export const Cover = ({
   children,
@@ -14,7 +13,6 @@ export const Cover = ({
   className?: string;
 }) => {
   const [hovered, setHovered] = useState(false);
-
   const ref = useRef<HTMLDivElement>(null);
 
   const [containerWidth, setContainerWidth] = useState(0);
@@ -64,43 +62,42 @@ export const Cover = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{
-              opacity: {
-                duration: 0.2,
-              },
-            }}
-            className="h-full w-full overflow-hidden absolute inset-0"
+            transition={{ duration: 0.25 }}
+            className="absolute inset-0 overflow-hidden"
           >
             <motion.div
+              className="absolute inset-0 opacity-60"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.35), transparent 45%), radial-gradient(circle at 80% 30%, rgba(147,197,253,0.25), transparent 55%), radial-gradient(circle at 50% 80%, rgba(192,132,252,0.2), transparent 45%)",
+                filter: "blur(1px)",
+              }}
               animate={{
-                translateX: ["-50%", "0%"],
+                scale: [1, 1.05, 1],
+                rotate: [0, 2, -2, 0],
               }}
               transition={{
-                translateX: {
-                  duration: 10,
-                  ease: "linear",
-                  repeat: Number.POSITIVE_INFINITY,
-                },
+                duration: 8,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
               }}
-              className="w-[200%] h-full flex"
-            >
-              <SparklesCore
-                background="transparent"
-                minSize={0.4}
-                maxSize={1}
-                particleDensity={500}
-                className="w-full h-full"
-                particleColor="#FFFFFF"
-              />
-              <SparklesCore
-                background="transparent"
-                minSize={0.4}
-                maxSize={1}
-                particleDensity={500}
-                className="w-full h-full"
-                particleColor="#FFFFFF"
-              />
-            </motion.div>
+            />
+            <motion.div
+              className="absolute inset-0 opacity-40"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(120deg, rgba(255,255,255,0.2) 0, rgba(255,255,255,0.2) 2px, transparent 2px, transparent 12px)",
+                backgroundSize: "300% 300%",
+              }}
+              animate={{
+                backgroundPosition: ["0% 0%", "100% 100%"],
+              }}
+              transition={{
+                duration: 12,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "linear",
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
@@ -178,7 +175,6 @@ const Beam = ({
 } & React.ComponentProps<typeof motion.svg>) => {
   const id = useId();
 
-  // Generate random values once during initialization
   const [randomDelay] = useState(() => Math.random() * (1 - 0.2) + 0.2);
   const [randomRepeatDelay] = useState(() => Math.random() * (2 - 1) + 1);
 

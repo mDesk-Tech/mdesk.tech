@@ -1,185 +1,192 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useMemo } from "react";
 import { motion } from "motion/react";
-import DottedMap from "dotted-map";
-import { useTheme } from "next-themes";
-import Image from "next/image";
 
 interface MapProps {
   dots?: Array<{
-    start: { lat: number; lng: number; label?: string };
-    end: { lat: number; lng: number; label?: string };
+    start: { lat: number; lng: number };
+    end: { lat: number; lng: number };
   }>;
   lineColor?: string;
 }
 
+const MAP_WIDTH = 1000;
+const MAP_HEIGHT = 500;
+
+const projectPoint = (lat: number, lng: number) => {
+  const x = ((lng + 180) * MAP_WIDTH) / 360;
+  const y = ((90 - lat) * MAP_HEIGHT) / 180;
+  return { x, y };
+};
+
+const createCurvedPath = (
+  start: { x: number; y: number },
+  end: { x: number; y: number },
+) => {
+  const ctrlX = (start.x + end.x) / 2;
+  const ctrlY =
+    Math.min(start.y, end.y) - Math.max(Math.abs(start.x - end.x) * 0.15, 80);
+  return `M ${start.x} ${start.y} Q ${ctrlX} ${ctrlY} ${end.x} ${end.y}`;
+};
+
 export default function WorldMap({ dots = [], lineColor }: MapProps) {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const { theme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 0);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const currentTheme = mounted ? resolvedTheme || theme : "dark";
-  const defaultLineColor = currentTheme === "dark" ? "#06b6d4" : "#0891b2";
-  const finalLineColor = lineColor || defaultLineColor;
-
-  const map = new DottedMap({ height: 100, grid: "diagonal" });
-
-  const svgMap = map.getSVG({
-    radius: 0.22,
-    color: currentTheme === "dark" ? "#FFFFFF40" : "#00000040",
-    shape: "circle",
-    backgroundColor: currentTheme === "dark" ? "black" : "white",
-  });
-
-  const projectPoint = (lat: number, lng: number) => {
-    const x = (lng + 180) * (800 / 360);
-    const y = (90 - lat) * (400 / 180);
-    return { x, y };
-  };
-
-  const createCurvedPath = (
-    start: { x: number; y: number },
-    end: { x: number; y: number },
-  ) => {
-    const midX = (start.x + end.x) / 2;
-    const midY = Math.min(start.y, end.y) - 50;
-    return `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
-  };
-
-  if (!mounted) {
-    return (
-      <div className="w-full aspect-2/1 dark:bg-black bg-white rounded-lg" />
-    );
-  }
+  const { line, glow } = useMemo(() => {
+    const base = lineColor ?? "#38BDF8";
+    const glowColor = `${base}55`;
+    return { line: base, glow: glowColor };
+  }, [lineColor]);
 
   return (
-    <div className="w-full aspect-2/1 dark:bg-black bg-white rounded-lg relative font-sans">
-      <Image
-        src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-        className="h-full w-full mask-[linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none"
-        alt="world map"
-        height="495"
-        width="1056"
-        draggable={false}
-      />
-      <svg
-        ref={svgRef}
-        viewBox="0 0 800 400"
-        className="w-full h-full absolute inset-0 pointer-events-none select-none"
+    <div className="relative aspect-[2/1] w-full overflow-hidden rounded-3xl border border-slate-800 bg-slate-950">
+      <div className="pointer-events-none absolute inset-0 opacity-40">
+        <div className="h-full w-full bg-[radial-gradient(circle_at_15%_20%,rgba(56,189,248,0.25),transparent_55%),radial-gradient(circle_at_85%_30%,rgba(129,140,248,0.25),transparent_60%),radial-gradient(circle_at_45%_80%,rgba(20,184,166,0.2),transparent_55%)]" />
+      </div>
+      <div className="pointer-events-none absolute inset-0 opacity-[0.07]">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.15)_1px,transparent_1px)] bg-[size:48px_48px]" />
+      </div>
+
+      <motion.svg
+        viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
+        className="absolute inset-0 h-full w-full"
+        initial={{ opacity: 0, scale: 1.02 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
       >
-        {dots.map((dot, i) => {
-          const startPoint = projectPoint(dot.start.lat, dot.start.lng);
-          const endPoint = projectPoint(dot.end.lat, dot.end.lng);
+        <defs>
+          <linearGradient id="route" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="transparent" />
+            <stop offset="15%" stopColor={line} />
+            <stop offset="85%" stopColor={line} />
+            <stop offset="100%" stopColor="transparent" />
+          </linearGradient>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        <rect
+          x="24"
+          y="24"
+          width={MAP_WIDTH - 48}
+          height={MAP_HEIGHT - 48}
+          rx="28"
+          fill="none"
+          stroke="rgba(148,163,184,0.12)"
+          strokeDasharray="12 16"
+        />
+
+        <g fill="rgba(148,163,184,0.25)" opacity="0.6">
+          <motion.ellipse
+            cx="220"
+            cy="220"
+            rx="140"
+            ry="90"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+          />
+          <motion.ellipse
+            cx="420"
+            cy="180"
+            rx="110"
+            ry="70"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.25 }}
+          />
+          <motion.ellipse
+            cx="600"
+            cy="210"
+            rx="90"
+            ry="60"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+          />
+          <motion.ellipse
+            cx="780"
+            cy="230"
+            rx="70"
+            ry="50"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.35 }}
+          />
+          <motion.ellipse
+            cx="520"
+            cy="320"
+            rx="120"
+            ry="70"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+          />
+        </g>
+
+        {dots.map((dot, index) => {
+          const start = projectPoint(dot.start.lat, dot.start.lng);
+          const end = projectPoint(dot.end.lat, dot.end.lng);
+          const delay = index * 0.5;
+
           return (
-            <g key={`path-group-${i}`}>
+            <g key={`route-${index}`} className="pointer-events-none">
               <motion.path
-                d={createCurvedPath(startPoint, endPoint)}
+                d={createCurvedPath(start, end)}
+                stroke="url(#route)"
+                strokeWidth="2.5"
                 fill="none"
-                stroke="url(#path-gradient)"
-                strokeWidth="1"
-                initial={{
-                  pathLength: 0,
-                }}
-                animate={{
-                  pathLength: 1,
-                }}
+                filter="url(#glow)"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
                 transition={{
-                  duration: 3,
-                  delay: 0.8 * i,
-                  ease: "easeOut",
+                  duration: 2.8,
+                  delay,
+                  ease: "easeInOut",
                   repeat: Number.POSITIVE_INFINITY,
-                  repeatDelay: 5,
+                  repeatDelay: 4,
                 }}
-                key={`path-${i}`}
               />
+              {[start, end].map((point, idx) => (
+                <g key={`${index}-${idx}`}>
+                  <motion.circle
+                    cx={point.x}
+                    cy={point.y}
+                    r="6"
+                    fill={line}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 0.85 }}
+                    transition={{ duration: 0.35, delay: delay + idx * 0.15 }}
+                  />
+                  <motion.circle
+                    cx={point.x}
+                    cy={point.y}
+                    r="14"
+                    stroke={glow}
+                    strokeWidth="2"
+                    fill="none"
+                    initial={{ scale: 0.7, opacity: 0 }}
+                    animate={{
+                      scale: [0.8, 1.05, 1.25],
+                      opacity: [0.6, 0.4, 0],
+                    }}
+                    transition={{
+                      duration: 2.2,
+                      delay,
+                      repeat: Number.POSITIVE_INFINITY,
+                      ease: "easeInOut",
+                    }}
+                  />
+                </g>
+              ))}
             </g>
           );
         })}
-
-        <defs>
-          <linearGradient id="path-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="white" stopOpacity="0" />
-            <stop offset="5%" stopColor={finalLineColor} stopOpacity="1" />
-            <stop offset="95%" stopColor={finalLineColor} stopOpacity="1" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-
-        {dots.map((dot, i) => (
-          <g key={`points-group-${i}`}>
-            <g key={`start-${i}`}>
-              <circle
-                cx={projectPoint(dot.start.lat, dot.start.lng).x}
-                cy={projectPoint(dot.start.lat, dot.start.lng).y}
-                r="2"
-                fill={finalLineColor}
-              />
-              <circle
-                cx={projectPoint(dot.start.lat, dot.start.lng).x}
-                cy={projectPoint(dot.start.lat, dot.start.lng).y}
-                r="2"
-                fill={finalLineColor}
-                opacity="0.5"
-              >
-                <animate
-                  attributeName="r"
-                  from="2"
-                  to="8"
-                  dur="2.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  from="0.5"
-                  to="0"
-                  dur="2.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-            </g>
-            <g key={`end-${i}`}>
-              <circle
-                cx={projectPoint(dot.end.lat, dot.end.lng).x}
-                cy={projectPoint(dot.end.lat, dot.end.lng).y}
-                r="2"
-                fill={finalLineColor}
-              />
-              <circle
-                cx={projectPoint(dot.end.lat, dot.end.lng).x}
-                cy={projectPoint(dot.end.lat, dot.end.lng).y}
-                r="2"
-                fill={finalLineColor}
-                opacity="0.5"
-              >
-                <animate
-                  attributeName="r"
-                  from="2"
-                  to="8"
-                  dur="2.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  from="0.5"
-                  to="0"
-                  dur="2.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-            </g>
-          </g>
-        ))}
-      </svg>
+      </motion.svg>
     </div>
   );
 }

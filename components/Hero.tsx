@@ -111,7 +111,7 @@ const Hero = () => {
             data-lcp-element="true"
           >
             <span className="block">Designing Your</span>
-            <span className="block bg-clip-text text-transparent bg-linear-to-r from-primary via-accent to-primary bg-size-[200%_auto] animate-gradient-x">
+            <span className="block bg-clip-text text-transparent bg-linear-to-b from-primary to-accent">
               Digital Future
             </span>
           </motion.h1>
