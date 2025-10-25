@@ -86,7 +86,7 @@ export default function OpenSourcePage() {
             <p className="text-2xl text-muted-foreground leading-relaxed max-w-3xl mx-auto mb-12">
               We offer <Cover>free website development</Cover> for selected open
               source projects. Help us give back to the community that powers
-              innovation.
+              innovation
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -170,7 +170,7 @@ export default function OpenSourcePage() {
             </h2>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Tell us about your open source project and how a professional
-              website could help your community grow.
+              website could help your community grow
             </p>
 
             <Link

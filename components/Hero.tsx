@@ -122,8 +122,9 @@ const Hero = () => {
             transition={{ duration: 0.4, delay: 0.2 }}
             className="text-base sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed font-light px-4"
           >
-            Cutting-edge web design and reliable hosting solutions for
-            businesses that want to stand out in the digital landscape.
+            Cutting-edge web design and reliable hosting solutions
+            <br />
+            for businesses that want to stand out in the digital landscape
           </motion.p>
 
           <motion.div
