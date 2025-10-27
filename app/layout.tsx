@@ -36,7 +36,7 @@ export const metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "https://mdesk.tech",
   ),
   icons: {
-    icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
+    icon: [{ url: "/icon", type: "image/x-icon" }],
     apple: "/apple-icon",
   },
   openGraph: {
