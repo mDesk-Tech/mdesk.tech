@@ -49,5 +49,5 @@
     "**/*.{js,jsx,ts,tsx}": "eslint --fix",
     "**/*.{js,ts,tsx,json,mjs,yaml,css,md}": "prettier -w"
   },
-  "packageManager": "pnpm@10.18.3"
+  "packageManager": "pnpm@10.19.0"
 }
