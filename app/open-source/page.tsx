@@ -98,7 +98,7 @@ export default function OpenSourcePage() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <a
-                href="https://github.com"
+                href="https://github.com/mdesk-tech"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-4 rounded-full border-2 border-primary/20 bg-background/50 backdrop-blur-sm font-bold transition-all hover:border-primary/40 hover:bg-primary/5"

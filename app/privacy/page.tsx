@@ -111,9 +111,7 @@ export default function PrivacyPolicy() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4 text-cyan-400">
-                6. Contact Us
-              </h2>
+              <h2 className="text-2xl font-semibold mb-4">6. Contact Us</h2>
               <p>
                 If you have any questions about this Privacy Policy, please
                 contact us at{" "}

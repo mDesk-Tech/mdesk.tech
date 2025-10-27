@@ -76,6 +76,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const currentYear = new Date().getFullYear();
   return (
     <html
       lang="en"
@@ -159,7 +160,7 @@ export default async function RootLayout({
                 {children}
               </div>
             </main>
-            <Footer />
+            <Footer year={currentYear} />
           </div>
 
           {/* Performance optimizers are loaded in page.tsx */}

@@ -3,11 +3,12 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Github, Mail } from "lucide-react";
-import { useState } from "react";
 
-const Footer = () => {
-  const [currentYear] = useState(() => new Date().getFullYear());
+type FooterProps = {
+  year: number;
+};
 
+const Footer = ({ year }: FooterProps) => {
   const socialLinks = [
     {
       icon: <Github className="h-5 w-5" />,
@@ -104,7 +105,7 @@ const Footer = () => {
 
         <div className="border-t border-border/40 mt-8 sm:mt-12 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
-            © {currentYear} mdesk.tech. All rights reserved.
+            © {year} mdesk.tech. All rights reserved.
           </p>
           <div className="flex space-x-4 sm:space-x-6">
             <Link
