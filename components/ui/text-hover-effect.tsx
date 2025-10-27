@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 export const TextHoverEffect = ({
   text,
@@ -26,6 +26,10 @@ export const TextHoverEffect = ({
       });
     }
   }, [cursor]);
+
+  // Framer Motion doesn't expose a typed radialGradient factory by default.
+  // Create one explicitly to ensure animation of SVG gradient attributes.
+  const MradialGradient: any = (motion as any)("radialGradient");
 
   return (
     <svg
@@ -58,7 +62,7 @@ export const TextHoverEffect = ({
           )}
         </linearGradient>
 
-        <motion.radialGradient
+        <MradialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
           r="20%"
@@ -68,7 +72,7 @@ export const TextHoverEffect = ({
         >
           <stop offset="0%" stopColor="white" />
           <stop offset="100%" stopColor="black" />
-        </motion.radialGradient>
+        </MradialGradient>
         <mask id="textMask">
           <rect
             x="0"
