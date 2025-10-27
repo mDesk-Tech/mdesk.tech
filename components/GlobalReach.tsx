@@ -28,7 +28,7 @@ export default function GlobalReach() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="h-32 sm:h-40 md:h-48 flex items-center justify-center mb-6 sm:mb-8"
+          className="h-32 sm:h-40 md:h-48 flex items-center justify-center"
         >
           <div className="block sm:hidden">
             <h2 className="text-5xl font-black bg-clip-text text-transparent bg-linear-to-r from-primary to-accent">
@@ -45,7 +45,7 @@ export default function GlobalReach() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-base sm:text-xl text-muted-foreground max-w-4xl mx-auto py-4 leading-relaxed px-4"
+          className="text-base sm:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed px-4"
         >
           Serving clients across continents with lightning-fast hosting and
           world-class web solutions
@@ -55,7 +55,7 @@ export default function GlobalReach() {
         </motion.p>
       </div>
 
-      <div className="hidden sm:block">
+      <div className="">
         <WorldMap
           dots={[
             {

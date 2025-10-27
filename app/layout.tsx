@@ -1,3 +1,5 @@
+"use cache";
+
 import type React from "react";
 import "./globals.css";
 import { Geist } from "next/font/google";
@@ -35,7 +37,7 @@ export const metadata = {
   ),
   icons: {
     icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
-    apple: "/apple-touch-icon.jpg",
+    apple: "/apple-icon",
   },
   openGraph: {
     type: "website",
@@ -69,7 +71,7 @@ export const metadata = {
   manifest: "/manifest.json",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;

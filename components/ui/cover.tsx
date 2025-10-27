@@ -13,7 +13,7 @@ export const Cover = ({
   className?: string;
 }) => {
   const [hovered, setHovered] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLSpanElement>(null);
 
   const [containerWidth, setContainerWidth] = useState(0);
   const [beamPositions, setBeamPositions] = useState<number[]>([]);
@@ -50,7 +50,7 @@ export const Cover = ({
   }, []);
 
   return (
-    <div
+    <span
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       ref={ref}
@@ -58,14 +58,14 @@ export const Cover = ({
     >
       <AnimatePresence>
         {hovered && (
-          <motion.div
+          <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="absolute inset-0 overflow-hidden"
           >
-            <motion.div
+            <motion.span
               className="absolute inset-0 opacity-60"
               style={{
                 backgroundImage:
@@ -82,7 +82,7 @@ export const Cover = ({
                 ease: "easeInOut",
               }}
             />
-            <motion.div
+            <motion.span
               className="absolute inset-0 opacity-40"
               style={{
                 backgroundImage:
@@ -98,7 +98,7 @@ export const Cover = ({
                 ease: "linear",
               }}
             />
-          </motion.div>
+          </motion.span>
         )}
       </AnimatePresence>
       {beamPositions.map((position, index) => (
@@ -156,7 +156,7 @@ export const Cover = ({
       <CircleIcon className="absolute -bottom-[2px] -right-[2px]" delay={0.4} />
       <CircleIcon className="absolute -left-[2px] -top-[2px]" delay={0.8} />
       <CircleIcon className="absolute -bottom-[2px] -left-[2px]" delay={1.6} />
-    </div>
+    </span>
   );
 };
 
@@ -229,11 +229,11 @@ const Beam = ({
 
 const CircleIcon = ({ className }: { className?: string; delay?: number }) => {
   return (
-    <div
+    <span
       className={cn(
-        `pointer-events-none animate-pulse group-hover/cover:hidden group-hover/cover:opacity-100 group h-2 w-2 rounded-full bg-neutral-600 dark:bg-white opacity-20 group-hover/cover:bg-white`,
+        `pointer-events-none animate-pulse group-hover/cover:hidden group-hover/cover:opacity-100 group inline-block h-2 w-2 rounded-full bg-neutral-600 dark:bg-white opacity-20 group-hover/cover:bg-white`,
         className,
       )}
-    ></div>
+    ></span>
   );
 };

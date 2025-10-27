@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  cacheComponents: true,
   typescript: {
     // Skip type checking during `next build`
     ignoreBuildErrors: true,
@@ -9,6 +10,8 @@ const nextConfig = {
   },
   experimental: {
     cssChunking: "strict",
+    useCache: true,
+    optimizeCss: true,
     optimizePackageImports: [
       "framer-motion",
       "lucide-react",

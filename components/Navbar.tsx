@@ -64,13 +64,16 @@ const Navbar = () => {
     setIsMobileMenuOpen((prev) => !prev);
   }, []);
 
+  const navState = isScrolled
+    ? "scrolled"
+    : isMobileMenuOpen
+      ? "mobile-open"
+      : "default";
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border/40"
-          : "bg-background/50 backdrop-blur-xs"
-      }`}
+      data-nav-state={navState}
+      className="navbar fixed top-0 left-0 right-0 z-50"
     >
       <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
         <Link
@@ -118,7 +121,7 @@ const Navbar = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="md:hidden fixed inset-0 top-[57px] sm:top-[65px] bg-background z-40"
+            className="md:hidden fixed inset-0 top-[57px] sm:top-[65px] bg-neutral-950 shadow-lg z-40 border-t border-border/40"
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}

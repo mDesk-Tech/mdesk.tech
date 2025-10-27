@@ -2,12 +2,12 @@
 
 import type React from "react";
 import { motion } from "motion/react";
-import { Code, Zap, Layers, Globe, Lock, Users } from "lucide-react";
-import { CardContainer, CardBody, CardItem } from "@/components/ui/magic-card";
-import { useState, useEffect, useId, useRef, useCallback } from "react";
 import { AnimatePresence } from "motion/react";
+import { Code, Zap, Layers, Globe, Lock, Users } from "lucide-react";
+import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
+import { useState, useEffect, useId, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-import { X } from "lucide-react";
 
 interface Feature {
   title: string;
@@ -146,6 +146,7 @@ const Features = () => {
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const id = useId();
+  const portalTarget = typeof window !== "undefined" ? document.body : null;
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -218,90 +219,75 @@ const Features = () => {
         </div>
       </div>
 
-      <AnimatePresence>
-        {selectedFeature && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50"
-              onClick={closeModal}
-            />
-            <div className="fixed inset-0 grid place-items-center z-100 p-4">
-              <motion.button
-                key={`button-${selectedFeature.title}-${id}`}
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, transition: { duration: 0.05 } }}
-                className="flex absolute top-4 right-4 items-center justify-center bg-card rounded-full h-10 w-10 z-10 border border-border hover:bg-muted transition-colors touch-manipulation"
-                onClick={closeModal}
-              >
-                <X className="h-5 w-5" />
-              </motion.button>
-              <motion.div
-                layoutId={`card-${selectedFeature.title}-${id}`}
-                ref={ref}
-                initial={{ opacity: 0, scale: 0.9, y: 50 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 50 }}
-                transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="w-full max-w-2xl h-full md:h-fit md:max-h-[90%] flex flex-col bg-card rounded-3xl overflow-hidden border border-primary/20 shadow-2xl"
-              >
-                <div className="p-6 sm:p-8 overflow-y-auto">
-                  <div className="flex items-start gap-4 mb-6">
-                    <motion.div
-                      layoutId={`icon-${selectedFeature.title}-${id}`}
-                      className="p-3 sm:p-4 rounded-xl bg-primary/10 text-primary shrink-0"
-                    >
-                      {selectedFeature.icon}
-                    </motion.div>
-                    <div className="flex-1">
-                      <motion.h3
-                        layoutId={`title-${selectedFeature.title}-${id}`}
-                        className="font-bold text-xl sm:text-2xl text-foreground mb-2"
-                      >
-                        {selectedFeature.title}
-                      </motion.h3>
-                      <motion.p
-                        layoutId={`description-${selectedFeature.description}-${id}`}
-                        className="text-sm sm:text-base text-muted-foreground"
-                      >
-                        {selectedFeature.description}
-                      </motion.p>
-                    </div>
-                  </div>
-
+      {portalTarget &&
+        createPortal(
+          <AnimatePresence>
+            {selectedFeature && (
+              <>
+                <motion.div
+                  key="overlay"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black/80 backdrop-blur-sm z-100"
+                  onClick={closeModal}
+                />
+                <div className="fixed inset-0 flex items-center justify-center z-110 p-4 pointer-events-none">
                   <motion.div
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="space-y-3"
+                    key={`modal-${selectedFeature.title}-${id}`}
+                    ref={ref}
+                    initial={{ opacity: 0, scale: 0.9, y: 50 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 30 }}
+                    transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                    role="dialog"
+                    aria-modal="true"
+                    className="w-full max-w-2xl h-auto max-h-[85vh] flex flex-col bg-card rounded-3xl overflow-hidden border border-primary/20 shadow-2xl pointer-events-auto"
                   >
-                    <h4 className="text-base sm:text-lg font-semibold mb-4">
-                      Key Benefits:
-                    </h4>
-                    {selectedFeature.details.map((detail, index) => (
+                    <div className="p-6 sm:p-8 overflow-y-auto">
+                      <div className="flex items-start gap-4 mb-6">
+                        <motion.div className="p-3 sm:p-4 rounded-xl bg-primary/10 text-primary shrink-0">
+                          {selectedFeature.icon}
+                        </motion.div>
+                        <div className="flex-1">
+                          <motion.h3 className="font-bold text-xl sm:text-2xl text-foreground mb-2">
+                            {selectedFeature.title}
+                          </motion.h3>
+                          <motion.p className="text-sm sm:text-base text-muted-foreground">
+                            {selectedFeature.description}
+                          </motion.p>
+                        </div>
+                      </div>
+
                       <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-start gap-3 p-3 rounded-lg bg-muted/50"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="space-y-3"
                       >
-                        <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
-                        <p className="text-sm">{detail}</p>
+                        <h4 className="text-base sm:text-lg font-semibold mb-4">
+                          Key Benefits:
+                        </h4>
+                        {selectedFeature.details.map((detail, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                            className="flex items-start gap-3 p-3 rounded-lg bg-muted/50"
+                          >
+                            <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
+                            <p className="text-sm">{detail}</p>
+                          </motion.div>
+                        ))}
                       </motion.div>
-                    ))}
+                    </div>
                   </motion.div>
                 </div>
-              </motion.div>
-            </div>
-          </>
+              </>
+            )}
+          </AnimatePresence>,
+          portalTarget,
         )}
-      </AnimatePresence>
     </section>
   );
 };

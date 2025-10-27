@@ -198,15 +198,71 @@
       background-position: 100% 50%;
     }
   }
-  /* Add shine animation for ShineBorder component */
-  @keyframes shine {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
+}
+
+.navbar {
+  background-color: #0a0a0a;
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: none;
+  transition:
+    background-color 250ms ease,
+    border-color 250ms ease,
+    backdrop-filter 250ms ease,
+    box-shadow 250ms ease;
+  box-shadow: none;
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    background-color: #0a0a0a;
+    background-color: var(--background);
+    border-bottom: 1px solid transparent;
+    backdrop-filter: blur(10px);
   }
+}
+
+.navbar[data-nav-state="scrolled"] {
+  background-color: #0a0a0a;
+  background-color: var(--background);
+  border-color: var(--border);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.navbar[data-nav-state="mobile-open"] {
+  background-color: #0a0a0a;
+  background-color: var(--background);
+  border-color: var(--border);
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(14px);
+}
+
+@media (max-width: 767px) {
+  .navbar[data-nav-state="mobile-open"] {
+    backdrop-filter: none;
+  }
+}
+
+/* Hard-stop transparency on phones */
+@media (max-width: 767px) {
+  .navbar,
+  .navbar[data-nav-state="scrolled"],
+  .navbar[data-nav-state="mobile-open"] {
+    background-color: #0a0a0a !important;
+    background-color: var(--background) !important;
+    border-bottom-color: var(--border) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+.dark .navbar {
+  box-shadow: none;
+}
+
+.dark .navbar[data-nav-state="scrolled"],
+.dark .navbar[data-nav-state="mobile-open"] {
+  box-shadow: 0 16px 34px rgba(3, 7, 18, 0.45);
 }
 
 @utility container {
@@ -387,6 +443,18 @@ img {
   --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
   --sidebar-border: hsl(240 3.7% 15.9%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+
+@property --shine-x {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --shine-y {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
 }
 
 @theme inline {
