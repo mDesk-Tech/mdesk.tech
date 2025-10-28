@@ -26,17 +26,16 @@ export function MagicCard({
 }: MagicCardProps) {
   const mouseX = useMotionValue(-gradientSize);
   const mouseY = useMotionValue(-gradientSize);
-
   const reset = useCallback(() => {
     mouseX.set(-gradientSize);
     mouseY.set(-gradientSize);
   }, [gradientSize, mouseX, mouseY]);
 
   const handlePointerMove = useCallback(
-    (event: React.PointerEvent<HTMLDivElement>) => {
-      const rect = event.currentTarget.getBoundingClientRect();
-      mouseX.set(event.clientX - rect.left);
-      mouseY.set(event.clientY - rect.top);
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      mouseX.set(e.clientX - rect.left);
+      mouseY.set(e.clientY - rect.top);
     },
     [mouseX, mouseY],
   );
@@ -46,8 +45,8 @@ export function MagicCard({
   }, [reset]);
 
   useEffect(() => {
-    const handleGlobalPointerOut = (event: PointerEvent) => {
-      if (!event.relatedTarget) {
+    const handleGlobalPointerOut = (e: PointerEvent) => {
+      if (!e.relatedTarget) {
         reset();
       }
     };
@@ -65,7 +64,7 @@ export function MagicCard({
     return () => {
       window.removeEventListener("pointerout", handleGlobalPointerOut);
       window.removeEventListener("blur", reset);
-      document.removeEventListener("visibilitychange", handleVisibility);
+      document.removeEventListener("visibilityzchange", handleVisibility);
     };
   }, [reset]);
 
@@ -77,18 +76,18 @@ export function MagicCard({
       onPointerEnter={reset}
     >
       <motion.div
-        className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        className="bg-border pointer-events-none absolute inset-0 rounded-[inherit] duration-300 group-hover:opacity-100"
         style={{
           background: useMotionTemplate`
           radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
-          ${gradientFrom},
-          ${gradientTo},
-          transparent 100%
+          ${gradientFrom}, 
+          ${gradientTo}, 
+          var(--border) 100%
           )
-        `,
+          `,
         }}
       />
-      <div className="pointer-events-none absolute inset-px rounded-[inherit] bg-background/80 backdrop-blur-sm" />
+      <div className="bg-background absolute inset-px rounded-[inherit]" />
       <motion.div
         className="pointer-events-none absolute inset-px rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{

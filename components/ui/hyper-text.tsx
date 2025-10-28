@@ -3,19 +3,18 @@
 import type React from "react";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, type MotionProps } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
 type CharacterSet = string[] | readonly string[];
 
-interface HyperTextProps extends MotionProps {
+interface HyperTextProps extends React.HTMLAttributes<HTMLDivElement> {
   text?: string;
   children?: string;
   className?: string;
   duration?: number;
   delay?: number;
-  as?: React.ElementType;
   startOnView?: boolean;
   animateOnHover?: boolean;
   characterSet?: CharacterSet;
@@ -33,7 +32,6 @@ export function HyperText({
   className,
   duration = 800,
   delay = 0,
-  as: Component = "div",
   startOnView = false,
   animateOnHover = true,
   characterSet = DEFAULT_CHARACTER_SET,
@@ -45,7 +43,7 @@ export function HyperText({
   );
   const [isAnimating, setIsAnimating] = useState(false);
   const iterationCount = useRef(0);
-  const elementRef = useRef<HTMLElement>(null);
+  const elementRef = useRef<HTMLDivElement | null>(null);
 
   const handleAnimationTrigger = () => {
     if (animateOnHover && !isAnimating) {
@@ -117,7 +115,7 @@ export function HyperText({
   }, [sourceText, duration, isAnimating, characterSet]);
 
   return (
-    <Component
+    <div
       ref={elementRef}
       className={cn("overflow-hidden py-2 text-4xl font-bold", className)}
       onMouseEnter={handleAnimationTrigger}
@@ -133,6 +131,6 @@ export function HyperText({
           </motion.span>
         ))}
       </AnimatePresence>
-    </Component>
+    </div>
   );
 }

@@ -1,13 +1,8 @@
 "use client";
 
 import { useMotionValue, motion, useMotionTemplate } from "motion/react";
-import type React from "react";
-import {
-  type MouseEvent as ReactMouseEvent,
-  useId,
-  useMemo,
-  useState,
-} from "react";
+import React, { MouseEvent as ReactMouseEvent, useState } from "react";
+import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
 import { cn } from "@/lib/utils";
 
 export const CardSpotlight = ({
@@ -28,22 +23,13 @@ export const CardSpotlight = ({
     clientX,
     clientY,
   }: ReactMouseEvent<HTMLDivElement>) {
-    const { left, top } = currentTarget.getBoundingClientRect();
+    let { left, top } = currentTarget.getBoundingClientRect();
 
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
   }
 
   const [isHovering, setIsHovering] = useState(false);
-  const gradientId = useId();
-  const gradientStops = useMemo(
-    () => [
-      { offset: "0%", color: "rgba(59,130,246,0.35)" },
-      { offset: "40%", color: "rgba(139,92,246,0.15)" },
-      { offset: "100%", color: "transparent" },
-    ],
-    [],
-  );
   const handleMouseEnter = () => setIsHovering(true);
   const handleMouseLeave = () => setIsHovering(false);
   return (
@@ -70,46 +56,17 @@ export const CardSpotlight = ({
           `,
         }}
       >
-        <motion.svg
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full"
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovering ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <defs>
-            <radialGradient id={gradientId} cx="50%" cy="50%" r="65%">
-              {gradientStops.map((stop) => (
-                <stop
-                  key={stop.offset}
-                  offset={stop.offset}
-                  stopColor={stop.color}
-                />
-              ))}
-            </radialGradient>
-          </defs>
-          <rect
-            width="100"
-            height="100"
-            fill={`url(#${gradientId})`}
-            opacity={0.85}
+        {isHovering && (
+          <CanvasRevealEffect
+            animationSpeed={5}
+            containerClassName="bg-transparent absolute inset-0 pointer-events-none"
+            colors={[
+              [59, 130, 246],
+              [139, 92, 246],
+            ]}
+            dotSize={3}
           />
-          {isHovering && (
-            <motion.circle
-              cx="50"
-              cy="50"
-              r="20"
-              stroke="rgba(255,255,255,0.35)"
-              strokeWidth="0.5"
-              fill="none"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            />
-          )}
-        </motion.svg>
+        )}
       </motion.div>
       {children}
     </div>
