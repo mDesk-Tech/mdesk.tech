@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import {
   Mail,
   ArrowRight,

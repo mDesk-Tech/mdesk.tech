@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Github, Heart, Rocket, Users, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { HyperText } from "@/components/ui/hyper-text";

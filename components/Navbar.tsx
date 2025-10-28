@@ -5,7 +5,7 @@ import type React from "react";
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { debounce } from "@/lib/debounce-util";
 
