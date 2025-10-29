@@ -20,8 +20,6 @@ const nextConfig = {
       "motion",
       "dotted-map",
     ],
-    // Enable partial prerendering for better performance
-    ppr: "incremental",
   },
   images: {
     formats: ["image/avif", "image/webp"],
