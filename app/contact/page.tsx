@@ -13,6 +13,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { MagicCard } from "@/components/ui/magic-card";
+import { Badge } from "@/components/ui/badge";
 
 export default function ContactPage() {
   const [formState, setFormState] = useState({
@@ -96,11 +97,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
-                <span className="text-xs sm:text-sm font-semibold text-primary">
-                  Get in touch
-                </span>
-              </div>
+              <Badge className="mb-4 sm:mb-6">Get in touch</Badge>
 
               <div className="mb-6 sm:mb-8">
                 <div className="block sm:hidden">
