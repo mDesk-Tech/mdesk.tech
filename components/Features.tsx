@@ -156,13 +156,9 @@ const Features = () => {
     }
 
     if (selectedFeature) {
-      requestAnimationFrame(() => {
-        document.body.style.overflow = "hidden";
-      });
+      document.body.style.overflow = "hidden";
     } else {
-      requestAnimationFrame(() => {
-        document.body.style.overflow = "auto";
-      });
+      document.body.style.overflow = "auto";
     }
 
     window.addEventListener("keydown", onKeyDown, { passive: true });

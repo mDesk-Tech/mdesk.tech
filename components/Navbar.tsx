@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
@@ -22,25 +22,26 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = debounce(() => {
-      setIsScrolled(window.scrollY > 10);
-    }, 50);
+  // Memoize the debounced scroll handler
+  const handleScroll = useMemo(
+    () =>
+      debounce(() => {
+        setIsScrolled(window.scrollY > 10);
+      }, 50),
+    [],
+  );
 
+  useEffect(() => {
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [handleScroll]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
-      requestAnimationFrame(() => {
-        document.body.style.overflow = "hidden";
-      });
+      document.body.style.overflow = "hidden";
     } else {
-      requestAnimationFrame(() => {
-        document.body.style.overflow = "auto";
-      });
+      document.body.style.overflow = "auto";
     }
     return () => {
       document.body.style.overflow = "auto";
