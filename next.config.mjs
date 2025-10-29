@@ -18,6 +18,7 @@ const nextConfig = {
       "lucide-react",
       "@radix-ui/react-dialog",
       "motion",
+      "dotted-map",
     ],
   },
   images: {
@@ -33,6 +34,10 @@ const nextConfig = {
       transform: "lucide-react/dist/esm/icons/{{kebabCase member}}",
     },
   },
+  // Enable SWC minification for faster builds
+  swcMinify: true,
+  // Optimize production bundle
+  productionBrowserSourceMaps: false,
 };
 
 export default nextConfig;

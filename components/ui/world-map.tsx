@@ -1,11 +1,17 @@
 "use client";
 
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useRef, useEffect, useState, useMemo, useCallback } from "react";
 import { motion } from "motion/react";
 import DottedMap from "dotted-map";
 import { useTheme } from "next-themes";
 
 const STATIC_MAP = new DottedMap({ height: 100, grid: "diagonal" });
+
+// Constants for map projection
+const MAP_WIDTH = 800;
+const MAP_HEIGHT = 400;
+const LONGITUDE_RANGE = 360;
+const LATITUDE_RANGE = 180;
 
 function MapSvg({ bg, dotColor }: { bg: string; dotColor: string }) {
   const inner = useMemo(
@@ -31,45 +37,44 @@ interface MapProps {
 
 export default function WorldMap({ dots = [], lineColor }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const { theme, resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 0);
-    return () => clearTimeout(t);
+    setMounted(true);
   }, []);
 
-  const currentTheme = mounted ? resolvedTheme || theme : "dark";
+  // Use resolvedTheme directly, fallback to 'dark'
+  const currentTheme = mounted ? resolvedTheme || "dark" : "dark";
 
   /* ------------- memoised colours ---------------------------------- */
-  const defaultLineColor = useMemo(
-    () => (currentTheme === "dark" ? "#06b6d4" : "#0891b2"),
-    [currentTheme],
-  );
-  const finalLineColor = lineColor || defaultLineColor;
+  const finalLineColor = useMemo(() => {
+    if (lineColor) return lineColor;
+    return currentTheme === "dark" ? "#06b6d4" : "#0891b2";
+  }, [lineColor, currentTheme]);
 
   const mapColors = useMemo(() => {
-    const dark = currentTheme === "dark";
+    const isDark = currentTheme === "dark";
     return {
-      bg: dark ? "black" : "white",
-      dotColor: dark ? "#FFFFFF40" : "#00000040",
+      bg: isDark ? "black" : "white",
+      dotColor: isDark ? "#FFFFFF40" : "#00000040",
     };
   }, [currentTheme]);
 
-  const projectPoint = (lat: number, lng: number) => {
-    const x = (lng + 180) * (800 / 360);
-    const y = (90 - lat) * (400 / 180);
+  const projectPoint = useCallback((lat: number, lng: number) => {
+    const x = (lng + 180) * (MAP_WIDTH / LONGITUDE_RANGE);
+    const y = (90 - lat) * (MAP_HEIGHT / LATITUDE_RANGE);
     return { x, y };
-  };
+  }, []);
 
-  const createCurvedPath = (
-    start: { x: number; y: number },
-    end: { x: number; y: number },
-  ) => {
-    const midX = (start.x + end.x) / 2;
-    const midY = Math.min(start.y, end.y) - 50;
-    return `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
-  };
+  const createCurvedPath = useCallback(
+    (start: { x: number; y: number }, end: { x: number; y: number }) => {
+      const midX = (start.x + end.x) / 2;
+      const midY = Math.min(start.y, end.y) - 50;
+      return `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
+    },
+    [],
+  );
 
   const projectedDots = useMemo(
     () =>
@@ -77,7 +82,7 @@ export default function WorldMap({ dots = [], lineColor }: MapProps) {
         start: projectPoint(d.start.lat, d.start.lng),
         end: projectPoint(d.end.lat, d.end.lng),
       })),
-    [dots],
+    [dots, projectPoint],
   );
 
   if (!mounted) {

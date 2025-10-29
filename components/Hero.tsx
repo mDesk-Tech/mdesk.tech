@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import { motion, useTransform, useScroll } from "motion/react";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { debounce } from "@/lib/debounce-util";
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -17,27 +18,31 @@ const Hero = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const y = useTransform(scrollYProgress, [0, 0.5], [0, 50]);
 
+  // Memoize the debounced resize handler
+  const debouncedResize = useMemo(
+    () =>
+      debounce(() => {
+        setIsMobile(window.innerWidth < 768);
+      }, 150),
+    [],
+  );
+
   useEffect(() => {
-    const checkMobile = () => {
+    // Initial check wrapped to avoid direct setState in effect
+    const checkInitialSize = () => {
       setIsMobile(window.innerWidth < 768);
     };
+    checkInitialSize();
 
     // Call setIsMounted in a microtask to avoid cascading renders
     Promise.resolve().then(() => setIsMounted(true));
 
-    let resizeTimeout: NodeJS.Timeout;
-    const debouncedResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(checkMobile, 150);
-    };
-
     window.addEventListener("resize", debouncedResize, { passive: true });
 
     return () => {
-      clearTimeout(resizeTimeout);
       window.removeEventListener("resize", debouncedResize);
     };
-  }, []);
+  }, [debouncedResize]);
 
   const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id);
