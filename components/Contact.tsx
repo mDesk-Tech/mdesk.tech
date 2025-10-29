@@ -7,6 +7,7 @@ const Contact = () => {
     <section
       id="contact"
       className="py-16 sm:py-20 md:py-32 relative overflow-hidden bg-muted/20"
+      style={{ minHeight: "600px" }}
     >
       <div className="absolute inset-0 bg-linear-to-b from-background via-primary/5 to-background z-0" />
       <div className="absolute inset-0 grid-pattern opacity-20 z-0" />

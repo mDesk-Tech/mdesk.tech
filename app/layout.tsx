@@ -20,6 +20,7 @@ const geist = Geist({
   fallback: ["system-ui", "sans-serif"],
   adjustFontFallback: true,
   variable: "--font-geist",
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const viewport = {
@@ -100,22 +101,28 @@ export default async function RootLayout({
               :root { --font-geist: '__Geist_Fallback_${geist.variable}'; }
               .critical-content { opacity: 1 !important; }
               
-              /* Critical CSS for LCP */
+              /* Critical CSS for LCP - Reserve space for content */
               h1, [data-lcp-element="true"] {
                 opacity: 1 !important;
                 visibility: visible !important;
+                min-height: 1em;
               }
               
               /* Optimize paint performance */
               .composite-layer {
-                will-change: transform;
+                will-change: auto;
               }
               
-              /* Prevent layout shifts */
+              /* Prevent layout shifts - Reserve space for images */
               img, video {
                 height: auto;
                 max-width: 100%;
                 display: block;
+              }
+              
+              /* Reserve minimum height for sections to prevent CLS */
+              section {
+                min-height: fit-content;
               }
               
               /* Smart content visibility for mobile */
@@ -132,6 +139,13 @@ export default async function RootLayout({
                 pointer-events: none;
               }
               
+              /* Reduce animation performance impact */
+              @media (prefers-reduced-motion: no-preference) {
+                * {
+                  will-change: auto;
+                }
+              }
+              
               /* Reduced motion support */
               @media (prefers-reduced-motion: reduce) {
                 *, *::before, *::after {
@@ -139,6 +153,16 @@ export default async function RootLayout({
                   animation-iteration-count: 1 !important;
                   transition-duration: 0.01ms !important;
                 }
+              }
+              
+              /* Font loading optimization */
+              @font-face {
+                font-family: '__Geist_Fallback';
+                src: local('Arial');
+                size-adjust: 100%;
+                ascent-override: 95%;
+                descent-override: 25%;
+                line-gap-override: 0%;
               }
             `,
           }}

@@ -58,6 +58,7 @@ const Hero = () => {
       style={{
         contain: "layout style paint",
         containIntrinsicSize: "0 100vh",
+        minHeight: "100vh",
       }}
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none" />
@@ -65,7 +66,8 @@ const Hero = () => {
       {isMounted && !isMobile && (
         <>
           <motion.div
-            className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none will-change-transform"
+            className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none"
+            style={{ willChange: "auto" }}
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.2, 0.4, 0.2],
@@ -77,7 +79,8 @@ const Hero = () => {
             }}
           />
           <motion.div
-            className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl pointer-events-none will-change-transform"
+            className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl pointer-events-none"
+            style={{ willChange: "auto" }}
             animate={{
               scale: [1.2, 1, 1.2],
               opacity: [0.4, 0.2, 0.4],
@@ -162,24 +165,27 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
+              style={{ willChange: "auto" }}
             >
               <motion.div
-                className="w-6 h-10 sm:w-8 sm:h-12 rounded-full border-2 border-primary/30 flex items-start justify-center p-2 will-change-transform"
+                className="w-6 h-10 sm:w-8 sm:h-12 rounded-full border-2 border-primary/30 flex items-start justify-center p-2"
                 animate={{ y: [0, 10, 0] }}
                 transition={{
                   duration: 1.5,
                   repeat: Number.POSITIVE_INFINITY,
                   ease: "easeInOut",
                 }}
+                style={{ willChange: "auto" }}
               >
                 <motion.div
-                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary will-change-transform"
+                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary"
                   animate={{ y: [0, 16, 0] }}
                   transition={{
                     duration: 1.5,
                     repeat: Number.POSITIVE_INFINITY,
                     ease: "easeInOut",
                   }}
+                  style={{ willChange: "auto" }}
                 />
               </motion.div>
             </motion.div>

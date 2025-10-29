@@ -82,6 +82,7 @@ const About = () => {
     <section
       id="about"
       className="py-16 sm:py-20 md:py-32 relative overflow-hidden bg-muted/20"
+      style={{ minHeight: "800px" }}
     >
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <SectionHeader

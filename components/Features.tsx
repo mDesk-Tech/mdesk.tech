@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 import { motion } from "motion/react";
 import { AnimatePresence } from "motion/react";
 import { Code, Zap, Layers, Globe, Lock, Users } from "lucide-react";
@@ -92,56 +92,60 @@ const features: Feature[] = [
   },
 ];
 
-const FeatureCard = ({
-  feature,
-  onClick,
-}: {
-  feature: Feature;
-  index: number;
-  onClick: () => void;
-}) => {
-  const handleClick = useCallback(() => {
-    onClick();
-  }, [onClick]);
+const FeatureCard = React.memo(
+  ({
+    feature,
+    onClick,
+  }: {
+    feature: Feature;
+    index: number;
+    onClick: () => void;
+  }) => {
+    const handleClick = useCallback(() => {
+      onClick();
+    }, [onClick]);
 
-  return (
-    <CardContainer containerClassName="py-0">
-      <CardBody className="relative group/card w-full h-auto min-h-[280px] sm:h-[320px] rounded-2xl p-6 sm:p-8 border border-border bg-card flex flex-col cursor-pointer hover:border-primary/50 transition-colors touch-manipulation">
-        <CardItem translateZ="50" className="mb-4">
-          <div className="inline-flex p-3 sm:p-4 rounded-xl bg-primary/10 text-primary">
-            {feature.icon}
-          </div>
-        </CardItem>
+    return (
+      <CardContainer containerClassName="py-0">
+        <CardBody className="relative group/card w-full h-auto min-h-[280px] sm:h-[320px] rounded-2xl p-6 sm:p-8 border border-border bg-card flex flex-col cursor-pointer hover:border-primary/50 transition-colors touch-manipulation">
+          <CardItem translateZ="50" className="mb-4">
+            <div className="inline-flex p-3 sm:p-4 rounded-xl bg-primary/10 text-primary">
+              {feature.icon}
+            </div>
+          </CardItem>
 
-        <CardItem
-          translateZ="60"
-          className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-foreground"
-        >
-          {feature.title}
-        </CardItem>
-
-        <CardItem
-          translateZ="40"
-          className="text-muted-foreground leading-relaxed text-sm flex-1"
-        >
-          {feature.description}
-        </CardItem>
-
-        <CardItem
-          translateZ="30"
-          className="text-primary text-sm font-medium mt-4"
-        >
-          <button
-            onClick={handleClick}
-            className="hover:underline touch-manipulation py-2"
+          <CardItem
+            translateZ="60"
+            className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-foreground"
           >
-            Click to learn more →
-          </button>
-        </CardItem>
-      </CardBody>
-    </CardContainer>
-  );
-};
+            {feature.title}
+          </CardItem>
+
+          <CardItem
+            translateZ="40"
+            className="text-muted-foreground leading-relaxed text-sm flex-1"
+          >
+            {feature.description}
+          </CardItem>
+
+          <CardItem
+            translateZ="30"
+            className="text-primary text-sm font-medium mt-4"
+          >
+            <button
+              onClick={handleClick}
+              className="hover:underline touch-manipulation py-2"
+            >
+              Click to learn more →
+            </button>
+          </CardItem>
+        </CardBody>
+      </CardContainer>
+    );
+  },
+);
+
+FeatureCard.displayName = "FeatureCard";
 
 const Features = () => {
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
@@ -173,7 +177,11 @@ const Features = () => {
   useOutsideClick(ref, closeModal);
 
   return (
-    <section className="py-20 sm:py-32 relative overflow-hidden bg-muted/20">
+    <section
+      className="py-20 sm:py-32 relative overflow-hidden bg-muted/20"
+      style={{ minHeight: "900px" }}
+    >
+      {" "}
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -213,7 +221,6 @@ const Features = () => {
           ))}
         </div>
       </div>
-
       {portalTarget &&
         createPortal(
           <AnimatePresence>
