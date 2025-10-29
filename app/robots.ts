@@ -12,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
           "/services",
           "/privacy",
           "/terms",
-          "open-source",
+          "/open-source",
         ],
       },
     ],
