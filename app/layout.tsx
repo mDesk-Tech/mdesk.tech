@@ -20,7 +20,6 @@ const geist = Geist({
   fallback: ["system-ui", "sans-serif"],
   adjustFontFallback: true,
   variable: "--font-geist",
-  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const viewport = {
