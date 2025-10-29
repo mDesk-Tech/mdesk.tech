@@ -57,21 +57,16 @@ export async function getCollection() {
   }
 }
 
-// Close MongoDB connection when the application shuts down
-process.on("SIGTERM", async () => {
+// Cleanup function for graceful shutdown
+async function cleanup() {
   if (cachedClient) {
     await cachedClient.close();
     cachedClient = null;
     cachedDb = null;
     cachedCollection = null;
   }
-});
+}
 
-process.on("SIGINT", async () => {
-  if (cachedClient) {
-    await cachedClient.close();
-    cachedClient = null;
-    cachedDb = null;
-    cachedCollection = null;
-  }
-});
+// Close MongoDB connection when the application shuts down
+process.on("SIGTERM", cleanup);
+process.on("SIGINT", cleanup);

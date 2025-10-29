@@ -7,6 +7,12 @@ import { useTheme } from "next-themes";
 
 const STATIC_MAP = new DottedMap({ height: 100, grid: "diagonal" });
 
+// Constants for map projection
+const MAP_WIDTH = 800;
+const MAP_HEIGHT = 400;
+const LONGITUDE_RANGE = 360;
+const LATITUDE_RANGE = 180;
+
 function MapSvg({ bg, dotColor }: { bg: string; dotColor: string }) {
   const inner = useMemo(
     () =>
@@ -56,8 +62,8 @@ export default function WorldMap({ dots = [], lineColor }: MapProps) {
   }, [currentTheme]);
 
   const projectPoint = useCallback((lat: number, lng: number) => {
-    const x = (lng + 180) * (800 / 360);
-    const y = (90 - lat) * (400 / 180);
+    const x = (lng + 180) * (MAP_WIDTH / LONGITUDE_RANGE);
+    const y = (90 - lat) * (MAP_HEIGHT / LATITUDE_RANGE);
     return { x, y };
   }, []);
 
