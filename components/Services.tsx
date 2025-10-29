@@ -1,6 +1,7 @@
 import { GlareCard } from "@/components/ui/glare-card";
 import { Palette, Code2, Server, TrendingUp } from "lucide-react";
 import { Cover } from "@/components/ui/cover";
+import { SectionHeader } from "@/components/ui/section-header";
 
 const services = [
   {
@@ -55,27 +56,25 @@ const services = [
 
 const Services = () => {
   return (
-    <section id="services" className="py-20 sm:py-32 relative overflow-hidden">
+    <section
+      id="services"
+      className="py-20 sm:py-32 relative overflow-hidden"
+      style={{ minHeight: "800px" }}
+    >
+      {" "}
       <div className="absolute inset-0 grid-pattern opacity-20" />
       <div className="absolute inset-0 bg-linear-to-b from-background via-transparent to-background" />
-
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center mb-12 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
-            <span className="text-xs sm:text-sm font-semibold text-primary">
-              What We Offer
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl md:text-7xl font-black mb-4 sm:mb-6">
+        <SectionHeader
+          badge="What We Offer"
+          title={
             <span className="bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70">
               Our <Cover>Services</Cover>
             </span>
-          </h2>
-          <p className="text-base sm:text-xl text-muted-foreground leading-relaxed px-4">
-            We provide comprehensive web solutions to help your business thrive
-            in the digital landscape
-          </p>
-        </div>
+          }
+          description="We provide comprehensive web solutions to help your business thrive in the digital landscape"
+          className="mb-12 sm:mb-20"
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
           {services.map((service) => (

@@ -3,6 +3,7 @@
 import WorldMap from "@/components/ui/world-map";
 import { motion } from "motion/react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
+import { Badge } from "@/components/ui/badge";
 
 export default function GlobalReach() {
   return (
@@ -16,11 +17,8 @@ export default function GlobalReach() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6"
         >
-          <span className="text-xs sm:text-sm font-semibold text-primary">
-            Global Reach
-          </span>
+          <Badge className="mb-4 sm:mb-6">Global Reach</Badge>
         </motion.div>
 
         <motion.div

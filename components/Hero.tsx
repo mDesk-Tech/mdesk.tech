@@ -1,49 +1,9 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback, useMemo } from "react";
-import { motion, useTransform, useScroll } from "motion/react";
+import { useCallback } from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { debounce } from "@/lib/debounce-util";
 
 const Hero = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.5], [0, 50]);
-
-  // Memoize the debounced resize handler
-  const debouncedResize = useMemo(
-    () =>
-      debounce(() => {
-        setIsMobile(window.innerWidth < 768);
-      }, 150),
-    [],
-  );
-
-  useEffect(() => {
-    // Initial check wrapped to avoid direct setState in effect
-    const checkInitialSize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkInitialSize();
-
-    // Call setIsMounted in a microtask to avoid cascading renders
-    Promise.resolve().then(() => setIsMounted(true));
-
-    window.addEventListener("resize", debouncedResize, { passive: true });
-
-    return () => {
-      window.removeEventListener("resize", debouncedResize);
-    };
-  }, [debouncedResize]);
-
   const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -53,90 +13,51 @@ const Hero = () => {
 
   return (
     <section
-      ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background"
       style={{
         contain: "layout style paint",
         containIntrinsicSize: "0 100vh",
+        minHeight: "100vh",
       }}
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none" />
 
-      {isMounted && !isMobile && (
-        <>
-          <motion.div
-            className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none will-change-transform"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.2, 0.4, 0.2],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl pointer-events-none will-change-transform"
-            animate={{
-              scale: [1.2, 1, 1.2],
-              opacity: [0.4, 0.2, 0.4],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-            }}
-          />
-        </>
-      )}
+      {/* Simplified background effects - CSS only */}
+      <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none opacity-30 hidden md:block" />
+      <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl pointer-events-none opacity-30 hidden md:block" />
 
-      <motion.div
-        className="container relative z-10 px-4 sm:px-6 py-20 sm:py-32"
-        style={{ opacity, y }}
-      >
+      <div className="container relative z-10 px-4 sm:px-6 py-20 sm:py-32">
         <div className="max-w-6xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-6 sm:mb-8"
-          >
+          <div className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-6 sm:mb-8 animate-fade-in">
             <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
             <span className="text-xs sm:text-sm font-semibold text-primary">
               Next-Generation Web Solutions
             </span>
-          </motion.div>
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 tracking-tight leading-tight"
+          <h1
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 tracking-tight leading-tight animate-fade-in-up"
             data-lcp-element="true"
+            style={{ animationDelay: "0.05s" }}
           >
             <span className="block">Designing Your</span>
             <span className="block bg-clip-text text-transparent bg-linear-to-b from-primary to-accent">
               Digital Future
             </span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="text-base sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed font-light px-4"
+          <p
+            className="text-base sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed font-light px-4 animate-fade-in-up"
+            style={{ animationDelay: "0.1s" }}
           >
             Cutting-edge web design and reliable hosting solutions
             <br />
             for businesses that want to stand out in the digital landscape
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4"
+          <div
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 animate-fade-in-up"
+            style={{ animationDelay: "0.15s" }}
           >
             <button
               onClick={() => scrollToSection("contact")}
@@ -154,38 +75,9 @@ const Hero = () => {
             >
               Explore Services
             </button>
-          </motion.div>
-
-          {isMounted && !isMobile && (
-            <motion.div
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:block"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              <motion.div
-                className="w-6 h-10 sm:w-8 sm:h-12 rounded-full border-2 border-primary/30 flex items-start justify-center p-2 will-change-transform"
-                animate={{ y: [0, 10, 0] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "easeInOut",
-                }}
-              >
-                <motion.div
-                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary will-change-transform"
-                  animate={{ y: [0, 16, 0] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                  }}
-                />
-              </motion.div>
-            </motion.div>
-          )}
+          </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

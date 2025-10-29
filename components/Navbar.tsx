@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";

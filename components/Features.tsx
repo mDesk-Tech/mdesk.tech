@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 import { motion } from "motion/react";
 import { AnimatePresence } from "motion/react";
 import { Code, Zap, Layers, Globe, Lock, Users } from "lucide-react";
@@ -8,6 +8,7 @@ import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { useState, useEffect, useId, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { useOutsideClick } from "@/hooks/use-outside-click";
+import { SectionHeader } from "@/components/ui/section-header";
 
 interface Feature {
   title: string;
@@ -91,56 +92,60 @@ const features: Feature[] = [
   },
 ];
 
-const FeatureCard = ({
-  feature,
-  onClick,
-}: {
-  feature: Feature;
-  index: number;
-  onClick: () => void;
-}) => {
-  const handleClick = useCallback(() => {
-    onClick();
-  }, [onClick]);
+const FeatureCard = React.memo(
+  ({
+    feature,
+    onClick,
+  }: {
+    feature: Feature;
+    index: number;
+    onClick: () => void;
+  }) => {
+    const handleClick = useCallback(() => {
+      onClick();
+    }, [onClick]);
 
-  return (
-    <CardContainer containerClassName="py-0">
-      <CardBody className="relative group/card w-full h-auto min-h-[280px] sm:h-[320px] rounded-2xl p-6 sm:p-8 border border-border bg-card flex flex-col cursor-pointer hover:border-primary/50 transition-colors touch-manipulation">
-        <CardItem translateZ="50" className="mb-4">
-          <div className="inline-flex p-3 sm:p-4 rounded-xl bg-primary/10 text-primary">
-            {feature.icon}
-          </div>
-        </CardItem>
+    return (
+      <CardContainer containerClassName="py-0">
+        <CardBody className="relative group/card w-full h-auto min-h-[280px] sm:h-[320px] rounded-2xl p-6 sm:p-8 border border-border bg-card flex flex-col cursor-pointer hover:border-primary/50 transition-colors touch-manipulation">
+          <CardItem translateZ="50" className="mb-4">
+            <div className="inline-flex p-3 sm:p-4 rounded-xl bg-primary/10 text-primary">
+              {feature.icon}
+            </div>
+          </CardItem>
 
-        <CardItem
-          translateZ="60"
-          className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-foreground"
-        >
-          {feature.title}
-        </CardItem>
-
-        <CardItem
-          translateZ="40"
-          className="text-muted-foreground leading-relaxed text-sm flex-1"
-        >
-          {feature.description}
-        </CardItem>
-
-        <CardItem
-          translateZ="30"
-          className="text-primary text-sm font-medium mt-4"
-        >
-          <button
-            onClick={handleClick}
-            className="hover:underline touch-manipulation py-2"
+          <CardItem
+            translateZ="60"
+            className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-foreground"
           >
-            Click to learn more →
-          </button>
-        </CardItem>
-      </CardBody>
-    </CardContainer>
-  );
-};
+            {feature.title}
+          </CardItem>
+
+          <CardItem
+            translateZ="40"
+            className="text-muted-foreground leading-relaxed text-sm flex-1"
+          >
+            {feature.description}
+          </CardItem>
+
+          <CardItem
+            translateZ="30"
+            className="text-primary text-sm font-medium mt-4"
+          >
+            <button
+              onClick={handleClick}
+              className="hover:underline touch-manipulation py-2"
+            >
+              Click to learn more →
+            </button>
+          </CardItem>
+        </CardBody>
+      </CardContainer>
+    );
+  },
+);
+
+FeatureCard.displayName = "FeatureCard";
 
 const Features = () => {
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
@@ -172,28 +177,30 @@ const Features = () => {
   useOutsideClick(ref, closeModal);
 
   return (
-    <section className="py-20 sm:py-32 relative overflow-hidden bg-muted/20">
+    <section
+      className="py-20 sm:py-32 relative overflow-hidden bg-muted/20"
+      style={{ minHeight: "900px" }}
+    >
+      {" "}
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
-          className="max-w-3xl mx-auto text-center mb-12 sm:mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
-            <span className="text-xs sm:text-sm font-semibold text-primary">
-              Why Choose Us
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl md:text-7xl font-black mb-4 sm:mb-6 bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70">
-            Powerful Features
-          </h2>
-          <p className="text-base sm:text-xl text-muted-foreground leading-relaxed px-4">
-            Our platform combines cutting-edge technologies with
-            <br />
-            intuitivedesign to deliver exceptional digital experiences
-          </p>
+          <SectionHeader
+            badge="Why Choose Us"
+            title="Powerful Features"
+            description={
+              <>
+                Our platform combines cutting-edge technologies with
+                <br />
+                intuitive design to deliver exceptional digital experiences
+              </>
+            }
+            className="mb-12 sm:mb-20"
+          />
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -214,7 +221,6 @@ const Features = () => {
           ))}
         </div>
       </div>
-
       {portalTarget &&
         createPortal(
           <AnimatePresence>
