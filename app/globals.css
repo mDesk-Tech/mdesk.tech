@@ -67,10 +67,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Apply Geist variable font without adding heavy body classes */
-html,
-body {
-  font-family: var(--font-geist), system-ui, sans-serif;
+/* Disable scroll anchoring on elements where dynamic height changes are expected */
+.no-anchor {
+  overflow-anchor: none;
 }
 
 :root {

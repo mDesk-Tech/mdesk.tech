@@ -264,8 +264,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-4 sm:py-8 border-y border-border/30 sticky top-14 sm:top-20 bg-background/80 backdrop-blur-md z-20">
-        <div className="container mx-auto px-4 sm:px-6">
+      <section className="py-4 sm:py-8 border-y border-border/30 bg-background/80">
+        <div className="container mx-auto px-4 sm:px-6 sticky top-14 sm:top-20 backdrop-blur-md z-20 no-anchor">
           <div className="flex space-x-1 overflow-x-auto pb-2 scrollbar-hide">
             {[
               { id: "mission", label: "Our Mission" },

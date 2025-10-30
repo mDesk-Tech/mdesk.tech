@@ -16,7 +16,7 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID;
 const geist = Geist({
   subsets: ["latin"],
   display: "swap",
-  preload: false,
+  preload: true,
   fallback: ["system-ui", "sans-serif"],
   adjustFontFallback: true,
   variable: "--font-geist",
@@ -84,13 +84,7 @@ export default async function RootLayout({
       style={{ colorScheme: "dark" }}
     >
       <head>
-        {/* Preconnect to critical domains */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+        {/* Keep head light; next/font self-hosts Geist so skip Google Fonts preconnects */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
         {/* Inline critical CSS */}
@@ -98,7 +92,6 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               .critical-content { opacity: 1 !important; }
-              
               /* Critical CSS for LCP - Reserve space for content */
               h1, [data-lcp-element="true"] {
                 opacity: 1 !important;

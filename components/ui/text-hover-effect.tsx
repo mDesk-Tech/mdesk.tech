@@ -16,15 +16,17 @@ export const TextHoverEffect = ({
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
   useEffect(() => {
-    if (svgRef.current && cursor.x !== null && cursor.y !== null) {
-      const svgRect = svgRef.current.getBoundingClientRect();
-      const cxPercentage = ((cursor.x - svgRect.left) / svgRect.width) * 100;
-      const cyPercentage = ((cursor.y - svgRect.top) / svgRect.height) * 100;
-      setMaskPosition({
-        cx: `${cxPercentage}%`,
-        cy: `${cyPercentage}%`,
-      });
-    }
+    if (!svgRef.current) return;
+    // Guard against zero-sized or hidden SVGs which can cause NaN values
+    const rect = svgRef.current.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+
+    const cxRaw = ((cursor.x - rect.left) / rect.width) * 100;
+    const cyRaw = ((cursor.y - rect.top) / rect.height) * 100;
+    const cx = Number.isFinite(cxRaw) ? Math.min(100, Math.max(0, cxRaw)) : 50;
+    const cy = Number.isFinite(cyRaw) ? Math.min(100, Math.max(0, cyRaw)) : 50;
+
+    setMaskPosition({ cx: `${cx}%`, cy: `${cy}%` });
   }, [cursor]);
 
   // Use motion.create for custom SVG element factories (avoids deprecated motion()).

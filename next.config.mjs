@@ -12,9 +12,9 @@ const nextConfig = {
   experimental: {
     cssChunking: "strict",
     useCache: true,
-    // Disable critters-based CSS optimization to avoid missing dependency errors in dev
-    optimizeCss: false,
+    optimizeCss: true,
     optimizePackageImports: [
+      "framer-motion",
       "lucide-react",
       "@radix-ui/react-dialog",
       "motion",
