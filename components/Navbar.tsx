@@ -5,7 +5,6 @@ import React from "react";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { debounce } from "@/lib/debounce-util";
 
@@ -80,6 +79,7 @@ const Navbar = () => {
         <Link
           href="/"
           className="text-xl sm:text-2xl font-bold bg-linear-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent hover:from-cyan-300 hover:to-teal-300 transition-all"
+          aria-label="mdesk.tech home"
         >
           mdesk.tech
         </Link>
@@ -99,10 +99,9 @@ const Navbar = () => {
             >
               {link.name}
               {pathname === link.path && (
-                <motion.div
+                <span
                   className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
-                  layoutId="navbar-indicator"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  aria-hidden="true"
                 />
               )}
             </Link>
@@ -119,43 +118,37 @@ const Navbar = () => {
         </button>
       </div>
 
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            className="md:hidden fixed inset-0 top-[57px] sm:top-[65px] bg-neutral-950 shadow-lg z-40 border-t border-border/40"
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <div className="container mx-auto px-4 sm:px-6 py-8 flex flex-col space-y-6">
-              {navLinks.map((link, index) => (
-                <motion.div
-                  key={link.path}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Link
-                    href={link.path}
-                    className={`block text-2xl font-bold transition-colors hover:text-primary py-3 touch-manipulation ${
-                      pathname === link.path
-                        ? "text-primary"
-                        : "text-foreground"
-                    }`}
-                    onClick={(e) => {
-                      setIsMobileMenuOpen(false);
-                      handleLinkClick(e, link.path);
-                    }}
-                  >
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
+      {/* Mobile Menu - Use CSS transitions instead of motion for better performance */}
+      <div
+        className={`md:hidden fixed inset-0 top-[57px] sm:top-[65px] bg-neutral-950 shadow-lg z-40 border-t border-border/40 transition-all duration-300 ${
+          isMobileMenuOpen
+            ? "opacity-100 translate-x-0"
+            : "opacity-0 translate-x-full pointer-events-none"
+        }`}
+      >
+        <div className="container mx-auto px-4 sm:px-6 py-8 flex flex-col space-y-6">
+          {navLinks.map((link, index) => (
+            <div
+              key={link.path}
+              className="animate-fade-in-up"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <Link
+                href={link.path}
+                className={`block text-2xl font-bold transition-colors hover:text-primary py-3 touch-manipulation ${
+                  pathname === link.path ? "text-primary" : "text-foreground"
+                }`}
+                onClick={(e) => {
+                  setIsMobileMenuOpen(false);
+                  handleLinkClick(e, link.path);
+                }}
+              >
+                {link.name}
+              </Link>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          ))}
+        </div>
+      </div>
     </nav>
   );
 };

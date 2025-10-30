@@ -19,7 +19,11 @@ const nextConfig = {
       "@radix-ui/react-dialog",
       "motion",
       "dotted-map",
+      "react",
+      "react-dom",
     ],
+    // Optimize server components for better performance
+    serverComponentsExternalPackages: ["mongodb"],
   },
   images: {
     formats: ["image/avif", "image/webp"],
@@ -40,6 +44,12 @@ const nextConfig = {
   // Enable SWC minification for faster builds
   // Optimize production bundle
   productionBrowserSourceMaps: false,
+  // Optimize output for better performance
+  poweredByHeader: false,
+  // Enable gzip compression
+  httpAgentOptions: {
+    keepAlive: true,
+  },
 };
 
 export default nextConfig;

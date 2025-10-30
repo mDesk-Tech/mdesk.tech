@@ -20,16 +20,23 @@ const Hero = () => {
         minHeight: "100vh",
       }}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none" />
+      {/* Optimized grid pattern - pure CSS, no JS */}
+      <div
+        className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none"
+        style={{ willChange: "auto" }}
+      />
 
-      {/* Simplified background effects - CSS only */}
+      {/* Simplified background effects - CSS only, no animations on mobile */}
       <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none opacity-30 hidden md:block" />
       <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl pointer-events-none opacity-30 hidden md:block" />
 
       <div className="container relative z-10 px-4 sm:px-6 py-20 sm:py-32">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-6 sm:mb-8 animate-fade-in">
-            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
+            <Sparkles
+              className="w-3 h-3 sm:w-4 sm:h-4 text-primary"
+              aria-hidden="true"
+            />
             <span className="text-xs sm:text-sm font-semibold text-primary">
               Next-Generation Web Solutions
             </span>
@@ -62,16 +69,21 @@ const Hero = () => {
             <button
               onClick={() => scrollToSection("contact")}
               className="group relative inline-flex items-center justify-center px-6 sm:px-10 py-4 sm:py-5 rounded-full bg-primary text-primary-foreground font-bold text-base sm:text-lg transition-all hover:scale-105 hover:shadow-2xl hover:shadow-primary/50 overflow-hidden cursor-pointer touch-manipulation"
+              aria-label="Get started with mdesk.tech"
             >
               <span className="relative z-10 flex items-center gap-2">
                 Get Started
-                <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight
+                  className="h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:translate-x-1"
+                  aria-hidden="true"
+                />
               </span>
               <div className="absolute inset-0 bg-linear-to-r from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
             <button
               onClick={() => scrollToSection("services")}
               className="inline-flex items-center justify-center px-6 sm:px-10 py-4 sm:py-5 rounded-full border-2 border-primary/20 bg-transparent text-foreground font-bold text-base sm:text-lg transition-all hover:bg-primary/10 hover:border-primary cursor-pointer touch-manipulation"
+              aria-label="Explore our services"
             >
               Explore Services
             </button>

@@ -41,11 +41,22 @@
   opacity: 0;
 }
 
-/* Optimize paint performance */
+/* Optimize paint performance - remove will-change by default */
 .composite-layer {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+/* Only add will-change during interactions */
+button:hover,
+a:hover {
+  will-change: transform;
+}
+
+button:not(:hover),
+a:not(:hover) {
+  will-change: auto;
 }
 
 .content-visibility-auto {
@@ -427,16 +438,17 @@ section {
   contain-intrinsic-size: 0 500px;
 }
 
-.animate-gradient-x {
+/* Remove will-change from animations that don't need it for better performance */
+.animate-gradient-x:hover {
   will-change: background-position;
 }
 
-.animate-float {
+.animate-float:hover {
   will-change: transform;
 }
 
 .animate-pulse {
-  will-change: opacity;
+  will-change: auto;
 }
 
 /* Performance optimizations */
@@ -445,12 +457,12 @@ section {
   contain-intrinsic-size: 0 auto;
 }
 
-/* Optimize paint and composite layers */
-.will-change-transform {
+/* Optimize paint and composite layers - only during interactions */
+.will-change-transform:hover {
   will-change: transform;
 }
 
-.will-change-opacity {
+.will-change-opacity:hover {
   will-change: opacity;
 }
 

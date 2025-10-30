@@ -20,6 +20,8 @@ const geist = Geist({
   fallback: ["system-ui", "sans-serif"],
   adjustFontFallback: true,
   variable: "--font-geist",
+  // Optimize font loading to prevent blocking
+  weight: ["400", "500", "700"],
 });
 
 export const viewport = {
@@ -84,8 +86,14 @@ export default async function RootLayout({
       style={{ colorScheme: "dark" }}
     >
       <head>
-        {/* Keep head light; next/font self-hosts Geist so skip Google Fonts preconnects */}
+        {/* Optimize resource loading for better FCP/LCP */}
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
         {/* Inline critical CSS */}
         <style
