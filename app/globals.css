@@ -41,6 +41,27 @@
   opacity: 0;
 }
 
+/* Animation delay utilities for better performance than inline styles */
+.animate-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animate-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animate-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animate-delay-500 {
+  animation-delay: 0.5s;
+}
+
 /* Optimize paint performance - remove will-change by default */
 .composite-layer {
   transform: translateZ(0);

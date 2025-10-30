@@ -112,10 +112,7 @@ export default function ContactPage() {
 
               {/* Contact Info Cards */}
               <div className="space-y-4 mb-6 sm:mb-8">
-                <div
-                  className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-card border border-border transition-colors animate-fade-in-up"
-                  style={{ animationDelay: "0.3s" }}
-                >
+                <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-card border border-border transition-colors animate-fade-in-up animate-delay-300">
                   <div className="p-2 sm:p-3 rounded-full bg-primary/10 text-primary border">
                     <Mail className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
@@ -129,10 +126,7 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div
-                  className="p-4 sm:p-6 rounded-xl bg-linear-to-br from-primary/10 to-accent/10 border border-primary/20 animate-fade-in-up"
-                  style={{ animationDelay: "0.4s" }}
-                >
+                <div className="p-4 sm:p-6 rounded-xl bg-linear-to-br from-primary/10 to-accent/10 border border-primary/20 animate-fade-in-up animate-delay-400">
                   <div className="flex items-center gap-3 mb-3 sm:mb-4">
                     <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     <h3 className="text-base sm:text-lg font-semibold">
@@ -147,10 +141,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div
-              className="lg:w-1/2 w-full border-none animate-fade-in-up"
-              style={{ animationDelay: "0.2s" }}
-            >
+            <div className="lg:w-1/2 w-full border-none animate-fade-in-up animate-delay-200">
               <Card className="relative overflow-hidden rounded-2xl bg-card border-none">
                 <MagicCard
                   gradientColor={"gray"}
