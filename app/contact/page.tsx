@@ -2,7 +2,6 @@
 
 import { useCallback, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { motion } from "motion/react";
 import {
   Mail,
   ArrowRight,
@@ -91,12 +90,7 @@ export default function ContactPage() {
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="flex flex-col lg:flex-row items-start gap-8 sm:gap-12">
-            <motion.div
-              className="lg:w-1/2 w-full"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+            <div className="lg:w-1/2 w-full animate-fade-in-up">
               <Badge className="mb-4 sm:mb-6">Get in touch</Badge>
 
               <div className="mb-6 sm:mb-8">
@@ -118,11 +112,9 @@ export default function ContactPage() {
 
               {/* Contact Info Cards */}
               <div className="space-y-4 mb-6 sm:mb-8">
-                <motion.div
-                  className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-card border border-border transition-colors"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.3 }}
+                <div
+                  className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-card border border-border transition-colors animate-fade-in-up"
+                  style={{ animationDelay: "0.3s" }}
                 >
                   <div className="p-2 sm:p-3 rounded-full bg-primary/10 text-primary border">
                     <Mail className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -135,13 +127,11 @@ export default function ContactPage() {
                       hello@mdesk.tech
                     </div>
                   </div>
-                </motion.div>
+                </div>
 
-                <motion.div
-                  className="p-4 sm:p-6 rounded-xl bg-linear-to-br from-primary/10 to-accent/10 border border-primary/20"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.4 }}
+                <div
+                  className="p-4 sm:p-6 rounded-xl bg-linear-to-br from-primary/10 to-accent/10 border border-primary/20 animate-fade-in-up"
+                  style={{ animationDelay: "0.4s" }}
                 >
                   <div className="flex items-center gap-3 mb-3 sm:mb-4">
                     <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
@@ -153,15 +143,13 @@ export default function ContactPage() {
                     Our team is distributed across the globe, serving clients
                     worldwide without geographical limitations.
                   </p>
-                </motion.div>
+                </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              className="lg:w-1/2 w-full border-none"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+            <div
+              className="lg:w-1/2 w-full border-none animate-fade-in-up"
+              style={{ animationDelay: "0.2s" }}
             >
               <Card className="relative overflow-hidden rounded-2xl bg-card border-none">
                 <MagicCard
@@ -176,12 +164,7 @@ export default function ContactPage() {
 
                   <div className="relative z-10 p-6 sm:p-8">
                     {isSubmitted ? (
-                      <motion.div
-                        className="text-center py-8 sm:py-12"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
+                      <div className="text-center py-8 sm:py-12 animate-fade-in">
                         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-primary/20 to-accent/20 sm:mb-6 sm:h-20 sm:w-20">
                           <CheckCircle className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
                         </div>
@@ -196,10 +179,11 @@ export default function ContactPage() {
                           type="button"
                           onClick={() => setIsSubmitted(false)}
                           className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
+                          aria-label="Send another message"
                         >
                           Send Another Message
                         </button>
-                      </motion.div>
+                      </div>
                     ) : (
                       <>
                         <div className="mb-5 flex items-center gap-3 sm:mb-6">
@@ -294,7 +278,10 @@ export default function ContactPage() {
                           </div>
 
                           {error && (
-                            <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-xs text-destructive sm:text-sm">
+                            <div
+                              className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-xs text-destructive sm:text-sm"
+                              role="alert"
+                            >
                               {error}
                             </div>
                           )}
@@ -303,6 +290,9 @@ export default function ContactPage() {
                             type="submit"
                             disabled={isSubmitting}
                             className="inline-flex w-full items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 disabled:opacity-70 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
+                            aria-label={
+                              isSubmitting ? "Sending message" : "Send message"
+                            }
                           >
                             {isSubmitting ? (
                               <>
@@ -311,6 +301,7 @@ export default function ContactPage() {
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
                                   viewBox="0 0 24 24"
+                                  aria-hidden="true"
                                 >
                                   <circle
                                     className="opacity-25"
@@ -341,7 +332,7 @@ export default function ContactPage() {
                   </div>
                 </MagicCard>
               </Card>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
