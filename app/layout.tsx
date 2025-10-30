@@ -13,6 +13,7 @@ import Script from "next/script";
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
+// Optimize font loading with display: swap for faster FCP
 const geist = Geist({
   subsets: ["latin"],
   display: "swap",
