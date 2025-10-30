@@ -14,7 +14,6 @@ const nextConfig = {
     useCache: true,
     optimizeCss: true,
     optimizePackageImports: [
-      "framer-motion",
       "lucide-react",
       "@radix-ui/react-dialog",
       "motion",
@@ -33,6 +32,9 @@ const nextConfig = {
     "lucide-react": {
       transform: "lucide-react/dist/esm/icons/{{kebabCase member}}",
     },
+  },
+  turbopack: {
+    root: ".",
   },
   // Enable SWC minification for faster builds
   // Optimize production bundle

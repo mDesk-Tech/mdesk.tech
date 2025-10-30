@@ -363,7 +363,7 @@ export default function AboutPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <Users className="h-5 w-5 text-primary" />
                     </div>
                     <div>

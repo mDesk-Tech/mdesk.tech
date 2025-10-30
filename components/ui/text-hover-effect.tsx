@@ -27,9 +27,8 @@ export const TextHoverEffect = ({
     }
   }, [cursor]);
 
-  // Framer Motion doesn't expose a typed radialGradient factory by default.
-  // Create one explicitly to ensure animation of SVG gradient attributes.
-  const MradialGradient: any = (motion as any)("radialGradient");
+  // Use motion.create for custom SVG element factories (avoids deprecated motion()).
+  const MradialGradient = motion.create("radialGradient");
 
   return (
     <svg

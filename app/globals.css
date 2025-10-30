@@ -67,6 +67,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Apply Geist variable font without adding heavy body classes */
+html,
+body {
+  font-family: var(--font-geist), system-ui, sans-serif;
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

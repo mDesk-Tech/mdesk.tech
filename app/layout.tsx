@@ -16,7 +16,8 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID;
 const geist = Geist({
   subsets: ["latin"],
   display: "swap",
-  preload: true,
+  // Disable automatic <link rel="preload"> to avoid "preloaded font not used" warnings.
+  preload: false,
   fallback: ["system-ui", "sans-serif"],
   adjustFontFallback: true,
   variable: "--font-geist",
@@ -97,7 +98,6 @@ export default async function RootLayout({
         <style
           dangerouslySetInnerHTML={{
             __html: `
-              :root { --font-geist: '__Geist_Fallback_${geist.variable}'; }
               .critical-content { opacity: 1 !important; }
               
               /* Critical CSS for LCP - Reserve space for content */
@@ -167,7 +167,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={`${geist.className} antialiased`}>
+      <body className={`antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
