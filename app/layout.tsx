@@ -16,7 +16,6 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID;
 const geist = Geist({
   subsets: ["latin"],
   display: "swap",
-  // Disable automatic <link rel="preload"> to avoid "preloaded font not used" warnings.
   preload: false,
   fallback: ["system-ui", "sans-serif"],
   adjustFontFallback: true,
@@ -122,14 +121,6 @@ export default async function RootLayout({
               /* Reserve minimum height for sections to prevent CLS */
               section {
                 min-height: fit-content;
-              }
-              
-              /* Smart content visibility for mobile */
-              @media (max-width: 768px) {
-                section:not(:first-of-type):not(.in-viewport) {
-                  content-visibility: auto;
-                  contain-intrinsic-size: 0 500px;
-                }
               }
               
               /* Grid pattern - optimized */
