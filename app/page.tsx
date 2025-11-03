@@ -1,10 +1,22 @@
 "use cache";
 
+import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import Services from "@/components/Services";
-import About from "@/components/About";
-import Contact from "@/components/Contact";
+
+// Dynamically import below-the-fold components with no SSR
+// This reduces initial JavaScript bundle size
+const Features = dynamic(() => import("@/components/Features"), {
+  ssr: false,
+});
+const Services = dynamic(() => import("@/components/Services"), {
+  ssr: false,
+});
+const About = dynamic(() => import("@/components/About"), {
+  ssr: false,
+});
+const Contact = dynamic(() => import("@/components/Contact"), {
+  ssr: false,
+});
 
 export default async function Home() {
   return (

@@ -1,11 +1,12 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback, memo } from "react";
-import { motion, useTransform, useScroll } from "motion/react";
+import { motion, useTransform, useScroll, MotionValue } from "motion/react";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 const Hero = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -39,6 +40,27 @@ const Hero = memo(() => {
       window.removeEventListener("resize", debouncedResize);
     };
   }, []);
+
+  // Apply scroll animations after mount
+  useEffect(() => {
+    if (isMounted && contentRef.current) {
+      const unsubscribeOpacity = opacity.on("change", (v) => {
+        if (contentRef.current) {
+          contentRef.current.style.opacity = String(v);
+        }
+      });
+      const unsubscribeY = y.on("change", (v) => {
+        if (contentRef.current) {
+          contentRef.current.style.transform = `translateY(${v}px)`;
+        }
+      });
+      
+      return () => {
+        unsubscribeOpacity();
+        unsubscribeY();
+      };
+    }
+  }, [isMounted, opacity, y]);
 
   const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id);
@@ -83,9 +105,9 @@ const Hero = memo(() => {
         </>
       )}
 
-      <motion.div
+      <div
+        ref={contentRef}
         className="container relative z-10 px-4 sm:px-6 py-20 sm:py-32"
-        style={{ opacity, y }}
       >
         <div className="max-w-6xl mx-auto text-center">
           <motion.div
@@ -100,10 +122,8 @@ const Hero = memo(() => {
             </span>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
+          {/* LCP element - visible immediately, no animation delay */}
+          <h1
             className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 tracking-tight leading-tight"
             data-lcp-element="true"
           >
@@ -111,7 +131,7 @@ const Hero = memo(() => {
             <span className="block bg-clip-text text-transparent bg-linear-to-b from-primary to-accent">
               Digital Future
             </span>
-          </motion.h1>
+          </h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -177,7 +197,7 @@ const Hero = memo(() => {
             </motion.div>
           )}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 });
