@@ -387,11 +387,6 @@
   opacity: 0.05;
 }
 
-section {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 500px;
-}
-
 .animate-gradient-x {
   will-change: background-position;
 }
@@ -402,36 +397,6 @@ section {
 
 .animate-pulse {
   will-change: opacity;
-}
-
-/* Performance optimizations */
-[data-lcp-element] {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 auto;
-}
-
-/* Optimize paint and composite layers */
-.will-change-transform {
-  will-change: transform;
-}
-
-.will-change-opacity {
-  will-change: opacity;
-}
-
-.hardware-accelerated {
-  transform: translateZ(0);
-}
-
-/* Reduce layout shifts */
-.motion-safe {
-  transform: translateZ(0);
-}
-
-/* Optimize image rendering */
-img {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 auto;
 }
 
 .dark {

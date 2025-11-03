@@ -92,11 +92,6 @@ export default async function RootLayout({
           crossOrigin="anonymous"
         />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://vercel.live" />
-        
-        {/* Prefetch critical resources */}
-        <link rel="preload" href="/icon" as="image" />
-        <link rel="preload" href="/apple-icon" as="image" />
 
         {/* Inline critical CSS */}
         <style
@@ -107,25 +102,10 @@ export default async function RootLayout({
                 color-scheme: dark;
               }
               
-              /* Critical content visibility */
-              .critical-content { 
-                opacity: 1 !important; 
-                visibility: visible !important;
-              }
-              
               /* LCP optimization - ensure hero content renders immediately */
               h1, [data-lcp-element="true"] {
                 opacity: 1 !important;
                 visibility: visible !important;
-                content-visibility: auto;
-              }
-              
-              /* Hardware acceleration for better paint performance */
-              .composite-layer,
-              .will-change-transform {
-                transform: translateZ(0);
-                backface-visibility: hidden;
-                perspective: 1000px;
               }
               
               /* Prevent layout shifts */
@@ -133,18 +113,6 @@ export default async function RootLayout({
                 height: auto;
                 max-width: 100%;
                 display: block;
-              }
-              
-              /* Content visibility for below-the-fold sections */
-              section:not(:first-of-type) {
-                content-visibility: auto;
-                contain-intrinsic-size: 0 500px;
-              }
-              
-              /* Optimize grid patterns for paint performance */
-              .grid-pattern {
-                contain: layout style paint;
-                pointer-events: none;
               }
               
               /* Reduced motion support for accessibility */
@@ -155,15 +123,6 @@ export default async function RootLayout({
                   transition-duration: 0.01ms !important;
                   scroll-behavior: auto !important;
                 }
-              }
-              
-              /* Loading skeleton animation */
-              @keyframes pulse {
-                0%, 100% { opacity: 1; }
-                50% { opacity: 0.5; }
-              }
-              .animate-pulse {
-                animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
               }
             `,
           }}

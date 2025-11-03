@@ -1,15 +1,13 @@
 "use client";
 
-import { useRef, useCallback, memo } from "react";
+import { useRef, useEffect, useState, useCallback, memo } from "react";
 import { motion, useTransform, useScroll } from "motion/react";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { useIsMounted } from "@/hooks/use-is-mounted";
-import { useIsMobile } from "@/hooks/use-is-mobile";
 
 const Hero = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
-  const isMounted = useIsMounted();
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -18,6 +16,29 @@ const Hero = memo(() => {
 
   const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const y = useTransform(scrollYProgress, [0, 0.5], [0, 50]);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Set mounted immediately for faster LCP
+    setIsMounted(true);
+    checkMobile();
+
+    let resizeTimeout: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(checkMobile, 150);
+    };
+
+    window.addEventListener("resize", debouncedResize, { passive: true });
+
+    return () => {
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", debouncedResize);
+    };
+  }, []);
 
   const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id);
@@ -30,10 +51,6 @@ const Hero = memo(() => {
     <section
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background"
-      style={{
-        contain: "layout style paint",
-        containIntrinsicSize: "0 100vh",
-      }}
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none" />
 
