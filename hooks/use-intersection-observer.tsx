@@ -38,7 +38,7 @@ export const useIntersectionObserver = (
       ([entry]) => {
         const isVisible = entry.isIntersecting;
         setIsIntersecting(isVisible);
-        
+
         if (isVisible && freezeOnceVisible) {
           setHasBeenVisible(true);
         }

@@ -92,56 +92,58 @@ const features: Feature[] = [
   },
 ];
 
-const FeatureCard = memo(({
-  feature,
-  onClick,
-}: {
-  feature: Feature;
-  index: number;
-  onClick: () => void;
-}) => {
-  const handleClick = useCallback(() => {
-    onClick();
-  }, [onClick]);
+const FeatureCard = memo(
+  ({
+    feature,
+    onClick,
+  }: {
+    feature: Feature;
+    index: number;
+    onClick: () => void;
+  }) => {
+    const handleClick = useCallback(() => {
+      onClick();
+    }, [onClick]);
 
-  return (
-    <CardContainer containerClassName="py-0">
-      <CardBody className="relative group/card w-full h-auto min-h-[280px] sm:h-[320px] rounded-2xl p-6 sm:p-8 border border-border bg-card flex flex-col cursor-pointer hover:border-primary/50 transition-colors touch-manipulation">
-        <CardItem translateZ="50" className="mb-4">
-          <div className="inline-flex p-3 sm:p-4 rounded-xl bg-primary/10 text-primary">
-            {feature.icon}
-          </div>
-        </CardItem>
+    return (
+      <CardContainer containerClassName="py-0">
+        <CardBody className="relative group/card w-full h-auto min-h-[280px] sm:h-[320px] rounded-2xl p-6 sm:p-8 border border-border bg-card flex flex-col cursor-pointer hover:border-primary/50 transition-colors touch-manipulation">
+          <CardItem translateZ="50" className="mb-4">
+            <div className="inline-flex p-3 sm:p-4 rounded-xl bg-primary/10 text-primary">
+              {feature.icon}
+            </div>
+          </CardItem>
 
-        <CardItem
-          translateZ="60"
-          className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-foreground"
-        >
-          {feature.title}
-        </CardItem>
-
-        <CardItem
-          translateZ="40"
-          className="text-muted-foreground leading-relaxed text-sm flex-1"
-        >
-          {feature.description}
-        </CardItem>
-
-        <CardItem
-          translateZ="30"
-          className="text-primary text-sm font-medium mt-4"
-        >
-          <button
-            onClick={handleClick}
-            className="hover:underline touch-manipulation py-2"
+          <CardItem
+            translateZ="60"
+            className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-foreground"
           >
-            Click to learn more →
-          </button>
-        </CardItem>
-      </CardBody>
-    </CardContainer>
-  );
-});
+            {feature.title}
+          </CardItem>
+
+          <CardItem
+            translateZ="40"
+            className="text-muted-foreground leading-relaxed text-sm flex-1"
+          >
+            {feature.description}
+          </CardItem>
+
+          <CardItem
+            translateZ="30"
+            className="text-primary text-sm font-medium mt-4"
+          >
+            <button
+              onClick={handleClick}
+              className="hover:underline touch-manipulation py-2"
+            >
+              Click to learn more →
+            </button>
+          </CardItem>
+        </CardBody>
+      </CardContainer>
+    );
+  },
+);
 
 FeatureCard.displayName = "FeatureCard";
 

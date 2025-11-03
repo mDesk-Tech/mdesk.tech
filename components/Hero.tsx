@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback, memo } from "react";
-import { motion, useTransform, useScroll, MotionValue } from "motion/react";
+import { motion, useTransform, useScroll } from "motion/react";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 const Hero = memo(() => {
@@ -54,7 +54,7 @@ const Hero = memo(() => {
           contentRef.current.style.transform = `translateY(${v}px)`;
         }
       });
-      
+
       return () => {
         unsubscribeOpacity();
         unsubscribeY();
@@ -167,35 +167,6 @@ const Hero = memo(() => {
               Explore Services
             </button>
           </motion.div>
-
-          {isMounted && !isMobile && (
-            <motion.div
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:block"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              <motion.div
-                className="w-6 h-10 sm:w-8 sm:h-12 rounded-full border-2 border-primary/30 flex items-start justify-center p-2 will-change-transform"
-                animate={{ y: [0, 10, 0] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "easeInOut",
-                }}
-              >
-                <motion.div
-                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary will-change-transform"
-                  animate={{ y: [0, 16, 0] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                  }}
-                />
-              </motion.div>
-            </motion.div>
-          )}
         </div>
       </div>
     </section>
