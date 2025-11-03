@@ -5,6 +5,7 @@ import { Github, Heart, Rocket, Users, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { HyperText } from "@/components/ui/hyper-text";
 import { Cover } from "@/components/ui/cover";
+import { Badge } from "@/components/ui/badge";
 
 const benefits = [
   {
@@ -69,12 +70,10 @@ export default function OpenSourcePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-8">
-              <Github className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold text-primary">
-                Supporting Open Source
-              </span>
-            </div>
+            <Badge className="mb-8">
+              <Github className="h-4 w-4" />
+              Supporting Open Source
+            </Badge>
 
             <h1 className="text-6xl md:text-8xl font-black mb-8">
               <HyperText

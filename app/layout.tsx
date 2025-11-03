@@ -84,31 +84,22 @@ export default async function RootLayout({
       style={{ colorScheme: "dark" }}
     >
       <head>
-        {/* Preconnect to critical domains */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+        {/* Resource hints for performance */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
         {/* Inline critical CSS */}
         <style
           dangerouslySetInnerHTML={{
             __html: `
-              :root { --font-geist: '__Geist_Fallback_${geist.variable}'; }
-              .critical-content { opacity: 1 !important; }
+              :root { 
+                --font-geist: '__Geist_Fallback_${geist.variable}'; 
+                color-scheme: dark;
+              }
               
-              /* Critical CSS for LCP */
+              /* LCP optimization - ensure hero content renders immediately */
               h1, [data-lcp-element="true"] {
                 opacity: 1 !important;
                 visibility: visible !important;
-              }
-              
-              /* Optimize paint performance */
-              .composite-layer {
-                will-change: transform;
               }
               
               /* Prevent layout shifts */
@@ -118,26 +109,13 @@ export default async function RootLayout({
                 display: block;
               }
               
-              /* Smart content visibility for mobile */
-              @media (max-width: 768px) {
-                section:not(:first-of-type):not(.in-viewport) {
-                  content-visibility: auto;
-                  contain-intrinsic-size: 0 500px;
-                }
-              }
-              
-              /* Grid pattern - optimized */
-              .grid-pattern {
-                contain: layout style;
-                pointer-events: none;
-              }
-              
-              /* Reduced motion support */
+              /* Reduced motion support for accessibility */
               @media (prefers-reduced-motion: reduce) {
                 *, *::before, *::after {
                   animation-duration: 0.01ms !important;
                   animation-iteration-count: 1 !important;
                   transition-duration: 0.01ms !important;
+                  scroll-behavior: auto !important;
                 }
               }
             `,

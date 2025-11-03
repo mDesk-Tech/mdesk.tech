@@ -3,12 +3,13 @@
 import { motion } from "motion/react";
 import Link from "next/link";
 import { Github, Mail } from "lucide-react";
+import { memo } from "react";
 
 type FooterProps = {
   year: number;
 };
 
-const Footer = ({ year }: FooterProps) => {
+const Footer = memo(({ year }: FooterProps) => {
   const socialLinks = [
     {
       icon: <Github className="h-5 w-5" />,
@@ -125,6 +126,8 @@ const Footer = ({ year }: FooterProps) => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = "Footer";
 
 export default Footer;

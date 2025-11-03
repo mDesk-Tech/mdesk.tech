@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, memo } from "react";
 import { motion, useTransform, useScroll } from "motion/react";
 import { ArrowRight, Sparkles } from "lucide-react";
 
-const Hero = () => {
+const Hero = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -22,8 +23,9 @@ const Hero = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    // Call setIsMounted in a microtask to avoid cascading renders
-    Promise.resolve().then(() => setIsMounted(true));
+    // Set mounted immediately for faster LCP
+    setIsMounted(true);
+    checkMobile();
 
     let resizeTimeout: NodeJS.Timeout;
     const debouncedResize = () => {
@@ -39,6 +41,27 @@ const Hero = () => {
     };
   }, []);
 
+  // Apply scroll animations after mount
+  useEffect(() => {
+    if (isMounted && contentRef.current) {
+      const unsubscribeOpacity = opacity.on("change", (v) => {
+        if (contentRef.current) {
+          contentRef.current.style.opacity = String(v);
+        }
+      });
+      const unsubscribeY = y.on("change", (v) => {
+        if (contentRef.current) {
+          contentRef.current.style.transform = `translateY(${v}px)`;
+        }
+      });
+
+      return () => {
+        unsubscribeOpacity();
+        unsubscribeY();
+      };
+    }
+  }, [isMounted, opacity, y]);
+
   const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -50,10 +73,6 @@ const Hero = () => {
     <section
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background"
-      style={{
-        contain: "layout style paint",
-        containIntrinsicSize: "0 100vh",
-      }}
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none" />
 
@@ -86,9 +105,9 @@ const Hero = () => {
         </>
       )}
 
-      <motion.div
+      <div
+        ref={contentRef}
         className="container relative z-10 px-4 sm:px-6 py-20 sm:py-32"
-        style={{ opacity, y }}
       >
         <div className="max-w-6xl mx-auto text-center">
           <motion.div
@@ -103,10 +122,8 @@ const Hero = () => {
             </span>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
+          {/* LCP element - visible immediately, no animation delay */}
+          <h1
             className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 tracking-tight leading-tight"
             data-lcp-element="true"
           >
@@ -114,7 +131,7 @@ const Hero = () => {
             <span className="block bg-clip-text text-transparent bg-linear-to-b from-primary to-accent">
               Digital Future
             </span>
-          </motion.h1>
+          </h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -150,39 +167,12 @@ const Hero = () => {
               Explore Services
             </button>
           </motion.div>
-
-          {isMounted && !isMobile && (
-            <motion.div
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:block"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              <motion.div
-                className="w-6 h-10 sm:w-8 sm:h-12 rounded-full border-2 border-primary/30 flex items-start justify-center p-2 will-change-transform"
-                animate={{ y: [0, 10, 0] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "easeInOut",
-                }}
-              >
-                <motion.div
-                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary will-change-transform"
-                  animate={{ y: [0, 16, 0] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                  }}
-                />
-              </motion.div>
-            </motion.div>
-          )}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
-};
+});
+
+Hero.displayName = "Hero";
 
 export default Hero;

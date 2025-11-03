@@ -18,6 +18,7 @@ import {
   DraggableCardBody,
   DraggableCardContainer,
 } from "@/components/ui/draggable-card";
+import { Badge } from "@/components/ui/badge";
 
 export default function AboutPage() {
   const [activeSection, setActiveSection] = useState("mission");
@@ -195,11 +196,7 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
-              <span className="text-xs sm:text-sm font-semibold text-primary">
-                Our Story
-              </span>
-            </div>
+            <Badge className="mb-4 sm:mb-6">Our Story</Badge>
 
             <div className="mb-6 sm:mb-8">
               <HyperText className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground">
