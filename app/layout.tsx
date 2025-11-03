@@ -84,7 +84,7 @@ export default async function RootLayout({
       style={{ colorScheme: "dark" }}
     >
       <head>
-        {/* Preconnect to critical domains */}
+        {/* Resource hints for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -92,23 +92,40 @@ export default async function RootLayout({
           crossOrigin="anonymous"
         />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://vercel.live" />
+        
+        {/* Prefetch critical resources */}
+        <link rel="preload" href="/icon" as="image" />
+        <link rel="preload" href="/apple-icon" as="image" />
 
         {/* Inline critical CSS */}
         <style
           dangerouslySetInnerHTML={{
             __html: `
-              :root { --font-geist: '__Geist_Fallback_${geist.variable}'; }
-              .critical-content { opacity: 1 !important; }
+              :root { 
+                --font-geist: '__Geist_Fallback_${geist.variable}'; 
+                color-scheme: dark;
+              }
               
-              /* Critical CSS for LCP */
-              h1, [data-lcp-element="true"] {
-                opacity: 1 !important;
+              /* Critical content visibility */
+              .critical-content { 
+                opacity: 1 !important; 
                 visibility: visible !important;
               }
               
-              /* Optimize paint performance */
-              .composite-layer {
-                will-change: transform;
+              /* LCP optimization - ensure hero content renders immediately */
+              h1, [data-lcp-element="true"] {
+                opacity: 1 !important;
+                visibility: visible !important;
+                content-visibility: auto;
+              }
+              
+              /* Hardware acceleration for better paint performance */
+              .composite-layer,
+              .will-change-transform {
+                transform: translateZ(0);
+                backface-visibility: hidden;
+                perspective: 1000px;
               }
               
               /* Prevent layout shifts */
@@ -118,27 +135,35 @@ export default async function RootLayout({
                 display: block;
               }
               
-              /* Smart content visibility for mobile */
-              @media (max-width: 768px) {
-                section:not(:first-of-type):not(.in-viewport) {
-                  content-visibility: auto;
-                  contain-intrinsic-size: 0 500px;
-                }
+              /* Content visibility for below-the-fold sections */
+              section:not(:first-of-type) {
+                content-visibility: auto;
+                contain-intrinsic-size: 0 500px;
               }
               
-              /* Grid pattern - optimized */
+              /* Optimize grid patterns for paint performance */
               .grid-pattern {
-                contain: layout style;
+                contain: layout style paint;
                 pointer-events: none;
               }
               
-              /* Reduced motion support */
+              /* Reduced motion support for accessibility */
               @media (prefers-reduced-motion: reduce) {
                 *, *::before, *::after {
                   animation-duration: 0.01ms !important;
                   animation-iteration-count: 1 !important;
                   transition-duration: 0.01ms !important;
+                  scroll-behavior: auto !important;
                 }
+              }
+              
+              /* Loading skeleton animation */
+              @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.5; }
+              }
+              .animate-pulse {
+                animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
               }
             `,
           }}

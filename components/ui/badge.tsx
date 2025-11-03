@@ -1,11 +1,13 @@
 import { cn } from "@/lib/utils";
+import type React from "react";
 
 interface BadgeProps {
   children: React.ReactNode;
   className?: string;
+  icon?: React.ReactNode;
 }
 
-export const Badge = ({ children, className }: BadgeProps) => {
+export const Badge = ({ children, className, icon }: BadgeProps) => {
   return (
     <div
       className={cn(
@@ -13,6 +15,7 @@ export const Badge = ({ children, className }: BadgeProps) => {
         className,
       )}
     >
+      {icon}
       <span className="text-xs sm:text-sm font-semibold text-primary">
         {children}
       </span>
