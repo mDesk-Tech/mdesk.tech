@@ -2,6 +2,13 @@
 import { useRef, useEffect, useState } from "react";
 import { motion } from "motion/react";
 
+// Hoist creation of the motion-wrapped SVG element to avoid creating
+// components during render and to satisfy lint rules.
+const MotionFactory = motion as unknown as {
+  (tag: string): React.ComponentType<Record<string, unknown>>;
+};
+const MotionRadialGradient = MotionFactory("radialGradient");
+
 export const TextHoverEffect = ({
   text,
   duration,
@@ -26,10 +33,6 @@ export const TextHoverEffect = ({
       });
     }
   }, [cursor]);
-
-  // Framer Motion doesn't expose a typed radialGradient factory by default.
-  // Create one explicitly to ensure animation of SVG gradient attributes.
-  const MradialGradient: any = (motion as any)("radialGradient");
 
   return (
     <svg
@@ -62,7 +65,7 @@ export const TextHoverEffect = ({
           )}
         </linearGradient>
 
-        <MradialGradient
+        <MotionRadialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
           r="20%"
@@ -72,7 +75,7 @@ export const TextHoverEffect = ({
         >
           <stop offset="0%" stopColor="white" />
           <stop offset="100%" stopColor="black" />
-        </MradialGradient>
+        </MotionRadialGradient>
         <mask id="textMask">
           <rect
             x="0"

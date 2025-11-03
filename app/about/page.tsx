@@ -190,12 +190,7 @@ export default function AboutPage() {
 
       <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <motion.div
-            className="max-w-4xl mx-auto text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-4 sm:mb-6">Our Story</Badge>
 
             <div className="mb-6 sm:mb-8">
@@ -208,19 +203,13 @@ export default function AboutPage() {
               We&apos;re passionate about creating exceptional digital
               experiences that transform businesses
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       <section className="py-12 sm:py-20 relative overflow-hidden hidden md:block">
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+          <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold mb-4">
               Explore Our Story
             </h2>
@@ -229,7 +218,7 @@ export default function AboutPage() {
               <br />
               They&apos;re interactive and fun to play with
             </p>
-          </motion.div>
+          </div>
 
           <DraggableCardContainer className="relative flex min-h-[600px] w-full items-center justify-center overflow-clip">
             {draggableCards.map((card, index) => (

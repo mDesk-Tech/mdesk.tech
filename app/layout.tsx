@@ -143,39 +143,37 @@ export default async function RootLayout({
 
           {/* Performance optimizers are loaded in page.tsx */}
 
-          {/* Defer non-critical scripts */}
-          {gaId ? (
-            <>
-              <Script
-                src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-                strategy="lazyOnload"
-                data-priority="low"
-              />
-              <Script
-                id="google-analytics"
-                strategy="lazyOnload"
-                data-priority="low"
-              >
-                {`
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${gaId}', {
-                    send_page_view: false,
-                    transport_type: 'beacon',
-                    anonymize_ip: true,
-                  });
-                `}
-              </Script>
-            </>
-          ) : null}
-
           {/* Load analytics only in production */}
           {process.env.NODE_ENV === "production" && (
             <>
               <Analytics />
               <SpeedInsights />
-              {gaId && <GoogleAnalytics gaId={gaId} />}
+              {gaId && (
+                <>
+                  <Script
+                    src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+                    strategy="lazyOnload"
+                    data-priority="low"
+                  />
+                  <Script
+                    id="google-analytics"
+                    strategy="lazyOnload"
+                    data-priority="low"
+                  >
+                    {`
+                      window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+                      gtag('config', '${gaId}', {
+                        send_page_view: false,
+                        transport_type: 'beacon',
+                        anonymize_ip: true,
+                      });
+                    `}
+                  </Script>
+                  <GoogleAnalytics gaId={gaId} />
+                </>
+              )}
             </>
           )}
         </ThemeProvider>

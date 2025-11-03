@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
+import type React from "react";
 
 interface SectionHeadingProps {
   badge?: string;
   title: string | React.ReactNode;
-  description?: string;
+  description?: React.ReactNode;
   className?: string;
   titleClassName?: string;
 }

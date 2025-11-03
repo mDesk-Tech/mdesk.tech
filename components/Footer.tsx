@@ -1,6 +1,4 @@
 "use client";
-
-import { motion } from "motion/react";
 import Link from "next/link";
 import { Github, Mail } from "lucide-react";
 import { memo } from "react";
@@ -45,18 +43,16 @@ const Footer = memo(({ year }: FooterProps) => {
 
             <div className="flex space-x-3 mt-6">
               {socialLinks.map((social, index) => (
-                <motion.a
+                <a
                   key={index}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="p-2.5 sm:p-3 rounded-xl bg-muted/30 text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all border border-border/50 hover:border-primary/50 touch-manipulation"
-                  whileHover={{ y: -3, scale: 1.05 }}
-                  transition={{ duration: 0.2 }}
+                  className="p-2.5 sm:p-3 rounded-xl bg-muted/30 text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all border border-border/50 hover:border-primary/50 touch-manipulation will-change-transform hover:-translate-y-0.5 hover:scale-[1.03]"
                 >
                   {social.icon}
-                </motion.a>
+                </a>
               ))}
             </div>
           </div>
@@ -76,6 +72,7 @@ const Footer = memo(({ year }: FooterProps) => {
                 <li key={index}>
                   <Link
                     href={link.href}
+                    prefetch={false}
                     className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-2 group touch-manipulation"
                   >
                     <span className="w-0 h-0.5 bg-primary group-hover:w-4 transition-all" />
@@ -111,12 +108,14 @@ const Footer = memo(({ year }: FooterProps) => {
           <div className="flex space-x-4 sm:space-x-6">
             <Link
               href="/privacy"
+              prefetch={false}
               className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors touch-manipulation"
             >
               Privacy Policy
             </Link>
             <Link
               href="/terms"
+              prefetch={false}
               className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors touch-manipulation"
             >
               Terms of Service

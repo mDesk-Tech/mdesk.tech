@@ -1,6 +1,6 @@
 "use client";
 
-import { ElementType, memo } from "react";
+import { memo } from "react";
 import { AnimatePresence, motion, MotionProps, Variants } from "motion/react";
 
 import { cn } from "@/lib/utils";
@@ -43,10 +43,6 @@ interface TextAnimateProps extends MotionProps {
    * Custom motion variants for the animation
    */
   variants?: Variants;
-  /**
-   * The element type to render
-   */
-  as?: ElementType;
   /**
    * How to split the text ("text", "word", "character")
    */
@@ -309,7 +305,7 @@ const TextAnimateBase = ({
   variants,
   className,
   segmentClassName,
-  as: Component = "p",
+  // Fixed tag to avoid creating components during render
   startOnView = true,
   once = false,
   by = "word",
@@ -317,7 +313,8 @@ const TextAnimateBase = ({
   accessible = true,
   ...props
 }: TextAnimateProps) => {
-  const MotionComponent = motion.create(Component);
+  // Use a fixed motion element to avoid creating components during render
+  const MotionComponent = motion.p;
 
   let segments: string[] = [];
   switch (by) {

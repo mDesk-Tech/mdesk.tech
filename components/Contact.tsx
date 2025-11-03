@@ -1,5 +1,4 @@
 import { Mail, ArrowRight, Send } from "lucide-react";
-import { TextAnimate } from "@/components/ui/text-animate";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { memo } from "react";
 
@@ -17,9 +16,9 @@ const Contact = memo(() => {
         <SectionHeading
           badge="Let's Connect"
           title={
-            <TextAnimate animation="blurInUp" by="character" once>
+            <span className="inline-block animate-fade-up delay-100">
               Get in Touch
-            </TextAnimate>
+            </span>
           }
           description={
             <>
