@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
@@ -17,7 +17,7 @@ const navLinks = [
   { name: "Contact", path: "/contact" },
 ];
 
-const Navbar = () => {
+const Navbar = memo(() => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -157,6 +157,8 @@ const Navbar = () => {
       </AnimatePresence>
     </nav>
   );
-};
+});
+
+Navbar.displayName = "Navbar";
 
 export default Navbar;
