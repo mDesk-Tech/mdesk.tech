@@ -31,11 +31,12 @@ export const staggerItem = {
 
 /**
  * Reduced motion variants for accessibility
+ * Uses 150ms duration to maintain visual feedback while respecting preference
  */
 export const reducedMotion = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
-  transition: { duration: 0.01 },
+  transition: { duration: 0.15 },
 };
 
 /**
