@@ -223,7 +223,6 @@
 
 .navbar[data-nav-state="mobile-open"] {
   background-color: #0a0a0a;
-  background-color: var(--background);
   border-color: var(--border);
   box-shadow: 0 18px 38px rgb(15 23 42 / 12%);
   backdrop-filter: blur(14px);

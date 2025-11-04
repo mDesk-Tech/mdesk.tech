@@ -2,7 +2,7 @@ mdesk.tech — Designing and hosting your digital future
 
 Modern website built with Next.js 16, React 19, and Tailwind CSS 4. It features server components, dynamic streaming, sleek UI components, and a production‑ready contact workflow with Discord notifications and MongoDB‑backed rate limiting.
 
-Live site: https://mdesk.tech
+Live site: [Click here](https://mdesk.tech)
 
 Highlights
 
@@ -11,7 +11,7 @@ Highlights
 - Page transitions, lazy loading for below‑the‑fold sections
 - SEO ready: metadata, Open Graph, [`app/sitemap.ts`](https://github.com/mDesk-Tech/mdesk.tech/blob/main/app/sitemap.ts), [`app/robots.ts`](https://github.com/mDesk-Tech/mdesk.tech/blob/main/app/robots.ts)
 - Analytics: Vercel Analytics, Speed Insights, optional Google Analytics (GA4)
-- Contact form: Discord webhook integration + MongoDB TTL rate limiting
+- Contact form: Discord webhook integration + MongoDB TTL rate-limiting
 - DX: ESLint 9, Prettier 3, Husky + lint‑staged, Turbopack dev/build
 
 Requirements
@@ -97,17 +97,17 @@ SEO & Analytics
 Styling & UI
 
 - Tailwind CSS v4 via PostCSS plugin ([`postcss.config.mjs`](https://github.com/mdesk-tech/mdesk.tech/blob/main/postcss.config.mjs))
-- modern ui components: 3D cards, glare/shine effects, hover text, world map, etc.
+- Modern Ui Components: 3D cards, glare/shine effects, hover text, world map, etc.
 - page transitions configured via [`components/pagetransition.tsx`](https://github.com/mdesk-tech/mdesk.tech/blob/main/components/pagetransition.tsx)
 
-deployment
+Deployment
 
 - recommended: vercel
   - set the same environment variables in your vercel project
   - ensure a mongodb instance is reachable from your deployment if using the contact form
   - build command uses turbopack by default. if you hit issues, try removing `--turbopack` from scripts
 
-troubleshooting
+Troubleshooting
 
 - discord webhook errors: verify `discord_webhook_url` and webhook permissions
 - MongoDB connection errors: Verify `MONGODB_URI` and network access; the TTL index is created automatically
