@@ -218,16 +218,16 @@ const Features = memo(() => {
             <>
               <div
                 key="overlay"
-                className="fixed inset-0 bg-black/80 backdrop-blur-sm z-100 opacity-0 animate-[fadeIn_150ms_ease-out_forwards]"
+                className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] opacity-0 animate-[fade-in_150ms_ease-out_forwards]"
                 onClick={closeModal}
               />
-              <div className="fixed inset-0 flex items-center justify-center z-110 p-4 pointer-events-none">
+              <div className="fixed inset-0 flex items-center justify-center z-[110] p-4 pointer-events-none">
                 <div
                   key={`modal-${selectedFeature.title}-${id}`}
                   ref={ref}
                   role="dialog"
                   aria-modal="true"
-                  className="w-full max-w-2xl h-auto max-h-[85vh] flex flex-col bg-card rounded-3xl overflow-hidden border border-primary/20 shadow-2xl pointer-events-auto opacity-0 animate-[modalIn_220ms_cubic-bezier(0.2,0.8,0.2,1)_forwards]"
+                  className="w-full max-w-2xl h-auto max-h-[85vh] flex flex-col bg-card rounded-3xl overflow-hidden border border-primary/20 shadow-2xl pointer-events-auto opacity-0 animate-[modal-in_220ms_cubic-bezier(0.2,0.8,0.2,1)_forwards]"
                 >
                   <div className="p-6 sm:p-8 overflow-y-auto">
                     <div className="flex items-start gap-4 mb-6">
