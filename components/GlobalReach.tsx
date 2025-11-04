@@ -4,6 +4,11 @@ import WorldMap from "@/components/ui/world-map";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import InView from "@/components/InView";
 
+/**
+ * Render the "Global Reach" section with a headline, descriptive copy, and a world map visualizing global routes.
+ *
+ * @returns A JSX element containing a badge, responsive headline with hover effect, descriptive text, and a WorldMap configured with predefined route coordinates.
+ */
 export default function GlobalReach() {
   return (
     <div className="pt-16 sm:pt-20 md:pt-32 bg-background w-full relative overflow-hidden">

@@ -16,6 +16,15 @@ import { MagicCard } from "@/components/ui/magic-card";
 import { Badge } from "@/components/ui/badge";
 import InView from "@/components/InView";
 
+/**
+ * Contact page component that renders contact information and a message form.
+ *
+ * The component manages form state, submits messages to the "/api/contact" endpoint,
+ * and displays submission status and errors. On successful send it shows a confirmation
+ * view and allows sending another message.
+ *
+ * @returns The rendered contact page React element.
+ */
 export default function ContactPage() {
   const [formState, setFormState] = useState({
     name: "",
@@ -154,7 +163,7 @@ export default function ContactPage() {
             </InView>
 
             <InView className="lg:w-1/2 w-full border-none" delay={0.1}>
-              <Card className="relative overflow-hidden rounded-2xl bg-card border-none">
+              <Card className="relative overflow-hidden rounded-2xl bg-card border-none p-0">
                 <MagicCard
                   gradientColor={"gray"}
                   gradientSize={250}

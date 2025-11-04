@@ -7,6 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "next lint",
+    "stylelint": "stylelint \"**/*.{css,scss,sass,less,styl}\" --fix",
     "prettier": "prettier --write .",
     "check-types": "tsc --noEmit",
     "prepare": "pnpm dlx husky"
@@ -45,11 +46,15 @@
     "postcss": "^8.5.6",
     "postcss-load-config": "^6.0.1",
     "prettier": "3.6.2",
+    "stylelint": "^16.25.0",
+    "stylelint-config-standard": "^39.0.1",
+    "stylelint-config-tailwindcss": "^1.0.0",
     "typescript": "^5.9.3"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "eslint --fix",
-    "**/*.{js,ts,tsx,json,mjs,yaml,css,md}": "prettier -w"
+    "**/*.{js,ts,tsx,json,mjs,yaml,css,md}": "prettier -w",
+    "**/*.{css,scss,sass,less,styl}": "stylelint --fix"
   },
   "packageManager": "pnpm@10.20.0"
 }

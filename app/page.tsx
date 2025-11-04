@@ -11,6 +11,14 @@ const Services = dynamic(() => import("@/components/Services"));
 const About = dynamic(() => import("@/components/About"));
 const Contact = dynamic(() => import("@/components/Contact"));
 
+/**
+ * Renders the homepage layout with a hero section and four below-the-fold sections loaded lazily.
+ *
+ * The page includes a static Hero component followed by Features, Services, About, and Contact
+ * sections each wrapped in a LazySection to defer loading until they approach the viewport.
+ *
+ * @returns The React element tree for the homepage containing the hero and lazily loaded sections.
+ */
 export default async function Home() {
   return (
     <div className="bg-background text-foreground">

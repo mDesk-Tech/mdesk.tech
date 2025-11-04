@@ -1,0 +1,8 @@
+node_modules
+bin
+obj
+LICENSE
+# Ignore all files by default, then re-include CSS/SCSS below
+*.*
+!*.css
+!*.scss
