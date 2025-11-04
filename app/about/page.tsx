@@ -383,10 +383,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section
-        id="journey"
-        className={`${activeSection === "journey" ? "block" : "hidden"}`}
-      >
+      <section id="journey">
         <Timeline data={timelineData} />
       </section>
 

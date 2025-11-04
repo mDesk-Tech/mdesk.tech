@@ -73,6 +73,12 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   useEffect(() => {
     const positions: number[] = [];
 
+    // Truncate stale refs if data shrank to avoid measuring old elements
+    if (itemRefs.current.length > data.length) {
+      itemRefs.current.length = data.length;
+    }
+
+    let measured = false;
     const measure = () => {
       positions.length = 0;
       itemRefs.current.forEach((el) => {
@@ -81,15 +87,26 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
         const top = rect.top + window.scrollY;
         positions.push(top);
       });
+      measured = true;
     };
 
+    let ticking = false;
     const onScroll = () => {
-      const center = window.scrollY + window.innerHeight * 0.4; // focus band ~40% from top
-      let idx = 0;
-      for (let i = 0; i < positions.length; i++) {
-        if (positions[i] <= center) idx = i;
-      }
-      setActiveIndex(idx);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        // Re-measure lazily if we haven't yet or the initial measurement was invalid (hidden state)
+        if (!measured || positions.every((p) => p === 0)) {
+          measure();
+        }
+        const center = window.scrollY + window.innerHeight * 0.4; // focus band ~40% from top
+        let idx = 0;
+        for (let i = 0; i < positions.length; i++) {
+          if (positions[i] <= center) idx = i;
+        }
+        setActiveIndex(idx);
+        ticking = false;
+      });
     };
 
     measure();
@@ -100,23 +117,10 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
       window.removeEventListener("resize", measure);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [data.length]);
+  }, [data, height]);
 
   return (
-    <div
-      className="w-full bg-white dark:bg-neutral-950 font-sans md:px-10"
-      ref={containerRef}
-    >
-      <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-        <h2 className="text-lg md:text-4xl mb-4 text-black dark:text-white max-w-4xl">
-          Changelog from our journey
-        </h2>
-        <p className="text-foreground text-sm md:text-base max-w-sm">
-          We&apos;ve been working on building amazing web experiences.
-          Here&apos;s a timeline of our journey.
-        </p>
-      </div>
-
+    <div className="w-full bg-background font-sans md:px-10" ref={containerRef}>
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
         {data.map((item, index) => (
           <div
@@ -124,7 +128,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             className="flex justify-start pt-10 md:pt-40 md:gap-10"
           >
             <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
-              <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center">
+              <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-background flex items-center justify-center">
                 <div
                   className={`h-4 w-4 rounded-full border p-2 transition-colors ${
                     activeIndex === index

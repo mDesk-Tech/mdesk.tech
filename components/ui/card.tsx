@@ -81,4 +81,11 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-export { Card, CardContent };
+(Card as unknown as { [k: string]: unknown }).Header = CardHeader;
+(Card as unknown as { [k: string]: unknown }).Title = CardTitle;
+(Card as unknown as { [k: string]: unknown }).Description = CardDescription;
+(Card as unknown as { [k: string]: unknown }).Action = CardAction;
+(Card as unknown as { [k: string]: unknown }).Content = CardContent;
+(Card as unknown as { [k: string]: unknown }).Footer = CardFooter;
+
+export { Card };
