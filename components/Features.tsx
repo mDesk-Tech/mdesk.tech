@@ -218,10 +218,10 @@ const Features = memo(() => {
             <>
               <div
                 key="overlay"
-                className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] opacity-0 animate-[fade-in_150ms_ease-out_forwards]"
+                className="fixed inset-0 bg-black/80 backdrop-blur-sm z-100 opacity-0 animate-[fade-in_150ms_ease-out_forwards]"
                 onClick={closeModal}
               />
-              <div className="fixed inset-0 flex items-center justify-center z-[110] p-4 pointer-events-none">
+              <div className="fixed inset-0 flex items-center justify-center z-110 p-4 pointer-events-none">
                 <div
                   key={`modal-${selectedFeature.title}-${id}`}
                   ref={ref}
