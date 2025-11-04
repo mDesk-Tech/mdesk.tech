@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+/**
+ * Renders the Privacy Policy page with static policy content and a back-to-home link.
+ *
+ * @returns A JSX element containing the styled Privacy Policy page.
+ */
 export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen pt-24 pb-16 relative overflow-hidden">

@@ -1,6 +1,15 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+/**
+ * Render the site's Terms of Service page.
+ *
+ * Displays the full Terms of Service content including sections on license,
+ * services, payment, intellectual property, disclaimers, limitations,
+ * governing law, and contact information (last updated March 8, 2024).
+ *
+ * @returns A React element containing the Terms of Service layout and content.
+ */
 export default function TermsOfService() {
   return (
     <div className="min-h-screen pt-24 pb-16 relative overflow-hidden">

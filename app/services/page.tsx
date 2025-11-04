@@ -77,6 +77,18 @@ const servicesData: Service[] = [
   },
 ];
 
+/**
+ * Renders the Services page containing a hero, services grid, process overview, deferred global reach map, and a call-to-action.
+ *
+ * The content is static and structured into:
+ * - Hero section with headline and subtitle
+ * - Responsive services grid generated from in-file data
+ * - Three-step process overview
+ * - Deferred heavy content mount for the global reach/map component
+ * - CTA section linking to the contact page
+ *
+ * @returns The React element for the Services page.
+ */
 export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-background">

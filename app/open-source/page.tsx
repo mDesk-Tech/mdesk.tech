@@ -27,6 +27,11 @@ const benefits = [
   },
 ];
 
+/**
+ * Open Source landing page component promoting free website development for selected projects.
+ *
+ * @returns A React element rendering the page's hero, benefits, and call-to-action sections.
+ */
 export default function OpenSourcePage() {
   return (
     <div className="min-h-screen bg-background">

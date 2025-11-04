@@ -17,8 +17,14 @@ interface LazySectionProps {
 }
 
 /**
- * Mounts children only when scrolled into view to reduce initial JS work.
- * Renders a lightweight placeholder to preserve layout and avoid CLS.
+ * Delays mounting children until the section scrolls into view while preserving layout with a configurable placeholder.
+ *
+ * @param children - Content to render after the section becomes visible
+ * @param className - Additional CSS classes applied to the wrapper element
+ * @param minHeight - Minimum height for the placeholder; if a number, it's treated as pixels (e.g., `100` -> `100px`)
+ * @param rootMargin - IntersectionObserver `rootMargin` used to pre-render before the element fully enters the viewport
+ * @param threshold - IntersectionObserver `threshold` (number or array) that determines when the section is considered visible
+ * @returns A wrapper `div` that renders a layout-preserving placeholder until the children are mounted
  */
 export default function LazySection({
   children,
