@@ -2,7 +2,9 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-function Card({ className, ...props }: React.ComponentProps<"div">) {
+type CardProps = React.ComponentProps<"div">;
+
+function Card({ className, ...props }: CardProps) {
   return (
     <div
       data-slot="card"
@@ -81,11 +83,22 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-(Card as unknown as { [k: string]: unknown }).Header = CardHeader;
-(Card as unknown as { [k: string]: unknown }).Title = CardTitle;
-(Card as unknown as { [k: string]: unknown }).Description = CardDescription;
-(Card as unknown as { [k: string]: unknown }).Action = CardAction;
-(Card as unknown as { [k: string]: unknown }).Content = CardContent;
-(Card as unknown as { [k: string]: unknown }).Footer = CardFooter;
+type CardComponent = React.FC<CardProps> & {
+  Header: typeof CardHeader;
+  Title: typeof CardTitle;
+  Description: typeof CardDescription;
+  Action: typeof CardAction;
+  Content: typeof CardContent;
+  Footer: typeof CardFooter;
+};
 
-export { Card };
+const TypedCard = Object.assign(Card as React.FC<CardProps>, {
+  Header: CardHeader,
+  Title: CardTitle,
+  Description: CardDescription,
+  Action: CardAction,
+  Content: CardContent,
+  Footer: CardFooter,
+}) as CardComponent;
+
+export { TypedCard as Card };
