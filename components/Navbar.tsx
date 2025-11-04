@@ -2,10 +2,9 @@
 
 import type React from "react";
 
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, memo, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// Replaced simple motion animations with CSS transitions
 import { Menu, X } from "lucide-react";
 import { debounce } from "@/lib/debounce-util";
 
@@ -21,6 +20,16 @@ const Navbar = memo(() => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const normalizedPath = useMemo(() => {
+    if (!pathname) return "/";
+    try {
+      const [pathOnly] = pathname.split("#");
+      return pathOnly.replace(/\/+$/, "") || "/";
+    } catch {
+      return "/";
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = debounce(() => {
@@ -83,28 +92,32 @@ const Navbar = memo(() => {
           mdesk.tech
         </Link>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              href={link.path}
-              prefetch={false}
-              onClick={(e) => handleLinkClick(e, link.path)}
-              className={`relative text-sm font-medium transition-colors hover:text-primary ${
-                pathname === link.path
-                  ? "text-primary"
-                  : "text-muted-foreground"
-              }`}
-            >
-              {link.name}
-              <span
-                className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ease-out ${
-                  pathname === link.path ? "w-full" : "w-0"
+          {navLinks.map((link) => {
+            const isActive =
+              (link.path === "/" && normalizedPath === "/") ||
+              (link.path !== "/" &&
+                (normalizedPath === link.path ||
+                  normalizedPath.startsWith(`${link.path}`)));
+            return (
+              <Link
+                key={link.path}
+                href={link.path}
+                aria-current={isActive ? "page" : undefined}
+                onClick={(e) => handleLinkClick(e, link.path)}
+                className={`relative text-sm font-medium transition-colors hover:text-primary touch-manipulation ${
+                  isActive ? "text-primary" : "text-muted-foreground"
                 }`}
-              />
-            </Link>
-          ))}
+              >
+                {link.name}
+                <span
+                  className={`pointer-events-none absolute -bottom-1 left-0 h-0.5 bg-primary transition-[width] duration-300 ease-out ${
+                    isActive ? "w-full" : "w-0"
+                  }`}
+                />
+              </Link>
+            );
+          })}
         </div>
 
         <button
@@ -124,9 +137,13 @@ const Navbar = memo(() => {
               <div key={link.path}>
                 <Link
                   href={link.path}
-                  prefetch={false}
+                  aria-current={
+                    normalizedPath === link.path ? "page" : undefined
+                  }
                   className={`block text-2xl font-bold transition-colors hover:text-primary py-3 touch-manipulation ${
-                    pathname === link.path ? "text-primary" : "text-foreground"
+                    normalizedPath === link.path
+                      ? "text-primary"
+                      : "text-foreground"
                   }`}
                   onClick={(e) => {
                     setIsMobileMenuOpen(false);

@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
+import PageTransition from "@/components/PageTransition";
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
@@ -134,9 +135,11 @@ export default async function RootLayout({
             <Navbar />
             <main className="grow">
               {/* Add priority hint for LCP content */}
-              <div className="critical-content" data-priority="high">
-                {children}
-              </div>
+              <PageTransition>
+                <div className="critical-content" data-priority="high">
+                  {children}
+                </div>
+              </PageTransition>
             </main>
             <Footer year={currentYear} />
           </div>

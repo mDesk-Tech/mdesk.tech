@@ -550,6 +550,22 @@
     opacity: 1;
   }
 }
+
+/* Page transition: small, unobtrusive fade/translate on route change */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-transition {
+  animation: pageFadeIn 220ms ease-out both;
+  will-change: opacity, transform;
+}
 @keyframes modalIn {
   from {
     opacity: 0;

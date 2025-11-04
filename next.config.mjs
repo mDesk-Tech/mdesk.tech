@@ -25,10 +25,7 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60,
-    // Use Next.js image optimization for better performance
-    unoptimized: false,
   },
-  compress: true,
   modularizeImports: {
     "lucide-react": {
       transform: "lucide-react/dist/esm/icons/{{kebabCase member}}",
@@ -39,17 +36,6 @@ const nextConfig = {
       {
         // Cache Next.js static assets aggressively
         source: "/_next/static/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
-        // Cache common static files served from /public
-        source:
-          "/:all*(css|js|woff|woff2|ttf|svg|png|jpg|jpeg|gif|webp|avif|ico)",
         headers: [
           {
             key: "Cache-Control",

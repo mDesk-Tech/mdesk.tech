@@ -40,7 +40,10 @@ export default function LazySection({
   }, [minHeight]);
 
   return (
-    <div ref={ref as React.RefObject<HTMLDivElement>} className={cn(className)}>
+    <div
+      ref={ref as React.RefObject<HTMLDivElement>}
+      className={cn("content-visibility-auto", className)}
+    >
       {isVisible ? children : <div aria-hidden style={placeholderStyle} />}
     </div>
   );
