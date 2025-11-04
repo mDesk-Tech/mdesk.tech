@@ -10,7 +10,12 @@ interface InViewProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Lightweight in-view reveal using CSS transitions (no JS animation libs).
+ * Reveals children with a CSS transition when the element enters the viewport.
+ *
+ * The component starts hidden and translated downward, then transitions to visible and aligned when at least 10% of the element is in view. Once visible, it stays visible.
+ *
+ * @param delay - Optional delay in seconds applied to the transition (useful for staggering).
+ * @returns A div wrapping `children` that applies the in-view reveal transition and forwards remaining props.
  */
 export default function InView({
   className,

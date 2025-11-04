@@ -18,6 +18,13 @@ import {
 } from "@/components/ui/draggable-card";
 import { Badge } from "@/components/ui/badge";
 
+/**
+ * Renders the About page including an interactive draggable-card story section, a sticky tab bar to switch
+ * between "Our Mission", "Our Journey", "Our Values", and "Our Approach" sections, a memoized timeline,
+ * a values grid, a step-by-step approach list, and a final call-to-action.
+ *
+ * @returns The About page JSX element
+ */
 export default function AboutPage() {
   const [activeSection, setActiveSection] = useState("mission");
 

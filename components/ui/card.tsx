@@ -4,6 +4,13 @@ import { cn } from "@/lib/utils";
 
 type CardProps = React.ComponentProps<"div">;
 
+/**
+ * Container component for card layouts.
+ *
+ * @param className - Additional CSS class names to merge with the component's default styles.
+ * @param props - Additional HTML attributes and event handlers forwarded to the underlying `div`.
+ * @returns A React element for the card container with default card styles and any provided props applied.
+ */
 function Card({ className, ...props }: CardProps) {
   return (
     <div
@@ -73,6 +80,11 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
+/**
+ * Card footer container used to render footer content within a Card.
+ *
+ * @returns A `div` element with `data-slot="card-footer"`, flex-aligned items, horizontal padding, and optional top-border spacing; accepts `className` and forwards all other `div` props.
+ */
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

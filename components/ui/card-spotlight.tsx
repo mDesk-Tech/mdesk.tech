@@ -25,6 +25,15 @@ export const CardSpotlight = ({
   children: React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>) => {
   const overlayRef = useRef<HTMLDivElement | null>(null);
+  /**
+   * Update the overlay element's CSS mask to center a radial spotlight at the mouse cursor.
+   *
+   * Applies a radial-gradient mask (using the component's `radius`) to `overlayRef.current` so the spotlight follows the cursor.
+   *
+   * @param currentTarget - Event currentTarget used to compute cursor position relative to the container.
+   * @param clientX - Pointer X coordinate in viewport space.
+   * @param clientY - Pointer Y coordinate in viewport space.
+   */
   function handleMouseMove({
     currentTarget,
     clientX,

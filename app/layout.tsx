@@ -72,6 +72,14 @@ export const metadata = {
   manifest: "/manifest.json",
 };
 
+/**
+ * Renders the application's root HTML layout with global styles, theming, navigation, footer, and performance/analytics hooks.
+ *
+ * Applies inline critical CSS and LCP priority hints, forces a dark theme, wraps page content with a page transition, and conditionally loads production analytics (including Google Analytics when a GA ID is configured).
+ *
+ * @param children - The page content to render inside the layout
+ * @returns The root HTML element (JSX) that wraps head, body, and the provided page content
+ */
 export default async function RootLayout({
   children,
 }: {
