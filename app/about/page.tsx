@@ -372,7 +372,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section id="journey">
+      <section
+        id="journey"
+        className={`py-16 ${activeSection === "journey" ? "block" : "hidden"}`}
+      >
         <Timeline data={timelineData} />
       </section>
 
