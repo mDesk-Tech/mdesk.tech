@@ -2,7 +2,7 @@ mdesk.tech — Designing and hosting your digital future
 
 Modern website built with Next.js 16, React 19, and Tailwind CSS 4. It features server components, dynamic streaming, sleek UI components, and a production‑ready contact workflow with Discord notifications and MongoDB‑backed rate limiting.
 
-Live site: [Click here](https://mdesk.tech)
+Live site: [mdesk.tech](https://mdesk.tech)
 
 Highlights
 
@@ -97,7 +97,7 @@ SEO & Analytics
 Styling & UI
 
 - Tailwind CSS v4 via PostCSS plugin ([`postcss.config.mjs`](https://github.com/mdesk-tech/mdesk.tech/blob/main/postcss.config.mjs))
-- Modern Ui Components: 3D cards, glare/shine effects, hover text, world map, etc.
+- Modern UI Components: 3D cards, glare/shine effects, hover text, world map, etc.
 - page transitions configured via [`components/pagetransition.tsx`](https://github.com/mdesk-tech/mdesk.tech/blob/main/components/pagetransition.tsx)
 
 Deployment

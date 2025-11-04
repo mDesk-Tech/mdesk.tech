@@ -163,7 +163,7 @@ export default function ContactPage() {
             </InView>
 
             <InView className="lg:w-1/2 w-full border-none" delay={0.1}>
-              <Card className="relative overflow-hidden rounded-2xl bg-card border-none">
+              <Card className="relative overflow-hidden rounded-2xl bg-card border-none p-0">
                 <MagicCard
                   gradientColor={"gray"}
                   gradientSize={250}

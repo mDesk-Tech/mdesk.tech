@@ -1,7 +1,22 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Critical CSS */
+/*
+  Critical CSS
+
+  Theme tokens are defined in two places on purpose:
+  1) OKLCH values here (outside any @layer) allow using tokens directly
+     as colors in raw CSS, e.g. `background-color: var(--background)`.
+  2) HSL channel values are defined later inside `@layer base` so they
+     can be consumed via `hsl(var(--token))` in the Tailwind @theme
+     mappings. Those later definitions override these by cascade.
+
+  This dual setup exists for compatibility while we migrate all direct
+  CSS usages to `hsl(var(--...))` (or Tailwind utilities like
+  `bg-background`, `border-border`). Once no direct `var(--token)` color
+  usages remain, the OKLCH block can be removed and the `@layer base`
+  HSL definitions will be the single source of truth.
+*/
 :root {
   --animate-duration: 0.5s;
   --sidebar: hsl(0deg 0% 98%);
@@ -63,6 +78,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+  Dark mode OKLCH values (see note above). These are overridden by the
+  HSL channel values defined in `@layer base .dark` later in this file,
+  which are used by `hsl(var(--...))` consumers.
+*/
 .dark {
   --background: oklch(14.5% 0 0deg);
   --foreground: oklch(98.5% 0 0deg);
@@ -98,6 +118,11 @@
   --sidebar-ring: oklch(43.9% 0 0deg);
 }
 
+/*
+  Tailwind v4 theme mappings. These consume HSL channel variables via
+  `hsl(var(--...))`, so ensure the active values for `--background`,
+  `--foreground`, etc. are HSL channel triples (set in `@layer base`).
+*/
 @theme {
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -194,8 +219,10 @@
 
 .navbar {
   background-color: #0a0a0a;
-  background-color: var(--background);
-  border-bottom: 1px solid var(--border);
+
+  /* Use HSL channel tokens consistently for colors */
+  background-color: hsl(var(--background));
+  border-bottom: 1px solid hsl(var(--border));
   backdrop-filter: none;
   transition:
     background-color 250ms ease,
@@ -207,23 +234,20 @@
 
 @media (width >= 768px) {
   .navbar {
-    background-color: #0a0a0a;
-    background-color: var(--background);
     border-bottom: 1px solid transparent;
     backdrop-filter: blur(10px);
   }
 }
 
 .navbar[data-nav-state="scrolled"] {
-  background-color: #0a0a0a;
-  background-color: var(--background);
-  border-color: var(--border);
+  background-color: hsl(var(--background));
+  border-color: hsl(var(--border));
   box-shadow: 0 12px 30px rgb(15 23 42 / 8%);
 }
 
 .navbar[data-nav-state="mobile-open"] {
   background-color: #0a0a0a;
-  border-color: var(--border);
+  border-color: hsl(var(--border));
   box-shadow: 0 18px 38px rgb(15 23 42 / 12%);
   backdrop-filter: blur(14px);
 }
@@ -239,9 +263,8 @@
   .navbar,
   .navbar[data-nav-state="scrolled"],
   .navbar[data-nav-state="mobile-open"] {
-    background-color: #0a0a0a !important;
-    background-color: var(--background) !important;
-    border-bottom-color: var(--border) !important;
+    background-color: hsl(var(--background)) !important;
+    border-bottom-color: hsl(var(--border)) !important;
     backdrop-filter: none !important;
   }
 }
@@ -289,6 +312,12 @@
 }
 
 @layer base {
+  /*
+    Active theme tokens for Tailwind and CSS: HSL channel values
+    (e.g. `0 0% 100%`) intended to be wrapped in `hsl(...)` at use sites.
+    These override the OKLCH defaults above and are consumed by the
+    `@theme` mappings like `--color-background: hsl(var(--background));`.
+  */
   :root {
     /* Updated to modern dark theme with vibrant cyan/teal accents */
     --background: 0 0% 100%;
