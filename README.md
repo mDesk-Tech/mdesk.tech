@@ -110,8 +110,8 @@ deployment
 troubleshooting
 
 - discord webhook errors: verify `discord_webhook_url` and webhook permissions
-- mongodb connection errors: verify `mongodb_uri` and network access;loadswhen`NEXT_PUBLIC_GA_ID`issetStylingUITailwindCSSv4viaPostCSSplugin`postcss.config.mjs`httpsloadswhen`NEXT_PUBLIC_GA_ID`issetStylingUITailwindCSSv4viaPostCSSplugin`postcss.config.mjs`httpsloadswhen`NEXT_PUBLIC_GA_ID`issetStylingUITailwindCSSv4viaPostCSSplugin`postcss.config.mjs`httpsloadswhen`NEXT_PUBLIC_GA_ID`issetStylingUITailwindCSSv4viaPostCSSplugin`postcss.config.mjs`https the TTL index is created automatically
-- GA not reporting: ensure `next_public_ga_id` is defined;theTTLindexiscreatedautomaticallyGAnotreportingtheTTLindexiscreatedautomaticallyGAnotreportingtheTTLindexiscreatedautomaticallyGAnotreportingTTLindexiscreatedautomaticallyGAnotreporting analytics load only in production
+- MongoDB connection errors: Verify `MONGODB_URI` and network access; the TTL index is created automatically
+- GA not reporting: Ensure `NEXT_PUBLIC_GA_ID` is defined; analytics load only in production
 
 Contributing
 
