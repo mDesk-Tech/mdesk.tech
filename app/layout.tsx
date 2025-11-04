@@ -63,9 +63,6 @@ export const metadata = {
       "Cutting-edge web design and reliable hosting solutions for businesses that want to stand out in the digital landscape.",
     images: ["/twitter-image.jpg"],
   },
-  alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://mdesk.tech",
-  },
   verification: {
     google: "google-site-verification-code",
   },

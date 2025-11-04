@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { debounce } from "@/lib/debounce-util";
+import { AnimatePresence, motion } from "motion/react";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -130,33 +131,42 @@ const Navbar = memo(() => {
         </button>
       </div>
 
-      {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-[57px] sm:top-[65px] bg-neutral-950 shadow-lg z-40 border-t border-border/40 transition-transform duration-300 ease-in-out translate-x-0">
-          <div className="container mx-auto px-4 sm:px-6 py-8 flex flex-col space-y-6">
-            {navLinks.map((link) => (
-              <div key={link.path}>
-                <Link
-                  href={link.path}
-                  aria-current={
-                    normalizedPath === link.path ? "page" : undefined
-                  }
-                  className={`block text-2xl font-bold transition-colors hover:text-primary py-3 touch-manipulation ${
-                    normalizedPath === link.path
-                      ? "text-primary"
-                      : "text-foreground"
-                  }`}
-                  onClick={(e) => {
-                    setIsMobileMenuOpen(false);
-                    handleLinkClick(e, link.path);
-                  }}
-                >
-                  {link.name}
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            key="mobile-nav"
+            className="md:hidden fixed inset-0 top-[57px] sm:top-[65px] bg-neutral-950 shadow-lg z-40 border-t border-border/40"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="container mx-auto px-4 sm:px-6 py-8 flex flex-col space-y-6">
+              {navLinks.map((link) => (
+                <div key={link.path}>
+                  <Link
+                    href={link.path}
+                    aria-current={
+                      normalizedPath === link.path ? "page" : undefined
+                    }
+                    className={`block text-2xl font-bold transition-colors hover:text-primary py-3 touch-manipulation ${
+                      normalizedPath === link.path
+                        ? "text-primary"
+                        : "text-foreground"
+                    }`}
+                    onClick={(e) => {
+                      setIsMobileMenuOpen(false);
+                      handleLinkClick(e, link.path);
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 });
