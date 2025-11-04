@@ -1,6 +1,4 @@
 "use client";
-
-import { motion } from "motion/react";
 import {
   Calendar,
   Users,
@@ -11,13 +9,14 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { HyperText } from "@/components/ui/hyper-text";
 import { Timeline } from "@/components/ui/timeline";
 import {
   DraggableCardBody,
   DraggableCardContainer,
 } from "@/components/ui/draggable-card";
+import { Badge } from "@/components/ui/badge";
 
 export default function AboutPage() {
   const [activeSection, setActiveSection] = useState("mission");
@@ -60,87 +59,90 @@ export default function AboutPage() {
     },
   ];
 
-  const timelineData = [
-    {
-      title: "2023",
-      content: (
-        <div>
-          <p className="mb-8 text-xs font-normal text-muted-foreground md:text-sm">
-            mdesk.tech was founded with a vision to create exceptional digital
-            experiences that transform businesses.
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-              <Calendar className="h-12 w-12 text-primary" />
-            </div>
-            <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-              <Target className="h-12 w-12 text-primary" />
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Early 2023",
-      content: (
-        <div>
-          <p className="mb-4 text-xs font-normal text-muted-foreground md:text-sm">
-            Secured our first major client and delivered a project that exceeded
-            expectations.
-          </p>
-          <p className="mb-8 text-xs font-normal text-muted-foreground md:text-sm">
-            Established our remote-first culture, enabling us to work with
-            talent worldwide.
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-              <Users className="h-12 w-12 text-primary" />
-            </div>
-            <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-              <Award className="h-12 w-12 text-primary" />
+  const timelineData = useMemo(
+    () => [
+      {
+        title: "2023",
+        content: (
+          <div>
+            <p className="mb-8 text-xs font-normal text-muted-foreground md:text-sm">
+              mdesk.tech was founded with a vision to create exceptional digital
+              experiences that transform businesses.
+            </p>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+                <Calendar className="h-12 w-12 text-primary" />
+              </div>
+              <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+                <Target className="h-12 w-12 text-primary" />
+              </div>
             </div>
           </div>
-        </div>
-      ),
-    },
-    {
-      title: "2024",
-      content: (
-        <div>
-          <p className="mb-4 text-xs font-normal text-muted-foreground md:text-sm">
-            Major milestones achieved this year
-          </p>
-          <div className="mb-8 space-y-2">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-              <div className="h-2 w-2 rounded-full bg-primary" />
-              Started working with clients across Europe, Asia, and North
-              America
-            </div>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-              <div className="h-2 w-2 rounded-full bg-primary" />
-              Expanded service offerings with cutting-edge technologies
-            </div>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-              <div className="h-2 w-2 rounded-full bg-primary" />
-              Grew team to 15+ talented professionals
-            </div>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-              <div className="h-2 w-2 rounded-full bg-primary" />
-              Delivered 100+ successful projects
+        ),
+      },
+      {
+        title: "Early 2023",
+        content: (
+          <div>
+            <p className="mb-4 text-xs font-normal text-muted-foreground md:text-sm">
+              Secured our first major client and delivered a project that
+              exceeded expectations.
+            </p>
+            <p className="mb-8 text-xs font-normal text-muted-foreground md:text-sm">
+              Established our remote-first culture, enabling us to work with
+              talent worldwide.
+            </p>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+                <Users className="h-12 w-12 text-primary" />
+              </div>
+              <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+                <Award className="h-12 w-12 text-primary" />
+              </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-              <Rocket className="h-12 w-12 text-primary" />
+        ),
+      },
+      {
+        title: "2024",
+        content: (
+          <div>
+            <p className="mb-4 text-xs font-normal text-muted-foreground md:text-sm">
+              Major milestones achieved this year
+            </p>
+            <div className="mb-8 space-y-2">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
+                <div className="h-2 w-2 rounded-full bg-primary" />
+                Started working with clients across Europe, Asia, and North
+                America
+              </div>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
+                <div className="h-2 w-2 rounded-full bg-primary" />
+                Expanded service offerings with cutting-edge technologies
+              </div>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
+                <div className="h-2 w-2 rounded-full bg-primary" />
+                Grew team to 15+ talented professionals
+              </div>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
+                <div className="h-2 w-2 rounded-full bg-primary" />
+                Delivered 100+ successful projects
+              </div>
             </div>
-            <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-              <Heart className="h-12 w-12 text-primary" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+                <Rocket className="h-12 w-12 text-primary" />
+              </div>
+              <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
+                <Heart className="h-12 w-12 text-primary" />
+              </div>
             </div>
           </div>
-        </div>
-      ),
-    },
-  ];
+        ),
+      },
+    ],
+    [],
+  );
 
   const steps = [
     {
@@ -189,17 +191,8 @@ export default function AboutPage() {
 
       <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <motion.div
-            className="max-w-4xl mx-auto text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
-              <span className="text-xs sm:text-sm font-semibold text-primary">
-                Our Story
-              </span>
-            </div>
+          <div className="max-w-4xl mx-auto text-center">
+            <Badge className="mb-4 sm:mb-6">Our Story</Badge>
 
             <div className="mb-6 sm:mb-8">
               <HyperText className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground">
@@ -211,19 +204,13 @@ export default function AboutPage() {
               We&apos;re passionate about creating exceptional digital
               experiences that transform businesses
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       <section className="py-12 sm:py-20 relative overflow-hidden hidden md:block">
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+          <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold mb-4">
               Explore Our Story
             </h2>
@@ -232,7 +219,7 @@ export default function AboutPage() {
               <br />
               They&apos;re interactive and fun to play with
             </p>
-          </motion.div>
+          </div>
 
           <DraggableCardContainer className="relative flex min-h-[600px] w-full items-center justify-center overflow-clip">
             {draggableCards.map((card, index) => (
@@ -298,13 +285,7 @@ export default function AboutPage() {
       >
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="bg-background/80 backdrop-blur-sm rounded-lg p-6 border border-border/30"
-            >
+            <div className="bg-background/80 backdrop-blur-sm rounded-lg p-6 border border-border/30">
               <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
               <p className="text-muted-foreground mb-6">
                 At mdesk.tech, we&apos;re on a mission to transform how
@@ -336,15 +317,9 @@ export default function AboutPage() {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
+            <div className="relative">
               <div className="absolute inset-0 bg-linear-to-br from-primary/20 to-accent/20 rounded-2xl blur-xl" />
               <div className="relative bg-card/80 backdrop-blur-sm border border-primary/20 rounded-2xl p-8 overflow-hidden">
                 <div className="absolute -right-20 -top-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />
@@ -392,14 +367,14 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       <section
         id="journey"
-        className={`${activeSection === "journey" ? "block" : "hidden"}`}
+        className={`py-16 ${activeSection === "journey" ? "block" : "hidden"}`}
       >
         <Timeline data={timelineData} />
       </section>
@@ -409,19 +384,13 @@ export default function AboutPage() {
         className={`py-16 ${activeSection === "values" ? "block" : "hidden"}`}
       >
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center mb-12 bg-background/80 backdrop-blur-md py-6 px-8 rounded-lg border border-primary/20"
-          >
+          <div className="max-w-3xl mx-auto text-center mb-12 bg-background/80 backdrop-blur-md py-6 px-8 rounded-lg border border-primary/20">
             <h2 className="text-3xl font-bold mb-4">Our Values</h2>
             <p className="text-muted-foreground">
               These core principles guide everything we do, from how we work
               with clients to how we build our team.
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
@@ -454,13 +423,9 @@ export default function AboutPage() {
                 color: "bg-accent/10 text-accent",
               },
             ].map((value, index) => (
-              <motion.div
+              <div
                 key={index}
                 className="bg-background/90 backdrop-blur-md border border-primary/30 rounded-lg p-6 shadow-lg"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
               >
                 <div
                   className={`w-12 h-12 rounded-lg ${value.color} flex items-center justify-center mb-4`}
@@ -525,7 +490,7 @@ export default function AboutPage() {
                     ))}
                   </ul>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -536,19 +501,13 @@ export default function AboutPage() {
         className={`py-16 ${activeSection === "approach" ? "block" : "hidden"}`}
       >
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center mb-12 bg-background/80 backdrop-blur-md py-6 px-8 rounded-lg border border-primary/20"
-          >
+          <div className="max-w-4xl mx-auto text-center mb-12 bg-background/80 backdrop-blur-md py-6 px-8 rounded-lg border border-primary/20">
             <h2 className="text-3xl font-bold mb-4">Our Approach</h2>
             <p className="text-muted-foreground">
               We follow a collaborative, client-centered approach to ensure your
               project meets your specific needs and goals.
             </p>
-          </motion.div>
+          </div>
 
           <div className="relative max-w-4xl mx-auto">
             <div
@@ -562,13 +521,9 @@ export default function AboutPage() {
             />
 
             {steps.map((step, index) => (
-              <motion.div
+              <div
                 key={index}
                 className="relative flex items-start gap-8 mb-12 last:mb-0"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
               >
                 <div className="relative z-10">
                   <div className="absolute inset-0 bg-linear-to-br from-primary to-accent rounded-full opacity-20 blur-sm" />
@@ -587,7 +542,7 @@ export default function AboutPage() {
                   <p className="text-gray-300">{step.description}</p>
                   <div className="mt-4 h-1 w-24 rounded-full bg-linear-to-r from-primary/40 to-accent/40" />
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -597,13 +552,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-accent/10" />
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <motion.div
-            className="max-w-4xl mx-auto p-6 sm:p-8 md:p-10 rounded-3xl border border-primary/20 bg-linear-to-br from-primary/5 to-accent/5 backdrop-blur-sm"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
+          <div className="max-w-4xl mx-auto p-6 sm:p-8 md:p-10 rounded-3xl border border-primary/20 bg-linear-to-br from-primary/5 to-accent/5 backdrop-blur-sm">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
                 <h3 className="text-2xl sm:text-3xl font-bold mb-2 flex items-center gap-3">
@@ -622,7 +571,7 @@ export default function AboutPage() {
                 <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>

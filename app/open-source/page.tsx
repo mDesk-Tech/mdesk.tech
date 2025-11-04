@@ -1,10 +1,10 @@
 "use client";
-
-import { motion } from "motion/react";
 import { Github, Heart, Rocket, Users, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { HyperText } from "@/components/ui/hyper-text";
 import { Cover } from "@/components/ui/cover";
+import { Badge } from "@/components/ui/badge";
+import InView from "@/components/InView";
 
 const benefits = [
   {
@@ -34,47 +34,17 @@ export default function OpenSourcePage() {
       <section className="relative pt-32 pb-24 overflow-hidden">
         <div className="absolute inset-0 bg-linear-to-br from-cyan-500/10 via-background to-teal-500/10" />
 
-        {/* Animated background elements */}
+        {/* Animated background elements (CSS only) */}
         <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-20 left-10 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.5, 0.3],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="absolute bottom-20 right-10 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl"
-            animate={{
-              scale: [1.2, 1, 1.2],
-              opacity: [0.5, 0.3, 0.5],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-            }}
-          />
+          <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl animate-blob-a" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-blob-b" />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            className="max-w-5xl mx-auto text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-8">
-              <Github className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold text-primary">
-                Supporting Open Source
-              </span>
-            </div>
+          <InView className="max-w-5xl mx-auto text-center">
+            <Badge className="mb-8" icon={<Github className="h-4 w-4" />}>
+              Supporting Open Source
+            </Badge>
 
             <h1 className="text-6xl md:text-8xl font-black mb-8">
               <HyperText
@@ -107,7 +77,7 @@ export default function OpenSourcePage() {
                 View Our Projects
               </a>
             </div>
-          </motion.div>
+          </InView>
         </div>
       </section>
 
@@ -116,30 +86,17 @@ export default function OpenSourcePage() {
         <div className="absolute inset-0 bg-linear-to-b from-background via-primary/5 to-background" />
 
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+          <InView className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Why Apply?</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Here&apos;s what you get when we partner with your open source
               project
             </p>
-          </motion.div>
+          </InView>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {benefits.map((benefit, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
+              <InView key={index} delay={index * 0.1} className="text-center">
                 <div className="inline-flex p-4 rounded-2xl bg-linear-to-br from-cyan-500/10 to-teal-500/10 border border-primary/20 mb-6">
                   <div className="text-primary">{benefit.icon}</div>
                 </div>
@@ -147,7 +104,7 @@ export default function OpenSourcePage() {
                 <p className="text-muted-foreground leading-relaxed">
                   {benefit.description}
                 </p>
-              </motion.div>
+              </InView>
             ))}
           </div>
         </div>
@@ -158,13 +115,7 @@ export default function OpenSourcePage() {
         <div className="absolute inset-0 bg-linear-to-r from-cyan-500/10 to-teal-500/10" />
 
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            className="max-w-4xl mx-auto text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+          <InView className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Ready to Apply?
             </h2>
@@ -180,7 +131,7 @@ export default function OpenSourcePage() {
               Get Started Today
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-          </motion.div>
+          </InView>
         </div>
       </section>
     </div>

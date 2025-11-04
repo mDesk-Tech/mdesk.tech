@@ -1,8 +1,4 @@
-"use client";
-
 import type React from "react";
-import { motion } from "motion/react";
-import GlobalReach from "@/components/GlobalReach";
 import {
   Palette,
   Code2,
@@ -12,6 +8,7 @@ import {
   Check,
 } from "lucide-react";
 import Link from "next/link";
+import GlobalReachDeferred from "@/components/GlobalReachDeferred";
 
 interface Service {
   title: string;
@@ -88,24 +85,14 @@ export default function ServicesPage() {
         <div className="absolute inset-0 bg-linear-to-br from-cyan-500/5 via-background to-teal-500/5" />
 
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            className="max-w-4xl mx-auto text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="inline-block mb-6"
-            >
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-block mb-6">
               <div className="px-4 py-2 rounded-full bg-linear-to-r from-cyan-500/10 to-teal-500/10 border border-cyan-500/20">
                 <span className="text-sm font-semibold bg-linear-to-r from-cyan-500 to-teal-500 bg-clip-text text-transparent">
                   Our Services
                 </span>
               </div>
-            </motion.div>
+            </div>
 
             <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
               Elevate Your
@@ -118,7 +105,7 @@ export default function ServicesPage() {
               Web solutions designed to help your business thrive in the modern
               digital landscape
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -127,14 +114,7 @@ export default function ServicesPage() {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
             {servicesData.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group relative"
-              >
+              <div key={index} className="group relative">
                 <div className="relative h-full p-8 rounded-3xl bg-card border border-border overflow-hidden transition-all duration-300 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10">
                   {/* Background gradient on hover */}
                   <div className="absolute inset-0 bg-linear-to-br from-cyan-500/0 to-teal-500/0 group-hover:from-cyan-500/5 group-hover:to-teal-500/5 transition-all duration-500" />
@@ -179,15 +159,8 @@ export default function ServicesPage() {
                     {/* Features List */}
                     <div className="space-y-3">
                       {service.features.map((feature, idx) => (
-                        <motion.div
+                        <div
                           key={idx}
-                          initial={{ opacity: 0, x: -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{
-                            duration: 0.3,
-                            delay: index * 0.1 + idx * 0.05,
-                          }}
-                          viewport={{ once: true }}
                           className="flex items-start gap-3 group/item"
                         >
                           <div
@@ -204,12 +177,12 @@ export default function ServicesPage() {
                           <span className="text-sm text-foreground/80 group-hover/item:text-foreground transition-colors">
                             {feature}
                           </span>
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -220,18 +193,12 @@ export default function ServicesPage() {
         <div className="absolute inset-0 bg-linear-to-b from-background via-cyan-500/5 to-background" />
 
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            className="max-w-3xl mx-auto text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+          <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Our Process</h2>
             <p className="text-xl text-muted-foreground">
               A streamlined approach to delivering exceptional results
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
@@ -251,14 +218,7 @@ export default function ServicesPage() {
                 desc: "Deploy with confidence and scale with ongoing support",
               },
             ].map((item, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                className="relative text-center"
-              >
+              <div key={idx} className="relative text-center">
                 <div className="mb-4">
                   <span className="text-6xl font-black bg-linear-to-br from-cyan-500 to-teal-500 bg-clip-text text-transparent opacity-50">
                     {item.step}
@@ -266,26 +226,21 @@ export default function ServicesPage() {
                 </div>
                 <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
                 <p className="text-muted-foreground">{item.desc}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      <GlobalReach />
+      {/* Defer heavy map/animation until section is in view on client */}
+      <GlobalReachDeferred />
 
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-linear-to-r from-cyan-500/10 via-teal-500/10 to-cyan-500/10" />
 
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            className="max-w-4xl mx-auto text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+          <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-6xl font-bold mb-6">
               Ready to Start Your Project?
             </h2>
@@ -302,7 +257,7 @@ export default function ServicesPage() {
               Get in Touch
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>

@@ -2,10 +2,9 @@
 
 import type React from "react";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { debounce } from "@/lib/debounce-util";
 
@@ -17,10 +16,20 @@ const navLinks = [
   { name: "Contact", path: "/contact" },
 ];
 
-const Navbar = () => {
+const Navbar = memo(() => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const normalizedPath = useMemo(() => {
+    if (!pathname) return "/";
+    try {
+      const [pathOnly] = pathname.split("#");
+      return pathOnly.replace(/\/+$/, "") || "/";
+    } catch {
+      return "/";
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = debounce(() => {
@@ -83,29 +92,32 @@ const Navbar = () => {
           mdesk.tech
         </Link>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              href={link.path}
-              onClick={(e) => handleLinkClick(e, link.path)}
-              className={`relative text-sm font-medium transition-colors hover:text-primary ${
-                pathname === link.path
-                  ? "text-primary"
-                  : "text-muted-foreground"
-              }`}
-            >
-              {link.name}
-              {pathname === link.path && (
-                <motion.div
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
-                  layoutId="navbar-indicator"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          {navLinks.map((link) => {
+            const isActive =
+              (link.path === "/" && normalizedPath === "/") ||
+              (link.path !== "/" &&
+                (normalizedPath === link.path ||
+                  normalizedPath.startsWith(`${link.path}`)));
+            return (
+              <Link
+                key={link.path}
+                href={link.path}
+                aria-current={isActive ? "page" : undefined}
+                onClick={(e) => handleLinkClick(e, link.path)}
+                className={`relative text-sm font-medium transition-colors hover:text-primary touch-manipulation ${
+                  isActive ? "text-primary" : "text-muted-foreground"
+                }`}
+              >
+                {link.name}
+                <span
+                  className={`pointer-events-none absolute -bottom-1 left-0 h-0.5 bg-primary transition-[width] duration-300 ease-out ${
+                    isActive ? "w-full" : "w-0"
+                  }`}
                 />
-              )}
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
 
         <button
@@ -118,45 +130,37 @@ const Navbar = () => {
         </button>
       </div>
 
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            className="md:hidden fixed inset-0 top-[57px] sm:top-[65px] bg-neutral-950 shadow-lg z-40 border-t border-border/40"
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <div className="container mx-auto px-4 sm:px-6 py-8 flex flex-col space-y-6">
-              {navLinks.map((link, index) => (
-                <motion.div
-                  key={link.path}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
+      {isMobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 top-[57px] sm:top-[65px] bg-neutral-950 shadow-lg z-40 border-t border-border/40 transition-transform duration-300 ease-in-out translate-x-0">
+          <div className="container mx-auto px-4 sm:px-6 py-8 flex flex-col space-y-6">
+            {navLinks.map((link) => (
+              <div key={link.path}>
+                <Link
+                  href={link.path}
+                  aria-current={
+                    normalizedPath === link.path ? "page" : undefined
+                  }
+                  className={`block text-2xl font-bold transition-colors hover:text-primary py-3 touch-manipulation ${
+                    normalizedPath === link.path
+                      ? "text-primary"
+                      : "text-foreground"
+                  }`}
+                  onClick={(e) => {
+                    setIsMobileMenuOpen(false);
+                    handleLinkClick(e, link.path);
+                  }}
                 >
-                  <Link
-                    href={link.path}
-                    className={`block text-2xl font-bold transition-colors hover:text-primary py-3 touch-manipulation ${
-                      pathname === link.path
-                        ? "text-primary"
-                        : "text-foreground"
-                    }`}
-                    onClick={(e) => {
-                      setIsMobileMenuOpen(false);
-                      handleLinkClick(e, link.path);
-                    }}
-                  >
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                  {link.name}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
-};
+});
+
+Navbar.displayName = "Navbar";
 
 export default Navbar;

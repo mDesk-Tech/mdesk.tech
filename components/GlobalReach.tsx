@@ -1,8 +1,8 @@
 "use client";
 
 import WorldMap from "@/components/ui/world-map";
-import { motion } from "motion/react";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
+import InView from "@/components/InView";
 
 export default function GlobalReach() {
   return (
@@ -11,25 +11,13 @@ export default function GlobalReach() {
       <div className="absolute inset-0 grid-pattern opacity-10" />
 
       <div className="max-w-7xl mx-auto text-center px-4 sm:px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6"
-        >
+        <InView className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
           <span className="text-xs sm:text-sm font-semibold text-primary">
             Global Reach
           </span>
-        </motion.div>
+        </InView>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="h-32 sm:h-40 md:h-48 flex items-center justify-center"
-        >
+        <InView className="h-32 sm:h-40 md:h-48 flex items-center justify-center">
           <div className="block sm:hidden">
             <h2 className="text-5xl font-black bg-clip-text text-transparent bg-linear-to-r from-primary to-accent">
               GLOBAL
@@ -38,21 +26,15 @@ export default function GlobalReach() {
           <div className="hidden h-52 sm:block">
             <TextHoverEffect text="GLOBAL" />
           </div>
-        </motion.div>
+        </InView>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="text-base sm:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed px-4"
-        >
+        <InView className="text-base sm:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed px-4">
           Serving clients across continents with lightning-fast hosting and
           world-class web solutions
           <br />
           Our global infrastructure ensures your digital presence is always
           accessible, anywhere
-        </motion.p>
+        </InView>
       </div>
 
       <div className="">

@@ -1,9 +1,17 @@
 "use client";
 
-import { useMotionValue, motion, useMotionTemplate } from "motion/react";
-import React, { MouseEvent as ReactMouseEvent, useState } from "react";
-import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
+import React, { MouseEvent as ReactMouseEvent, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
+
+// Defer loading of the heavy three.js canvas until actually needed (on hover)
+const CanvasRevealEffect = dynamic(
+  () =>
+    import("@/components/ui/canvas-reveal-effect").then(
+      (m) => m.CanvasRevealEffect,
+    ),
+  { ssr: false, loading: () => null },
+);
 
 export const CardSpotlight = ({
   children,
@@ -16,17 +24,21 @@ export const CardSpotlight = ({
   color?: string;
   children: React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
   function handleMouseMove({
     currentTarget,
     clientX,
     clientY,
   }: ReactMouseEvent<HTMLDivElement>) {
-    let { left, top } = currentTarget.getBoundingClientRect();
-
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
+    const { left, top } = currentTarget.getBoundingClientRect();
+    const x = clientX - left;
+    const y = clientY - top;
+    const mask = `radial-gradient(${radius}px circle at ${x}px ${y}px, white, transparent 80%)`;
+    const el = overlayRef.current;
+    if (el) {
+      el.style.setProperty("mask-image", mask);
+      el.style.setProperty("-webkit-mask-image", mask);
+    }
   }
 
   const [isHovering, setIsHovering] = useState(false);
@@ -43,18 +55,10 @@ export const CardSpotlight = ({
       onMouseLeave={handleMouseLeave}
       {...props}
     >
-      <motion.div
-        className="pointer-events-none absolute z-0 -inset-px rounded-md opacity-0 transition duration-300 group-hover/spotlight:opacity-100"
-        style={{
-          backgroundColor: color,
-          maskImage: useMotionTemplate`
-            radial-gradient(
-              ${radius}px circle at ${mouseX}px ${mouseY}px,
-              white,
-              transparent 80%
-            )
-          `,
-        }}
+      <div
+        ref={overlayRef}
+        className="pointer-events-none absolute z-0 -inset-px rounded-md opacity-0 transition-opacity duration-300 group-hover/spotlight:opacity-100"
+        style={{ backgroundColor: color }}
       >
         {isHovering && (
           <CanvasRevealEffect
@@ -67,7 +71,7 @@ export const CardSpotlight = ({
             dotSize={3}
           />
         )}
-      </motion.div>
+      </div>
       {children}
     </div>
   );

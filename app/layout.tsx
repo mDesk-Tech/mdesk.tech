@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
+import PageTransition from "@/components/PageTransition";
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
@@ -84,31 +85,22 @@ export default async function RootLayout({
       style={{ colorScheme: "dark" }}
     >
       <head>
-        {/* Preconnect to critical domains */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+        {/* Resource hints for performance */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
         {/* Inline critical CSS */}
         <style
           dangerouslySetInnerHTML={{
             __html: `
-              :root { --font-geist: '__Geist_Fallback_${geist.variable}'; }
-              .critical-content { opacity: 1 !important; }
+              :root { 
+                --font-geist: '__Geist_Fallback_${geist.variable}'; 
+                color-scheme: dark;
+              }
               
-              /* Critical CSS for LCP */
+              /* LCP optimization - ensure hero content renders immediately */
               h1, [data-lcp-element="true"] {
                 opacity: 1 !important;
                 visibility: visible !important;
-              }
-              
-              /* Optimize paint performance */
-              .composite-layer {
-                will-change: transform;
               }
               
               /* Prevent layout shifts */
@@ -118,26 +110,13 @@ export default async function RootLayout({
                 display: block;
               }
               
-              /* Smart content visibility for mobile */
-              @media (max-width: 768px) {
-                section:not(:first-of-type):not(.in-viewport) {
-                  content-visibility: auto;
-                  contain-intrinsic-size: 0 500px;
-                }
-              }
-              
-              /* Grid pattern - optimized */
-              .grid-pattern {
-                contain: layout style;
-                pointer-events: none;
-              }
-              
-              /* Reduced motion support */
+              /* Reduced motion support for accessibility */
               @media (prefers-reduced-motion: reduce) {
                 *, *::before, *::after {
                   animation-duration: 0.01ms !important;
                   animation-iteration-count: 1 !important;
                   transition-duration: 0.01ms !important;
+                  scroll-behavior: auto !important;
                 }
               }
             `,
@@ -156,48 +135,48 @@ export default async function RootLayout({
             <Navbar />
             <main className="grow">
               {/* Add priority hint for LCP content */}
-              <div className="critical-content" data-priority="high">
-                {children}
-              </div>
+              <PageTransition>
+                <div className="critical-content" data-priority="high">
+                  {children}
+                </div>
+              </PageTransition>
             </main>
             <Footer year={currentYear} />
           </div>
 
           {/* Performance optimizers are loaded in page.tsx */}
 
-          {/* Defer non-critical scripts */}
-          {gaId ? (
-            <>
-              <Script
-                src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-                strategy="lazyOnload"
-                data-priority="low"
-              />
-              <Script
-                id="google-analytics"
-                strategy="lazyOnload"
-                data-priority="low"
-              >
-                {`
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${gaId}', {
-                    send_page_view: false,
-                    transport_type: 'beacon',
-                    anonymize_ip: true,
-                  });
-                `}
-              </Script>
-            </>
-          ) : null}
-
           {/* Load analytics only in production */}
           {process.env.NODE_ENV === "production" && (
             <>
               <Analytics />
               <SpeedInsights />
-              {gaId && <GoogleAnalytics gaId={gaId} />}
+              {gaId && (
+                <>
+                  <Script
+                    src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+                    strategy="lazyOnload"
+                    data-priority="low"
+                  />
+                  <Script
+                    id="google-analytics"
+                    strategy="lazyOnload"
+                    data-priority="low"
+                  >
+                    {`
+                      window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+                      gtag('config', '${gaId}', {
+                        send_page_view: false,
+                        transport_type: 'beacon',
+                        anonymize_ip: true,
+                      });
+                    `}
+                  </Script>
+                  <GoogleAnalytics gaId={gaId} />
+                </>
+              )}
             </>
           )}
         </ThemeProvider>

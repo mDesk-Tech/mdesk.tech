@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "motion/react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -10,12 +7,7 @@ export default function PrivacyPolicy() {
       <div className="absolute inset-0 grid-pattern opacity-10 z-0" />
 
       <div className="container mx-auto px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto"
-        >
+        <div className="max-w-3xl mx-auto">
           <Link
             href="/"
             className="inline-flex items-center text-muted-foreground hover:text-primary mb-8 transition-colors"
@@ -124,7 +116,7 @@ export default function PrivacyPolicy() {
               </p>
             </section>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
