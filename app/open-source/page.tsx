@@ -40,13 +40,20 @@ export default function OpenSourcePage() {
         <div className="absolute inset-0 bg-linear-to-br from-cyan-500/10 via-background to-teal-500/10" />
 
         {/* Animated background elements (CSS only) */}
-        <div className="absolute inset-0 overflow-hidden">
+        <div
+          className="absolute inset-0 overflow-hidden hidden md:block"
+          aria-hidden="true"
+        >
           <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl animate-blob-a" />
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-blob-b" />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">
-          <InView className="max-w-5xl mx-auto text-center">
+          <div
+            className="max-w-5xl mx-auto text-center"
+            data-lcp-element="true"
+            data-priority="high"
+          >
             <Badge className="mb-8" icon={<Github className="h-4 w-4" />}>
               Supporting Open Source
             </Badge>
@@ -82,7 +89,7 @@ export default function OpenSourcePage() {
                 View Our Projects
               </a>
             </div>
-          </InView>
+          </div>
         </div>
       </section>
 

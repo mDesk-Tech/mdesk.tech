@@ -1,8 +1,7 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { motion } from "motion/react";
 import {
   Mail,
   ArrowRight,
@@ -11,10 +10,12 @@ import {
   Globe,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { TextHoverEffect } from "@/components/ui/text-hover-effect";
-import { MagicCard } from "@/components/ui/magic-card";
+import dynamic from "next/dynamic";
+const MagicCard = dynamic(
+  () => import("@/components/ui/magic-card").then((m) => m.MagicCard),
+  { ssr: false },
+);
 import { Badge } from "@/components/ui/badge";
-import InView from "@/components/InView";
 
 /**
  * Contact page component that renders contact information and a message form.
@@ -26,6 +27,22 @@ import InView from "@/components/InView";
  * @returns The rendered contact page React element.
  */
 export default function ContactPage() {
+  const TextHoverEffect = dynamic(
+    () =>
+      import("@/components/ui/text-hover-effect").then(
+        (m) => m.TextHoverEffect,
+      ),
+    { ssr: false },
+  );
+
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 640px)");
+    const onChange = () => setIsDesktop(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -101,17 +118,22 @@ export default function ContactPage() {
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="flex flex-col lg:flex-row items-start gap-8 sm:gap-12">
-            <InView className="lg:w-1/2 w-full">
+            <div className="lg:w-1/2 w-full animate-fade-up delay-0">
               <Badge className="mb-4 sm:mb-6">Get in touch</Badge>
 
               <div className="mb-6 sm:mb-8">
                 <div className="block sm:hidden">
-                  <h1 className="text-4xl font-black bg-clip-text text-transparent bg-linear-to-r from-primary to-accent">
+                  <h1
+                    data-lcp-element="true"
+                    className="text-4xl font-black bg-clip-text text-transparent bg-linear-to-r from-primary to-accent"
+                  >
                     CONTACT
                   </h1>
                 </div>
                 <div className="hidden sm:block">
-                  <TextHoverEffect text="CONTACT" />
+                  {/* Keep semantic h1 for desktop while using decorative SVG text */}
+                  <h1 className="sr-only">CONTACT</h1>
+                  {isDesktop && <TextHoverEffect text="CONTACT" />}
                 </div>
               </div>
 
@@ -123,12 +145,7 @@ export default function ContactPage() {
 
               {/* Contact Info Cards */}
               <div className="space-y-4 mb-6 sm:mb-8">
-                <motion.div
-                  className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-card border border-border transition-colors"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.3 }}
-                >
+                <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-card border border-border transition-colors animate-fade-up delay-300">
                   <div className="p-2 sm:p-3 rounded-full bg-primary/10 text-primary border">
                     <Mail className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
@@ -140,48 +157,204 @@ export default function ContactPage() {
                       hello@mdesk.tech
                     </div>
                   </div>
-                </motion.div>
+                </div>
 
-                <motion.div
-                  className="p-4 sm:p-6 rounded-xl bg-linear-to-br from-primary/10 to-accent/10 border border-primary/20"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.4 }}
-                >
+                <div className="p-4 sm:p-6 rounded-xl bg-linear-to-br from-primary/10 to-accent/10 border border-primary/20 animate-fade-up delay-400">
                   <div className="flex items-center gap-3 mb-3 sm:mb-4">
                     <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                    <h3 className="text-base sm:text-lg font-semibold">
+                    <h2 className="text-base sm:text-lg font-semibold">
                       We Work Remotely!
-                    </h3>
+                    </h2>
                   </div>
                   <p className="text-muted-foreground text-xs sm:text-sm">
                     Our team is distributed across the globe, serving clients
                     worldwide without geographical limitations.
                   </p>
-                </motion.div>
+                </div>
               </div>
-            </InView>
+            </div>
 
-            <InView className="lg:w-1/2 w-full border-none" delay={0.1}>
+            <div className="lg:w-1/2 w-full border-none animate-fade-up delay-100 content-visibility-auto">
               <Card className="relative overflow-hidden rounded-2xl bg-card border-none p-0">
-                <MagicCard
-                  gradientColor={"gray"}
-                  gradientSize={250}
-                  gradientOpacity={0.3}
-                  gradientFrom="#00b9d7"
-                  gradientTo="#00bcab"
-                  className="p-0"
-                >
-                  <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-primary/5 to-accent/5" />
+                {isDesktop ? (
+                  <MagicCard
+                    gradientColor={"gray"}
+                    gradientSize={250}
+                    gradientOpacity={0.3}
+                    gradientFrom="#00b9d7"
+                    gradientTo="#00bcab"
+                    className="p-0"
+                  >
+                    <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-primary/5 to-accent/5" />
 
+                    <div className="relative z-10 p-6 sm:p-8">
+                      {isSubmitted ? (
+                        <div className="text-center py-8 sm:py-12 animate-fade-up delay-0">
+                          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-primary/20 to-accent/20 sm:mb-6 sm:h-20 sm:w-20">
+                            <CheckCircle className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
+                          </div>
+                          <h3 className="mb-3 text-xl font-bold sm:mb-4 sm:text-2xl">
+                            Message Sent!
+                          </h3>
+                          <p className="mx-auto mb-6 max-w-md px-4 text-sm text-muted-foreground sm:mb-8 sm:text-base">
+                            Thank you for reaching out. We&apos;ll get back to
+                            you as soon as possible.
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => setIsSubmitted(false)}
+                            className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
+                          >
+                            Send Another Message
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <div
+                            className="mb-5 flex items-center gap-3 sm:mb-6"
+                            data-lcp-element="true"
+                          >
+                            <div className="rounded-lg bg-primary/10 p-2">
+                              <MessageSquare className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
+                            </div>
+                            <h2 className="text-lg font-bold sm:text-xl">
+                              Send us a message
+                            </h2>
+                          </div>
+
+                          <form
+                            onSubmit={handleSubmit}
+                            className="space-y-4 sm:space-y-5"
+                          >
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
+                              <div>
+                                <label
+                                  htmlFor="name"
+                                  className="mb-2 block text-xs font-medium sm:text-sm"
+                                >
+                                  Name
+                                </label>
+                                <input
+                                  type="text"
+                                  id="name"
+                                  name="name"
+                                  value={formState.name}
+                                  onChange={handleChange}
+                                  required
+                                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
+                                  placeholder="Your name"
+                                />
+                              </div>
+
+                              <div>
+                                <label
+                                  htmlFor="email"
+                                  className="mb-2 block text-xs font-medium sm:text-sm"
+                                >
+                                  Email
+                                </label>
+                                <input
+                                  type="email"
+                                  id="email"
+                                  name="email"
+                                  value={formState.email}
+                                  onChange={handleChange}
+                                  required
+                                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
+                                  placeholder="your.email@example.com"
+                                />
+                              </div>
+                            </div>
+
+                            <div>
+                              <label
+                                htmlFor="subject"
+                                className="mb-2 block text-xs font-medium sm:text-sm"
+                              >
+                                Subject
+                              </label>
+                              <input
+                                type="text"
+                                id="subject"
+                                name="subject"
+                                value={formState.subject}
+                                onChange={handleChange}
+                                required
+                                className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
+                                placeholder="What's this about?"
+                              />
+                            </div>
+
+                            <div>
+                              <label
+                                htmlFor="message"
+                                className="mb-2 block text-xs font-medium sm:text-sm"
+                              >
+                                Message
+                              </label>
+                              <textarea
+                                id="message"
+                                name="message"
+                                value={formState.message}
+                                onChange={handleChange}
+                                required
+                                rows={5}
+                                className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
+                                placeholder="Tell us about your project..."
+                              />
+                            </div>
+
+                            {error && (
+                              <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-xs text-destructive sm:text-sm">
+                                {error}
+                              </div>
+                            )}
+
+                            <button
+                              type="submit"
+                              disabled={isSubmitting}
+                              className="inline-flex w-full items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 disabled:opacity-70 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
+                            >
+                              {isSubmitting ? (
+                                <>
+                                  <svg
+                                    className="mr-2 h-4 w-4 animate-spin text-white"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <circle
+                                      className="opacity-25"
+                                      cx="12"
+                                      cy="12"
+                                      r="10"
+                                      stroke="currentColor"
+                                      strokeWidth="4"
+                                    ></circle>
+                                    <path
+                                      className="opacity-75"
+                                      fill="currentColor"
+                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                    ></path>
+                                  </svg>
+                                  Sending...
+                                </>
+                              ) : (
+                                <>
+                                  Send Message
+                                  <ArrowRight className="ml-2 h-4 w-4" />
+                                </>
+                              )}
+                            </button>
+                          </form>
+                        </>
+                      )}
+                    </div>
+                  </MagicCard>
+                ) : (
                   <div className="relative z-10 p-6 sm:p-8">
                     {isSubmitted ? (
-                      <motion.div
-                        className="text-center py-8 sm:py-12"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
+                      <div className="text-center py-8 sm:py-12 animate-fade-up delay-0">
                         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-primary/20 to-accent/20 sm:mb-6 sm:h-20 sm:w-20">
                           <CheckCircle className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
                         </div>
@@ -199,10 +372,13 @@ export default function ContactPage() {
                         >
                           Send Another Message
                         </button>
-                      </motion.div>
+                      </div>
                     ) : (
                       <>
-                        <div className="mb-5 flex items-center gap-3 sm:mb-6">
+                        <div
+                          className="mb-5 flex items-center gap-3 sm:mb-6"
+                          data-lcp-element="true"
+                        >
                           <div className="rounded-lg bg-primary/10 p-2">
                             <MessageSquare className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
                           </div>
@@ -339,9 +515,9 @@ export default function ContactPage() {
                       </>
                     )}
                   </div>
-                </MagicCard>
+                )}
               </Card>
-            </InView>
+            </div>
           </div>
         </div>
       </section>
