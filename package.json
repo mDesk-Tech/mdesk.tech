@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "pnpm run eslint && pnpm run prettier && pnpm run stylelint",
+    "lint": "pnpm check-types && pnpm run eslint && pnpm run prettier && pnpm run stylelint",
     "eslint": "eslint . --fix",
     "stylelint": "stylelint \"**/*.{css,scss,sass,less,styl}\" --fix",
     "prettier": "prettier --write .",
