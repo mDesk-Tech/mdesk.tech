@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import {
   Mail,
@@ -16,10 +16,7 @@ const TextHoverEffect = dynamic(
     import("@/components/ui/text-hover-effect").then((m) => m.TextHoverEffect),
   { ssr: false },
 );
-const MagicCard = dynamic(
-  () => import("@/components/ui/magic-card").then((m) => m.MagicCard),
-  { ssr: false },
-);
+import { MagicCard } from "@/components/ui/magic-card";
 import { Badge } from "@/components/ui/badge";
 
 /**
@@ -32,14 +29,6 @@ import { Badge } from "@/components/ui/badge";
  * @returns The rendered contact page React element.
  */
 export default function ContactPage() {
-  const [isDesktop, setIsDesktop] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 640px)");
-    const onChange = () => setIsDesktop(mq.matches);
-    onChange();
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -106,6 +95,168 @@ export default function ContactPage() {
     [formState],
   );
 
+  // Shared form/confirmation content used for both mobile and desktop variants
+  const formContent = (
+    <div className="relative z-10 p-6 sm:p-8">
+      {isSubmitted ? (
+        <div className="text-center py-8 sm:py-12 animate-fade-up delay-0">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-primary/20 to-accent/20 sm:mb-6 sm:h-20 sm:w-20">
+            <CheckCircle className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
+          </div>
+          <h3 className="mb-3 text-xl font-bold sm:mb-4 sm:text-2xl">
+            Message Sent!
+          </h3>
+          <p className="mx-auto mb-6 max-w-md px-4 text-sm text-muted-foreground sm:mb-8 sm:text-base">
+            Thank you for reaching out. We&apos;ll get back to you as soon as
+            possible.
+          </p>
+          <button
+            type="button"
+            onClick={() => setIsSubmitted(false)}
+            className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
+          >
+            Send Another Message
+          </button>
+        </div>
+      ) : (
+        <>
+          <div
+            className="mb-5 flex items-center gap-3 sm:mb-6"
+            data-lcp-element="true"
+          >
+            <div className="rounded-lg bg-primary/10 p-2">
+              <MessageSquare className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
+            </div>
+            <h2 className="text-lg font-bold sm:text-xl">Send us a message</h2>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="mb-2 block text-xs font-medium sm:text-sm"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formState.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
+                  placeholder="Your name"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="email"
+                  className="mb-2 block text-xs font-medium sm:text-sm"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formState.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
+                  placeholder="your.email@example.com"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="subject"
+                className="mb-2 block text-xs font-medium sm:text-sm"
+              >
+                Subject
+              </label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                value={formState.subject}
+                onChange={handleChange}
+                required
+                className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
+                placeholder="What's this about?"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="message"
+                className="mb-2 block text-xs font-medium sm:text-sm"
+              >
+                Message
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                value={formState.message}
+                onChange={handleChange}
+                required
+                rows={5}
+                className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
+                placeholder="Tell us about your project..."
+              />
+            </div>
+
+            {error && (
+              <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-xs text-destructive sm:text-sm">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="inline-flex w-full items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 disabled:opacity-70 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
+            >
+              {isSubmitting ? (
+                <>
+                  <svg
+                    className="mr-2 h-4 w-4 animate-spin text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Sending...
+                </>
+              ) : (
+                <>
+                  Send Message
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
+            </button>
+          </form>
+        </>
+      )}
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -127,10 +278,10 @@ export default function ContactPage() {
                     CONTACT
                   </h1>
                 </div>
-                <div className="hidden sm:block">
+                <div className="hidden h-52 sm:block" suppressHydrationWarning>
                   {/* Keep semantic h1 for desktop while using decorative SVG text */}
                   <h1 className="sr-only">CONTACT</h1>
-                  {isDesktop && <TextHoverEffect text="CONTACT" />}
+                  <TextHoverEffect text="CONTACT" />
                 </div>
               </div>
 
@@ -171,9 +322,13 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="lg:w-1/2 w-full border-none animate-fade-up delay-100 content-visibility-auto">
+            <div className="lg:w-1/2 w-full border-none animate-fade-up delay-100">
               <Card className="relative overflow-hidden rounded-2xl bg-card border-none p-0">
-                {isDesktop ? (
+                {/* Mobile: simple rendering without MagicCard */}
+                <div className="block sm:hidden">{formContent}</div>
+
+                {/* Desktop and up: with MagicCard */}
+                <div className="hidden sm:block">
                   <MagicCard
                     gradientColor={"gray"}
                     gradientSize={250}
@@ -184,335 +339,9 @@ export default function ContactPage() {
                   >
                     <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-primary/5 to-accent/5" />
 
-                    <div className="relative z-10 p-6 sm:p-8">
-                      {isSubmitted ? (
-                        <div className="text-center py-8 sm:py-12 animate-fade-up delay-0">
-                          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-primary/20 to-accent/20 sm:mb-6 sm:h-20 sm:w-20">
-                            <CheckCircle className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
-                          </div>
-                          <h3 className="mb-3 text-xl font-bold sm:mb-4 sm:text-2xl">
-                            Message Sent!
-                          </h3>
-                          <p className="mx-auto mb-6 max-w-md px-4 text-sm text-muted-foreground sm:mb-8 sm:text-base">
-                            Thank you for reaching out. We&apos;ll get back to
-                            you as soon as possible.
-                          </p>
-                          <button
-                            type="button"
-                            onClick={() => setIsSubmitted(false)}
-                            className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
-                          >
-                            Send Another Message
-                          </button>
-                        </div>
-                      ) : (
-                        <>
-                          <div
-                            className="mb-5 flex items-center gap-3 sm:mb-6"
-                            data-lcp-element="true"
-                          >
-                            <div className="rounded-lg bg-primary/10 p-2">
-                              <MessageSquare className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
-                            </div>
-                            <h2 className="text-lg font-bold sm:text-xl">
-                              Send us a message
-                            </h2>
-                          </div>
-
-                          <form
-                            onSubmit={handleSubmit}
-                            className="space-y-4 sm:space-y-5"
-                          >
-                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
-                              <div>
-                                <label
-                                  htmlFor="name"
-                                  className="mb-2 block text-xs font-medium sm:text-sm"
-                                >
-                                  Name
-                                </label>
-                                <input
-                                  type="text"
-                                  id="name"
-                                  name="name"
-                                  value={formState.name}
-                                  onChange={handleChange}
-                                  required
-                                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
-                                  placeholder="Your name"
-                                />
-                              </div>
-
-                              <div>
-                                <label
-                                  htmlFor="email"
-                                  className="mb-2 block text-xs font-medium sm:text-sm"
-                                >
-                                  Email
-                                </label>
-                                <input
-                                  type="email"
-                                  id="email"
-                                  name="email"
-                                  value={formState.email}
-                                  onChange={handleChange}
-                                  required
-                                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
-                                  placeholder="your.email@example.com"
-                                />
-                              </div>
-                            </div>
-
-                            <div>
-                              <label
-                                htmlFor="subject"
-                                className="mb-2 block text-xs font-medium sm:text-sm"
-                              >
-                                Subject
-                              </label>
-                              <input
-                                type="text"
-                                id="subject"
-                                name="subject"
-                                value={formState.subject}
-                                onChange={handleChange}
-                                required
-                                className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
-                                placeholder="What's this about?"
-                              />
-                            </div>
-
-                            <div>
-                              <label
-                                htmlFor="message"
-                                className="mb-2 block text-xs font-medium sm:text-sm"
-                              >
-                                Message
-                              </label>
-                              <textarea
-                                id="message"
-                                name="message"
-                                value={formState.message}
-                                onChange={handleChange}
-                                required
-                                rows={5}
-                                className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
-                                placeholder="Tell us about your project..."
-                              />
-                            </div>
-
-                            {error && (
-                              <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-xs text-destructive sm:text-sm">
-                                {error}
-                              </div>
-                            )}
-
-                            <button
-                              type="submit"
-                              disabled={isSubmitting}
-                              className="inline-flex w-full items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 disabled:opacity-70 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
-                            >
-                              {isSubmitting ? (
-                                <>
-                                  <svg
-                                    className="mr-2 h-4 w-4 animate-spin text-white"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <circle
-                                      className="opacity-25"
-                                      cx="12"
-                                      cy="12"
-                                      r="10"
-                                      stroke="currentColor"
-                                      strokeWidth="4"
-                                    ></circle>
-                                    <path
-                                      className="opacity-75"
-                                      fill="currentColor"
-                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                    ></path>
-                                  </svg>
-                                  Sending...
-                                </>
-                              ) : (
-                                <>
-                                  Send Message
-                                  <ArrowRight className="ml-2 h-4 w-4" />
-                                </>
-                              )}
-                            </button>
-                          </form>
-                        </>
-                      )}
-                    </div>
+                    {formContent}
                   </MagicCard>
-                ) : (
-                  <div className="relative z-10 p-6 sm:p-8">
-                    {isSubmitted ? (
-                      <div className="text-center py-8 sm:py-12 animate-fade-up delay-0">
-                        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-primary/20 to-accent/20 sm:mb-6 sm:h-20 sm:w-20">
-                          <CheckCircle className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
-                        </div>
-                        <h3 className="mb-3 text-xl font-bold sm:mb-4 sm:text-2xl">
-                          Message Sent!
-                        </h3>
-                        <p className="mx-auto mb-6 max-w-md px-4 text-sm text-muted-foreground sm:mb-8 sm:text-base">
-                          Thank you for reaching out. We&apos;ll get back to you
-                          as soon as possible.
-                        </p>
-                        <button
-                          type="button"
-                          onClick={() => setIsSubmitted(false)}
-                          className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
-                        >
-                          Send Another Message
-                        </button>
-                      </div>
-                    ) : (
-                      <>
-                        <div
-                          className="mb-5 flex items-center gap-3 sm:mb-6"
-                          data-lcp-element="true"
-                        >
-                          <div className="rounded-lg bg-primary/10 p-2">
-                            <MessageSquare className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
-                          </div>
-                          <h2 className="text-lg font-bold sm:text-xl">
-                            Send us a message
-                          </h2>
-                        </div>
-
-                        <form
-                          onSubmit={handleSubmit}
-                          className="space-y-4 sm:space-y-5"
-                        >
-                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
-                            <div>
-                              <label
-                                htmlFor="name"
-                                className="mb-2 block text-xs font-medium sm:text-sm"
-                              >
-                                Name
-                              </label>
-                              <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={formState.name}
-                                onChange={handleChange}
-                                required
-                                className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
-                                placeholder="Your name"
-                              />
-                            </div>
-
-                            <div>
-                              <label
-                                htmlFor="email"
-                                className="mb-2 block text-xs font-medium sm:text-sm"
-                              >
-                                Email
-                              </label>
-                              <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                value={formState.email}
-                                onChange={handleChange}
-                                required
-                                className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
-                                placeholder="your.email@example.com"
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <label
-                              htmlFor="subject"
-                              className="mb-2 block text-xs font-medium sm:text-sm"
-                            >
-                              Subject
-                            </label>
-                            <input
-                              type="text"
-                              id="subject"
-                              name="subject"
-                              value={formState.subject}
-                              onChange={handleChange}
-                              required
-                              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
-                              placeholder="What's this about?"
-                            />
-                          </div>
-
-                          <div>
-                            <label
-                              htmlFor="message"
-                              className="mb-2 block text-xs font-medium sm:text-sm"
-                            >
-                              Message
-                            </label>
-                            <textarea
-                              id="message"
-                              name="message"
-                              value={formState.message}
-                              onChange={handleChange}
-                              required
-                              rows={5}
-                              className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:px-4 sm:py-3 sm:text-base"
-                              placeholder="Tell us about your project..."
-                            />
-                          </div>
-
-                          {error && (
-                            <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-xs text-destructive sm:text-sm">
-                              {error}
-                            </div>
-                          )}
-
-                          <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="inline-flex w-full items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 disabled:opacity-70 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
-                          >
-                            {isSubmitting ? (
-                              <>
-                                <svg
-                                  className="mr-2 h-4 w-4 animate-spin text-white"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <circle
-                                    className="opacity-25"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                    stroke="currentColor"
-                                    strokeWidth="4"
-                                  ></circle>
-                                  <path
-                                    className="opacity-75"
-                                    fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                  ></path>
-                                </svg>
-                                Sending...
-                              </>
-                            ) : (
-                              <>
-                                Send Message
-                                <ArrowRight className="ml-2 h-4 w-4" />
-                              </>
-                            )}
-                          </button>
-                        </form>
-                      </>
-                    )}
-                  </div>
-                )}
+                </div>
               </Card>
             </div>
           </div>
