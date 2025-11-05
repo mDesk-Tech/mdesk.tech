@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   cacheComponents: true,
   typescript: {
     // Skip type checking during `next build`
@@ -7,6 +8,7 @@ const nextConfig = {
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
+    styledComponents: true,
   },
   reactCompiler: true,
   experimental: {

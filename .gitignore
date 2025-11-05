@@ -37,3 +37,6 @@ next-env.d.ts
 
 .env
 .turbo
+
+.swc-temp
+.swc
