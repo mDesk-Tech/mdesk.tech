@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import type React from "react";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Open Source | mdesk.tech",
   description:
     "Free website development offer and our commitment to open source.",
-  alternates: { canonical: "/open-source" },
-};
+  path: "/open-source",
+});
 
-export default function OpenSourceLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <>{children}</>;
-}
+export { default } from "@/components/PassthroughLayout";

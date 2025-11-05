@@ -1,16 +1,10 @@
 import type { Metadata } from "next";
-import type React from "react";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact | mdesk.tech",
   description: "Get in touch with the mdesk.tech team.",
-  alternates: { canonical: "/contact" },
-};
+  path: "/contact",
+});
 
-export default function ContactLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <>{children}</>;
-}
+export { default } from "@/components/PassthroughLayout";
