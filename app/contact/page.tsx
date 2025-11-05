@@ -312,9 +312,9 @@ export default function ContactPage() {
                 <div className="p-4 sm:p-6 rounded-xl bg-linear-to-br from-primary/10 to-accent/10 border border-primary/20 animate-fade-up delay-400">
                   <div className="flex items-center gap-3 mb-3 sm:mb-4">
                     <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                    <h3 className="text-base sm:text-lg font-semibold">
+                    <h2 className="text-base sm:text-lg font-semibold">
                       We Work Remotely!
-                    </h3>
+                    </h2>
                   </div>
                   <p className="text-muted-foreground text-xs sm:text-sm">
                     Our team is distributed across the globe, serving clients
@@ -326,24 +326,18 @@ export default function ContactPage() {
 
             <div className="lg:w-1/2 w-full border-none animate-fade-up delay-100">
               <Card className="relative overflow-hidden rounded-2xl bg-card border-none p-0">
-                {/* Mobile: simple rendering without MagicCard */}
-                <div className="block sm:hidden">{formContent}</div>
+                <MagicCard
+                  gradientColor={"gray"}
+                  gradientSize={250}
+                  gradientOpacity={0.3}
+                  gradientFrom="#00b9d7"
+                  gradientTo="#00bcab"
+                  className="p-0"
+                >
+                  <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-primary/5 to-accent/5" />
 
-                {/* Desktop and up: with MagicCard */}
-                <div className="hidden sm:block">
-                  <MagicCard
-                    gradientColor={"gray"}
-                    gradientSize={250}
-                    gradientOpacity={0.3}
-                    gradientFrom="#00b9d7"
-                    gradientTo="#00bcab"
-                    className="p-0"
-                  >
-                    <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-primary/5 to-accent/5" />
-
-                    {formContent}
-                  </MagicCard>
-                </div>
+                  {formContent}
+                </MagicCard>
               </Card>
             </div>
           </div>

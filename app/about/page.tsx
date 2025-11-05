@@ -209,9 +209,7 @@ export default function AboutPage() {
             <Badge className="mb-4 sm:mb-6">Our Story</Badge>
 
             <div className="mb-6 sm:mb-8">
-              <h1
-                className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground sr-only"
-              >
+              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground sr-only">
                 ABOUT US
               </h1>
               <HyperText
