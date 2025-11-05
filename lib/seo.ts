@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 type PageMetaInput = {
   title: string;
-  description?: string;
+  description: string;
   path: `/${string}`;
 };
 
