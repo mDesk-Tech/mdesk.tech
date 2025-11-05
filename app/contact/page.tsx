@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, Suspense } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import {
   Mail,
@@ -127,7 +127,7 @@ export default function ContactPage() {
             <div className="rounded-lg bg-primary/10 p-2">
               <MessageSquare className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
             </div>
-            <h2 className="text-lg font-bold sm:text-xl">Send us a message</h2>
+            <h3 className="text-lg font-bold sm:text-xl">Send us a message</h3>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
@@ -278,10 +278,12 @@ export default function ContactPage() {
                     CONTACT
                   </h1>
                 </div>
-                <div className="hidden h-52 sm:block" suppressHydrationWarning>
-                  {/* Keep semantic h1 for desktop while using decorative SVG text */}
-                  <h1 className="sr-only">CONTACT</h1>
-                  <TextHoverEffect text="CONTACT" />
+                <div className="hidden sm:block h-52">
+                  <Suspense fallback={<div className="h-52" />}>
+                    {/* Keep semantic h1 for desktop while using decorative SVG text */}
+                    <h1 className="sr-only">CONTACT</h1>
+                    <TextHoverEffect text="CONTACT" />
+                  </Suspense>
                 </div>
               </div>
 
@@ -310,9 +312,9 @@ export default function ContactPage() {
                 <div className="p-4 sm:p-6 rounded-xl bg-linear-to-br from-primary/10 to-accent/10 border border-primary/20 animate-fade-up delay-400">
                   <div className="flex items-center gap-3 mb-3 sm:mb-4">
                     <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                    <h2 className="text-base sm:text-lg font-semibold">
+                    <h3 className="text-base sm:text-lg font-semibold">
                       We Work Remotely!
-                    </h2>
+                    </h3>
                   </div>
                   <p className="text-muted-foreground text-xs sm:text-sm">
                     Our team is distributed across the globe, serving clients
