@@ -10,8 +10,10 @@
     "eslint": "eslint . --fix",
     "stylelint": "stylelint \"**/*.{css,scss,sass,less,styl}\" --fix",
     "prettier": "prettier --write .",
-    "check-types": "concurrently -n transpile,types -c cyan,magenta \"swc src --out-dir .swc-temp --delete-dir-on-start\" \"pnpm tsgo -p tsconfig.json\"",
-    "prepare": "pnpm dlx husky"
+    "check-types": "concurrently -n transpile,types -c cyan,magenta \"pnpm run check-types:transpile\" \"tsgo -p tsconfig.json\"",
+    "check-types:transpile": "swc app components hooks lib --out-dir .swc --ignore **/*.d.ts,node_modules,.next",
+    "prepare": "pnpm dlx husky",
+    "check-deps": "pnpm dlx knip --fix"
   },
   "dependencies": {
     "@next/third-parties": "^16.0.1",

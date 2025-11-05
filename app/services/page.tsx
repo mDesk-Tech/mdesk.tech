@@ -9,7 +9,7 @@ import {
   Check,
 } from "lucide-react";
 import Link from "next/link";
-import GlobalReachDeferred from "@/components/GlobalReachDeferred";
+import GlobalReach from "@/components/GlobalReach";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -254,8 +254,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Defer heavy map/animation until section is in view on client */}
-      <GlobalReachDeferred />
+      {/* Global Reach section */}
+      <GlobalReach />
 
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden">
