@@ -11,6 +11,11 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import dynamic from "next/dynamic";
+const TextHoverEffect = dynamic(
+  () =>
+    import("@/components/ui/text-hover-effect").then((m) => m.TextHoverEffect),
+  { ssr: false },
+);
 const MagicCard = dynamic(
   () => import("@/components/ui/magic-card").then((m) => m.MagicCard),
   { ssr: false },
@@ -27,14 +32,6 @@ import { Badge } from "@/components/ui/badge";
  * @returns The rendered contact page React element.
  */
 export default function ContactPage() {
-  const TextHoverEffect = dynamic(
-    () =>
-      import("@/components/ui/text-hover-effect").then(
-        (m) => m.TextHoverEffect,
-      ),
-    { ssr: false },
-  );
-
   const [isDesktop, setIsDesktop] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 640px)");

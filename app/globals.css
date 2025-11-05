@@ -218,7 +218,7 @@
 }
 
 .navbar {
-  background-color: hsl(var(--background)) !important;
+  background-color: hsl(var(--background));
   border-bottom: 1px solid hsl(var(--border));
   backdrop-filter: none;
   transition:
