@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Terms of Service | mdesk.tech",
+  description: "Read our terms of service.",
+  path: "/terms",
+});
 
 /**
  * Render the site's Terms of Service page.

@@ -1,4 +1,5 @@
 import type React from "react";
+import type { Metadata } from "next";
 import {
   Palette,
   Code2,
@@ -9,6 +10,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import GlobalReachDeferred from "@/components/GlobalReachDeferred";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Services | mdesk.tech",
+  description:
+    "Explore our web design, development, hosting, and SEO services.",
+  path: "/services",
+});
 
 interface Service {
   title: string;

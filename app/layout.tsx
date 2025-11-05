@@ -1,6 +1,7 @@
 "use cache";
 
 import type React from "react";
+import type { Metadata } from "next";
 import "./globals.css";
 import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
@@ -11,8 +12,10 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import PageTransition from "@/components/PageTransition";
+import { getSiteUrl } from "@/lib/seo";
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
+const SITE_URL = getSiteUrl();
 
 const geist = Geist({
   subsets: ["latin"],
@@ -29,13 +32,11 @@ export const viewport = {
   maximumScale: 5,
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "mdesk.tech - Designing and hosting your digital future",
   description:
     "mdesk.tech specializes in cutting-edge web design and reliable hosting solutions.",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://mdesk.tech",
-  ),
+  metadataBase: new URL(SITE_URL),
   icons: {
     icon: [{ url: "/icon", type: "image/x-icon" }],
     apple: "/apple-icon",
@@ -43,13 +44,14 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "https://mdesk.tech",
+    url: SITE_URL,
     title: "mdesk.tech - Designing and hosting your digital future",
     description:
       "Cutting-edge web design and reliable hosting solutions for businesses that want to stand out in the digital landscape.",
     images: [
       {
-        url: "/opengraph-image.jpg",
+        // Use the dynamic OG image route with absolute URL to silence warnings
+        url: `${SITE_URL}/opengraph-image`,
         width: 1200,
         height: 630,
         alt: "mdesk.tech - Designing and hosting your digital future",
@@ -61,7 +63,8 @@ export const metadata = {
     title: "mdesk.tech - Designing and hosting your digital future",
     description:
       "Cutting-edge web design and reliable hosting solutions for businesses that want to stand out in the digital landscape.",
-    images: ["/twitter-image.jpg"],
+    // Use the dynamic Twitter image route with absolute URL to silence warnings
+    images: [`${SITE_URL}/twitter-image`],
   },
   verification: {
     google: "google-site-verification-code",

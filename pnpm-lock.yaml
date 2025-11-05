@@ -58,9 +58,6 @@ importers:
       three:
         specifier: ^0.181.0
         version: 0.181.0
-      tw-animate-css:
-        specifier: ^1.4.0
-        version: 1.4.0
     devDependencies:
       "@swc/cli":
         specifier: ^0.7.8
@@ -125,6 +122,9 @@ importers:
       stylelint-config-tailwindcss:
         specifier: ^1.0.0
         version: 1.0.0(stylelint@16.25.0(typescript@5.9.3))(tailwindcss@4.1.16)
+      tw-animate-css:
+        specifier: ^1.4.0
+        version: 1.4.0
 
 packages:
   "@alloc/quick-lru@5.2.0":
