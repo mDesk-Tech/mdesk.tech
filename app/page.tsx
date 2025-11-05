@@ -1,8 +1,17 @@
 "use cache";
 
+import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import LazySection from "@/components/LazySection";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "mdesk.tech - Designing and hosting your digital future",
+  description:
+    "mdesk.tech specializes in cutting-edge web design and reliable hosting solutions.",
+  path: "/",
+});
 
 // Dynamically import below-the-fold components
 // Next.js will automatically code-split these into separate chunks

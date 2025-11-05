@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Privacy Policy | mdesk.tech",
+  description: "Read our privacy policy.",
+  path: "/privacy",
+});
 
 /**
  * Renders the Privacy Policy page with static policy content and a back-to-home link.

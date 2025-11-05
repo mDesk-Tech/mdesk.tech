@@ -6,9 +6,11 @@ packages:
 ignore-workspace-root-check: true
 
 onlyBuiltDependencies:
+  - "@swc/core"
   - "@tailwindcss/oxide"
   - "@tsparticles/engine"
   - "@vercel/speed-insights"
   - canvas
+  - esbuild
   - sharp
   - unrs-resolver

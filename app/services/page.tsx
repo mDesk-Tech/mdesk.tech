@@ -1,4 +1,5 @@
 import type React from "react";
+import type { Metadata } from "next";
 import {
   Palette,
   Code2,
@@ -8,7 +9,15 @@ import {
   Check,
 } from "lucide-react";
 import Link from "next/link";
-import GlobalReachDeferred from "@/components/GlobalReachDeferred";
+import GlobalReach from "@/components/GlobalReach";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Services | mdesk.tech",
+  description:
+    "Explore our web design, development, hosting, and SEO services.",
+  path: "/services",
+});
 
 interface Service {
   title: string;
@@ -245,8 +254,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Defer heavy map/animation until section is in view on client */}
-      <GlobalReachDeferred />
+      {/* Global Reach section */}
+      <GlobalReach />
 
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden">

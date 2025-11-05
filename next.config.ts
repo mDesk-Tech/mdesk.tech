@@ -1,5 +1,9 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  turbopack: {
+    root: __dirname,
+  },
   cacheComponents: true,
   typescript: {
     // Skip type checking during `next build`
@@ -7,6 +11,7 @@ const nextConfig = {
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
+    styledComponents: true,
   },
   reactCompiler: true,
   experimental: {
