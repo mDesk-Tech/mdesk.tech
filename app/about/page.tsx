@@ -209,15 +209,20 @@ export default function AboutPage() {
             <Badge className="mb-4 sm:mb-6">Our Story</Badge>
 
             <div className="mb-6 sm:mb-8">
-              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground">
-                <HyperText
-                  startOnView
-                  delay={800}
-                  className="text-inherit font-inherit"
-                >
-                  ABOUT US
-                </HyperText>
+              <h1
+                className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground sr-only"
+                aria-label="ABOUT US"
+              >
+                ABOUT US
               </h1>
+              <HyperText
+                startOnView
+                delay={800}
+                className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground"
+                aria-hidden="true"
+              >
+                ABOUT US
+              </HyperText>
             </div>
 
             <p className="text-base sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto px-4">
