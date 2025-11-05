@@ -13,6 +13,7 @@ const nextConfig = {
     cssChunking: "strict",
     useCache: true,
     optimizeCss: true,
+    inlineCss: true,
     optimizePackageImports: [
       "framer-motion",
       "lucide-react",

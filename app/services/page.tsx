@@ -124,6 +124,7 @@ export default function ServicesPage() {
       {/* Services Grid */}
       <section className="py-20 relative">
         <div className="container mx-auto px-6">
+          <h2 className="sr-only">Services</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
             {servicesData.map((service, index) => (
               <div key={index} className="group relative">

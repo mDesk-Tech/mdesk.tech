@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "pnpm run eslint && pnpm run prettier && pnpm run stylelint",
+    "eslint": "eslint . --fix",
     "stylelint": "stylelint \"**/*.{css,scss,sass,less,styl}\" --fix",
     "prettier": "prettier --write .",
     "check-types": "tsc --noEmit",
@@ -53,7 +54,7 @@
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "eslint --fix",
-    "**/*.{js,ts,tsx,json,mjs,yaml,css,md}": "prettier -w",
+    "**/*.{js,ts,tsx,json,mjs,yaml,yml,css,md}": "prettier -w",
     "**/*.{css,scss,sass,less,styl}": "stylelint --fix"
   },
   "packageManager": "pnpm@10.20.0"

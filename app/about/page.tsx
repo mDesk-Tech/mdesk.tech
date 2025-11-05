@@ -194,15 +194,30 @@ export default function AboutPage() {
     <div className="min-h-screen relative overflow-hidden bg-background">
       {/* Background elements */}
       <div className="absolute inset-0 bg-linear-to-b from-primary/5 via-background to-background z-0" />
-      <div className="absolute inset-0 opacity-20 grid-pattern" />
+      <div
+        className="hidden sm:block absolute inset-0 opacity-20 grid-pattern"
+        aria-hidden="true"
+      />
 
       <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
+          <div
+            className="max-w-4xl mx-auto text-center"
+            data-lcp-element="true"
+            data-priority="high"
+          >
             <Badge className="mb-4 sm:mb-6">Our Story</Badge>
 
             <div className="mb-6 sm:mb-8">
-              <HyperText className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground sr-only">
+                ABOUT US
+              </h1>
+              <HyperText
+                startOnView
+                delay={800}
+                className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground"
+                aria-hidden="true"
+              >
                 ABOUT US
               </HyperText>
             </div>

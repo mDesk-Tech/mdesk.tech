@@ -218,9 +218,6 @@
 }
 
 .navbar {
-  background-color: #0a0a0a;
-
-  /* Use HSL channel tokens consistently for colors */
   background-color: hsl(var(--background));
   border-bottom: 1px solid hsl(var(--border));
   backdrop-filter: none;
@@ -234,6 +231,8 @@
 
 @media (width >= 768px) {
   .navbar {
+    /* Desktop: translucent/blurred, not solid by default */
+    background-color: transparent;
     border-bottom: 1px solid transparent;
     backdrop-filter: blur(10px);
   }
@@ -587,9 +586,11 @@
   }
 }
 
-.page-transition {
-  animation: page-fade-in 220ms ease-out both;
-  will-change: opacity, transform;
+@media (width >= 768px) {
+  .page-transition {
+    animation: page-fade-in 220ms ease-out both;
+    will-change: opacity, transform;
+  }
 }
 
 @keyframes modal-in {
