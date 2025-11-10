@@ -22,27 +22,27 @@
     "@vercel/speed-insights": "^1.2.0",
     "clsx": "^2.1.1",
     "dotted-map": "^2.2.3",
-    "lucide-react": "^0.552.0",
+    "lucide-react": "^0.553.0",
     "mongodb": "^6.20.0",
     "motion": "^12.23.24",
     "next": "16.0.1",
     "next-themes": "^0.4.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.16",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss": "^4.1.17",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.181.0"
+    "three": "^0.181.1"
   },
   "devDependencies": {
-    "@swc/cli": "^0.7.8",
-    "@swc/core": "^1.15.0",
-    "@tailwindcss/postcss": "^4.1.16",
+    "@swc/cli": "^0.7.9",
+    "@swc/core": "^1.15.1",
+    "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/three": "^0.181.0",
-    "@typescript/native-preview": "7.0.0-dev.20251104.1",
+    "@typescript/native-preview": "7.0.0-dev.20251110.1",
     "babel-plugin-react-compiler": "^1.0.0",
     "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
@@ -63,5 +63,5 @@
     "**/*.{js,ts,tsx,json,mjs,yaml,yml,css,md}": "prettier -w",
     "**/*.{css,scss,sass,less,styl}": "stylelint --fix"
   },
-  "packageManager": "pnpm@10.20.0"
+  "packageManager": "pnpm@10.21.0"
 }
