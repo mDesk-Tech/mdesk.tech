@@ -35,17 +35,16 @@ export default function InView({
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
       className={cn(
-        // Use transform: translateZ(0) to promote to compositor layer for smoother animations
-        // Only apply will-change when not visible to hint browser about upcoming animation
-        visible
-          ? "opacity-100 translate-y-0 transition-[opacity,transform] duration-500 ease-out"
-          : "opacity-0 translate-y-4 will-change-[opacity,transform] transition-[opacity,transform] duration-500 ease-out",
+        // Use CSS transitions for smoother animations
+        // Apply will-change only when not visible to hint browser about upcoming animation
+        "transition-[opacity,transform] duration-500 ease-out",
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
         className,
       )}
       style={{
         transitionDelay: delay ? `${delay}s` : undefined,
-        // Remove will-change after animation to free GPU memory
-        willChange: visible ? "auto" : undefined,
+        // Use will-change to hint browser about upcoming animation, reset to 'auto' after
+        willChange: visible ? "auto" : "opacity, transform",
         ...style,
       }}
       {...rest}

@@ -42,12 +42,12 @@ export default function LazySection({
     freezeOnceVisible: true,
   });
 
-  const placeholderStyle = useMemo<React.CSSProperties>(() => {
-    const height = typeof minHeight === "number" ? `${minHeight}px` : minHeight;
+  // Compute height and contain-intrinsic-size values once
+  const { height, containIntrinsicSize } = useMemo(() => {
+    const h = typeof minHeight === "number" ? `${minHeight}px` : minHeight;
     return {
-      minHeight: height,
-      // Use contain-intrinsic-size to help browser estimate size before rendering
-      containIntrinsicSize: `auto ${height}`,
+      height: h,
+      containIntrinsicSize: `auto ${h}`,
     };
   }, [minHeight]);
 
@@ -60,12 +60,16 @@ export default function LazySection({
           ? {
               // Optimize rendering for offscreen content
               contentVisibility: "auto",
-              containIntrinsicSize: placeholderStyle.containIntrinsicSize,
+              containIntrinsicSize,
             }
           : undefined
       }
     >
-      {isVisible ? children : <div aria-hidden style={placeholderStyle} />}
+      {isVisible ? (
+        children
+      ) : (
+        <div aria-hidden style={{ minHeight: height, containIntrinsicSize }} />
+      )}
     </div>
   );
 }

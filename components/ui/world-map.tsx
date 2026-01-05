@@ -41,24 +41,30 @@ function WorldMap({ dots = [], lineColor }: MapProps) {
   const [mounted, setMounted] = useState(false);
   const [animationsReady, setAnimationsReady] = useState(false);
 
-  // Mount immediately but defer animations for better INP
+  // Track mount state for hydration-safe theme access
+  // This is a common pattern for components that need client-only APIs
   useEffect(() => {
-    // Defer setting mounted state to avoid cascading renders
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
-    // Defer heavy animations using requestIdleCallback
+  }, []);
+
+  // Defer heavy animations using requestIdleCallback for better INP
+  useEffect(() => {
+    if (!mounted) return;
+
     const scheduleAnimations = () => {
       setAnimationsReady(true);
     };
 
     if (typeof requestIdleCallback !== "undefined") {
-      requestIdleCallback(scheduleAnimations, { timeout: 200 });
+      const handle = requestIdleCallback(scheduleAnimations, { timeout: 200 });
+      return () => cancelIdleCallback(handle);
     } else {
       // Fallback: use setTimeout with a small delay
       const t = setTimeout(scheduleAnimations, 100);
       return () => clearTimeout(t);
     }
-  }, []);
+  }, [mounted]);
 
   const currentTheme = mounted ? resolvedTheme || theme : "dark";
 
