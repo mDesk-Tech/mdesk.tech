@@ -2,6 +2,8 @@ mdesk.tech — Designing and hosting your digital future
 
 Modern website built with Next.js 16, React 19, and Tailwind CSS 4. It features server components, dynamic streaming, sleek UI components, and a production‑ready contact workflow with Discord notifications and MongoDB‑backed rate limiting.
 
+GitHub Copilot is used to help optimize page performance
+
 Live site: [mdesk.tech](https://mdesk.tech)
 
 Highlights
