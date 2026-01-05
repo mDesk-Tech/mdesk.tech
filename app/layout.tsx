@@ -131,14 +131,6 @@ export default async function RootLayout({
                 contain: layout style;
               }
               
-              /* Defer non-critical animations until after load */
-              .defer-animation {
-                animation-play-state: paused !important;
-              }
-              body.loaded .defer-animation {
-                animation-play-state: running !important;
-              }
-              
               /* Reduced motion support for accessibility */
               @media (prefers-reduced-motion: reduce) {
                 *, *::before, *::after {

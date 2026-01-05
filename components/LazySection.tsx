@@ -68,7 +68,8 @@ export default function LazySection({
       {isVisible ? (
         children
       ) : (
-        <div aria-hidden style={{ minHeight: height, containIntrinsicSize }} />
+        // Placeholder only needs minHeight - containIntrinsicSize is on the container
+        <div aria-hidden style={{ minHeight: height }} />
       )}
     </div>
   );

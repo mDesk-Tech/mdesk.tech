@@ -161,7 +161,7 @@ function WorldMap({ dots = [], lineColor }: MapProps) {
             </linearGradient>
           </defs>
 
-          {/* start & end circles with pulse - using CSS animations for better performance */}
+          {/* start & end circles with pulse - using SVG SMIL animations */}
           {projectedDots.map((d, i) => (
             <g key={`points-${i}`}>
               {/* start */}

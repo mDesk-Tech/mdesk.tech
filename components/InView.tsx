@@ -36,14 +36,13 @@ export default function InView({
       ref={ref as React.RefObject<HTMLDivElement>}
       className={cn(
         // Use CSS transitions for smoother animations
-        // Apply will-change only when not visible to hint browser about upcoming animation
         "transition-[opacity,transform] duration-500 ease-out",
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
         className,
       )}
       style={{
         transitionDelay: delay ? `${delay}s` : undefined,
-        // Use will-change to hint browser about upcoming animation, reset to 'auto' after
+        // will-change hints browser about upcoming animation, reset to 'auto' after visible
         willChange: visible ? "auto" : "opacity, transform",
         ...style,
       }}
