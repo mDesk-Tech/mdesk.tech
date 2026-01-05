@@ -4,7 +4,6 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
-  // cacheComponents: true,
   typescript: {
     // Skip type checking during `next build`
     ignoreBuildErrors: true,
@@ -16,11 +15,9 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   experimental: {
     cssChunking: "strict",
-    // useCache: true,
     optimizeCss: true,
     inlineCss: true,
     optimizePackageImports: [
-      "framer-motion",
       "lucide-react",
       "@radix-ui/react-dialog",
       "motion/react",
@@ -40,16 +37,6 @@ const nextConfig: NextConfig = {
       {
         // Cache Next.js static assets aggressively
         source: "/_next/static/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
-        // Cache fonts for better TTFB on repeat visits
-        source: "/fonts/:path*",
         headers: [
           {
             key: "Cache-Control",
