@@ -283,7 +283,7 @@ section:not(:first-of-type) {
   .navbar,
   .navbar[data-nav-state="scrolled"],
   .navbar[data-nav-state="mobile-open"] {
-    background-color: hsl(var(--background)) !important;
+    background-color: #000 !important;
     border-bottom-color: hsl(var(--border)) !important;
     backdrop-filter: none !important;
   }
