@@ -19,6 +19,9 @@ interface LazySectionProps {
 /**
  * Delays mounting children until the section scrolls into view while preserving layout with a configurable placeholder.
  *
+ * Uses content-visibility: auto and contain-intrinsic-size for better rendering performance
+ * and reduced INP by skipping layout/paint work for off-screen content.
+ *
  * @param children - Content to render after the section becomes visible
  * @param className - Additional CSS classes applied to the wrapper element
  * @param minHeight - Minimum height for the placeholder; if a number, it's treated as pixels (e.g., `100` -> `100px`)
@@ -39,18 +42,35 @@ export default function LazySection({
     freezeOnceVisible: true,
   });
 
-  const placeholderStyle = useMemo<React.CSSProperties>(() => {
-    return typeof minHeight === "number"
-      ? { minHeight: `${minHeight}px` }
-      : { minHeight };
+  // Compute height and contain-intrinsic-size values once
+  const { height, containIntrinsicSize } = useMemo(() => {
+    const h = typeof minHeight === "number" ? `${minHeight}px` : minHeight;
+    return {
+      height: h,
+      containIntrinsicSize: `auto ${h}`,
+    };
   }, [minHeight]);
 
   return (
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
       className={cn("content-visibility-auto", className)}
+      style={
+        !isVisible
+          ? {
+              // Optimize rendering for offscreen content
+              contentVisibility: "auto",
+              containIntrinsicSize,
+            }
+          : undefined
+      }
     >
-      {isVisible ? children : <div aria-hidden style={placeholderStyle} />}
+      {isVisible ? (
+        children
+      ) : (
+        // Placeholder only needs minHeight - containIntrinsicSize is on the container
+        <div aria-hidden style={{ minHeight: height }} />
+      )}
     </div>
   );
 }

@@ -4,7 +4,6 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
-  cacheComponents: true,
   typescript: {
     // Skip type checking during `next build`
     ignoreBuildErrors: true,
@@ -16,14 +15,15 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   experimental: {
     cssChunking: "strict",
-    useCache: true,
     optimizeCss: true,
     inlineCss: true,
     optimizePackageImports: [
-      "framer-motion",
       "lucide-react",
       "@radix-ui/react-dialog",
       "motion/react",
+      "dotted-map",
+      "three",
+      "@react-three/fiber",
     ],
   },
   images: {
@@ -41,6 +41,16 @@ const nextConfig: NextConfig = {
           {
             key: "Cache-Control",
             value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // Add security and performance headers to all pages
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
           },
         ],
       },

@@ -1,13 +1,19 @@
 "use client";
 
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useRef, useEffect, useState, useMemo, memo } from "react";
 import { motion } from "motion/react";
 import DottedMap from "dotted-map";
 import { useTheme } from "next-themes";
 
 const STATIC_MAP = new DottedMap({ height: 100, grid: "diagonal" });
 
-function MapSvg({ bg, dotColor }: { bg: string; dotColor: string }) {
+const MapSvg = memo(function MapSvg({
+  bg,
+  dotColor,
+}: {
+  bg: string;
+  dotColor: string;
+}) {
   const inner = useMemo(
     () =>
       STATIC_MAP.getSVG({
@@ -19,7 +25,7 @@ function MapSvg({ bg, dotColor }: { bg: string; dotColor: string }) {
     [bg, dotColor],
   );
   return <div dangerouslySetInnerHTML={{ __html: inner }} />;
-}
+});
 
 interface MapProps {
   dots?: Array<{
@@ -29,15 +35,36 @@ interface MapProps {
   lineColor?: string;
 }
 
-export default function WorldMap({ dots = [], lineColor }: MapProps) {
+function WorldMap({ dots = [], lineColor }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [animationsReady, setAnimationsReady] = useState(false);
 
+  // Track mount state for hydration-safe theme access
+  // This is a common pattern for components that need client-only APIs
   useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 0);
-    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
   }, []);
+
+  // Defer heavy animations using requestIdleCallback for better INP
+  useEffect(() => {
+    if (!mounted) return;
+
+    const scheduleAnimations = () => {
+      setAnimationsReady(true);
+    };
+
+    if (typeof requestIdleCallback !== "undefined") {
+      const handle = requestIdleCallback(scheduleAnimations, { timeout: 200 });
+      return () => cancelIdleCallback(handle);
+    } else {
+      // Fallback: use setTimeout with a small delay
+      const t = setTimeout(scheduleAnimations, 100);
+      return () => clearTimeout(t);
+    }
+  }, [mounted]);
 
   const currentTheme = mounted ? resolvedTheme || theme : "dark";
 
@@ -92,100 +119,115 @@ export default function WorldMap({ dots = [], lineColor }: MapProps) {
         <MapSvg bg={mapColors.bg} dotColor={mapColors.dotColor} />
       </div>
 
-      {/* animated lines & pulsing dots */}
-      <svg
-        ref={svgRef}
-        viewBox="0 0 800 400"
-        className="w-full h-full absolute inset-0 pointer-events-none select-none"
-      >
-        {/* curved paths */}
-        {projectedDots.map((d, i) => (
-          <motion.path
-            key={`path-${i}`}
-            d={createCurvedPath(d.start, d.end)}
-            fill="none"
-            stroke="url(#path-gradient)"
-            strokeWidth="1"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{
-              duration: 3,
-              delay: 0.8 * i,
-              ease: "easeOut",
-              repeat: Number.POSITIVE_INFINITY,
-              repeatDelay: 5,
-            }}
-          />
-        ))}
+      {/* Defer animated elements to reduce INP */}
+      {animationsReady && (
+        <svg
+          ref={svgRef}
+          viewBox="0 0 800 400"
+          className="w-full h-full absolute inset-0 pointer-events-none select-none"
+        >
+          {/* curved paths */}
+          {projectedDots.map((d, i) => (
+            <motion.path
+              key={`path-${i}`}
+              d={createCurvedPath(d.start, d.end)}
+              fill="none"
+              stroke="url(#path-gradient)"
+              strokeWidth="1"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{
+                duration: 3,
+                delay: 0.8 * i,
+                ease: "easeOut",
+                repeat: Number.POSITIVE_INFINITY,
+                repeatDelay: 5,
+              }}
+            />
+          ))}
 
-        <defs>
-          <linearGradient id="path-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="white" stopOpacity="0" />
-            <stop offset="5%" stopColor={finalLineColor} stopOpacity="1" />
-            <stop offset="95%" stopColor={finalLineColor} stopOpacity="1" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-
-        {/* start & end circles with pulse */}
-        {projectedDots.map((d, i) => (
-          <g key={`points-${i}`}>
-            {/* start */}
-            <circle cx={d.start.x} cy={d.start.y} r="2" fill={finalLineColor} />
-            <circle
-              cx={d.start.x}
-              cy={d.start.y}
-              r="2"
-              fill={finalLineColor}
-              opacity="0.5"
+          <defs>
+            <linearGradient
+              id="path-gradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
             >
-              <animate
-                attributeName="r"
-                from="2"
-                to="8"
-                dur="2.5s"
-                begin="0s"
-                repeatCount="indefinite"
-              />
-              <animate
-                attributeName="opacity"
-                from="0.5"
-                to="0"
-                dur="2.5s"
-                begin="0s"
-                repeatCount="indefinite"
-              />
-            </circle>
+              <stop offset="0%" stopColor="white" stopOpacity="0" />
+              <stop offset="5%" stopColor={finalLineColor} stopOpacity="1" />
+              <stop offset="95%" stopColor={finalLineColor} stopOpacity="1" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </linearGradient>
+          </defs>
 
-            {/* end */}
-            <circle cx={d.end.x} cy={d.end.y} r="2" fill={finalLineColor} />
-            <circle
-              cx={d.end.x}
-              cy={d.end.y}
-              r="2"
-              fill={finalLineColor}
-              opacity="0.5"
-            >
-              <animate
-                attributeName="r"
-                from="2"
-                to="8"
-                dur="2.5s"
-                begin="0s"
-                repeatCount="indefinite"
+          {/* start & end circles with pulse - using SVG SMIL animations */}
+          {projectedDots.map((d, i) => (
+            <g key={`points-${i}`}>
+              {/* start */}
+              <circle
+                cx={d.start.x}
+                cy={d.start.y}
+                r="2"
+                fill={finalLineColor}
               />
-              <animate
-                attributeName="opacity"
-                from="0.5"
-                to="0"
-                dur="2.5s"
-                begin="0s"
-                repeatCount="indefinite"
-              />
-            </circle>
-          </g>
-        ))}
-      </svg>
+              <circle
+                cx={d.start.x}
+                cy={d.start.y}
+                r="2"
+                fill={finalLineColor}
+                opacity="0.5"
+              >
+                <animate
+                  attributeName="r"
+                  from="2"
+                  to="8"
+                  dur="2.5s"
+                  begin="0s"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="opacity"
+                  from="0.5"
+                  to="0"
+                  dur="2.5s"
+                  begin="0s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+
+              {/* end */}
+              <circle cx={d.end.x} cy={d.end.y} r="2" fill={finalLineColor} />
+              <circle
+                cx={d.end.x}
+                cy={d.end.y}
+                r="2"
+                fill={finalLineColor}
+                opacity="0.5"
+              >
+                <animate
+                  attributeName="r"
+                  from="2"
+                  to="8"
+                  dur="2.5s"
+                  begin="0s"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="opacity"
+                  from="0.5"
+                  to="0"
+                  dur="2.5s"
+                  begin="0s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+            </g>
+          ))}
+        </svg>
+      )}
     </div>
   );
 }
+
+export default memo(WorldMap);

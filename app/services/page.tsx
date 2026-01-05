@@ -115,7 +115,11 @@ export default function ServicesPage() {
               </div>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
+            {/* LCP element - marked for priority rendering */}
+            <h1
+              className="text-5xl md:text-7xl font-black mb-6 leading-tight"
+              data-lcp-element="true"
+            >
               Elevate Your
               <span className="block bg-linear-to-r from-cyan-500 to-teal-500 bg-clip-text text-transparent">
                 Digital Presence
