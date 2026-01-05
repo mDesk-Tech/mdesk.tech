@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
-  cacheComponents: true,
+  // cacheComponents: true,
   typescript: {
     // Skip type checking during `next build`
     ignoreBuildErrors: true,
@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   experimental: {
     cssChunking: "strict",
-    useCache: true,
+    // useCache: true,
     optimizeCss: true,
     inlineCss: true,
     optimizePackageImports: [
