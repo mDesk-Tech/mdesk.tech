@@ -93,10 +93,17 @@ export default async function RootLayout({
       style={{ colorScheme: "dark" }}
     >
       <head>
-        {/* Resource hints for performance */}
+        {/* Resource hints for performance - preconnect for critical third-party domains */}
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
-        {/* Inline critical CSS */}
+        {/* Inline critical CSS for faster FCP and LCP */}
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -105,17 +112,31 @@ export default async function RootLayout({
                 color-scheme: dark;
               }
               
-              /* LCP optimization - ensure hero content renders immediately */
+              /* Critical path: ensure above-the-fold content renders immediately */
               h1, [data-lcp-element="true"] {
                 opacity: 1 !important;
                 visibility: visible !important;
+                content-visibility: visible !important;
               }
               
-              /* Prevent layout shifts */
+              /* Prevent layout shifts (CLS optimization) */
               img, video {
                 height: auto;
                 max-width: 100%;
                 display: block;
+              }
+              
+              /* Optimize main content visibility for LCP */
+              .critical-content {
+                contain: layout style;
+              }
+              
+              /* Defer non-critical animations until after load */
+              .defer-animation {
+                animation-play-state: paused !important;
+              }
+              body.loaded .defer-animation {
+                animation-play-state: running !important;
               }
               
               /* Reduced motion support for accessibility */

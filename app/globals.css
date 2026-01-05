@@ -61,9 +61,16 @@
   perspective: 1000px;
 }
 
+/* Content visibility optimization for off-screen content */
 .content-visibility-auto {
   content-visibility: auto;
-  contain-intrinsic-size: 0 500px;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Optimize sections below the fold */
+section:not(:first-of-type) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 
 /* Optimize animations for reduced motion */
@@ -74,6 +81,20 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Optimize will-change usage - only apply to elements that are animating */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Remove will-change from elements not actively animating */
+.animate-complete {
+  will-change: auto;
 }
 
 @custom-variant dark (&:is(.dark *));

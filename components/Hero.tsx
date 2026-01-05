@@ -7,10 +7,26 @@ const Hero = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   // Track scroll-driven fade/translate without animation library
   const opacityRef = useRef(1);
   const translateYRef = useRef(0);
+
+  // Defer non-critical visual effects until after hydration
+  useEffect(() => {
+    // Use requestIdleCallback if available for non-critical work
+    const scheduleHydration = () => {
+      setIsHydrated(true);
+    };
+
+    if (typeof requestIdleCallback !== "undefined") {
+      requestIdleCallback(scheduleHydration, { timeout: 100 });
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      setTimeout(scheduleHydration, 50);
+    }
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -81,7 +97,8 @@ const Hero = memo(() => {
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none" />
 
-      {!isMobile && (
+      {/* Defer decorative blobs until after hydration for better INP */}
+      {isHydrated && !isMobile && (
         <>
           <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none will-change-transform animate-blob-a" />
           <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl pointer-events-none will-change-transform animate-blob-b" />

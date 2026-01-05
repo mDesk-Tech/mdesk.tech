@@ -14,6 +14,8 @@ interface InViewProps extends React.HTMLAttributes<HTMLDivElement> {
  *
  * The component starts hidden and translated downward, then transitions to visible and aligned when at least 10% of the element is in view. Once visible, it stays visible.
  *
+ * Uses CSS transitions instead of JavaScript animations for better INP performance.
+ *
  * @param delay - Optional delay in seconds applied to the transition (useful for staggering).
  * @returns A div wrapping `children` that applies the in-view reveal transition and forwards remaining props.
  */
@@ -33,12 +35,17 @@ export default function InView({
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
       className={cn(
-        "will-change-transform transition duration-500 ease-out",
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+        // Use transform: translateZ(0) to promote to compositor layer for smoother animations
+        // Only apply will-change when not visible to hint browser about upcoming animation
+        visible
+          ? "opacity-100 translate-y-0 transition-[opacity,transform] duration-500 ease-out"
+          : "opacity-0 translate-y-4 will-change-[opacity,transform] transition-[opacity,transform] duration-500 ease-out",
         className,
       )}
       style={{
         transitionDelay: delay ? `${delay}s` : undefined,
+        // Remove will-change after animation to free GPU memory
+        willChange: visible ? "auto" : undefined,
         ...style,
       }}
       {...rest}

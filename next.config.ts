@@ -24,6 +24,9 @@ const nextConfig: NextConfig = {
       "lucide-react",
       "@radix-ui/react-dialog",
       "motion/react",
+      "dotted-map",
+      "three",
+      "@react-three/fiber",
     ],
   },
   images: {
@@ -41,6 +44,26 @@ const nextConfig: NextConfig = {
           {
             key: "Cache-Control",
             value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // Cache fonts for better TTFB on repeat visits
+        source: "/fonts/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // Add security and performance headers to all pages
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
           },
         ],
       },
