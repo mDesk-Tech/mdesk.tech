@@ -37,7 +37,7 @@ export default function InView({
       className={cn(
         // Use CSS transitions for smoother animations
         "transition-[opacity,transform] duration-500 ease-out",
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+        visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
         className,
       )}
       style={{

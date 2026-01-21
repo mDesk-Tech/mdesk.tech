@@ -9,7 +9,6 @@ import {
   Check,
 } from "lucide-react";
 import Link from "next/link";
-import GlobalReach from "@/components/GlobalReach";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -32,7 +31,7 @@ const servicesData: Service[] = [
     title: "Web Design",
     description:
       "Transform your vision into stunning, user-centric designs that captivate and convert",
-    icon: <Palette className="h-6 w-6" />,
+    icon: <Palette className="size-6" />,
     features: [
       "Custom UI/UX Design",
       "Responsive Layouts",
@@ -46,7 +45,7 @@ const servicesData: Service[] = [
     title: "Web Development",
     description:
       "Build powerful, scalable applications with modern technologies and best practices",
-    icon: <Code2 className="h-6 w-6" />,
+    icon: <Code2 className="size-6" />,
     features: [
       "React & Next.js Development",
       "API Integration & Development",
@@ -60,7 +59,7 @@ const servicesData: Service[] = [
     title: "Hosting Solutions",
     description:
       "Enterprise-grade hosting infrastructure with guaranteed uptime and security",
-    icon: <Server className="h-6 w-6" />,
+    icon: <Server className="size-6" />,
     features: [
       "99.9% Uptime Guarantee",
       "SSL Certificates Included",
@@ -74,7 +73,7 @@ const servicesData: Service[] = [
     title: "SEO Optimization",
     description:
       "Dominate search rankings with data-driven strategies and proven techniques",
-    icon: <TrendingUp className="h-6 w-6" />,
+    icon: <TrendingUp className="size-6" />,
     features: [
       "Comprehensive Keyword Research",
       "Technical SEO Audits",
@@ -102,14 +101,14 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
+      <section className="relative overflow-hidden pt-32 pb-16">
         <div className="absolute inset-0 bg-linear-to-br from-cyan-500/5 via-background to-teal-500/5" />
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block mb-6">
-              <div className="px-4 py-2 rounded-full bg-linear-to-r from-cyan-500/10 to-teal-500/10 border border-cyan-500/20">
-                <span className="text-sm font-semibold bg-linear-to-r from-cyan-500 to-teal-500 bg-clip-text text-transparent">
+        <div className="relative z-10 container mx-auto px-6">
+          <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-6 inline-block">
+              <div className="rounded-full border border-cyan-500/20 bg-linear-to-r from-cyan-500/10 to-teal-500/10 px-4 py-2">
+                <span className="bg-linear-to-r from-cyan-500 to-teal-500 bg-clip-text text-sm font-semibold text-transparent">
                   Our Services
                 </span>
               </div>
@@ -117,7 +116,7 @@ export default function ServicesPage() {
 
             {/* LCP element - marked for priority rendering */}
             <h1
-              className="text-5xl md:text-7xl font-black mb-6 leading-tight"
+              className="mb-6 text-5xl/tight font-black md:text-7xl"
               data-lcp-element="true"
             >
               Elevate Your
@@ -126,7 +125,7 @@ export default function ServicesPage() {
               </span>
             </h1>
 
-            <p className="text-xl text-muted-foreground leading-relaxed">
+            <p className="text-xl/relaxed text-muted-foreground">
               Web solutions designed to help your business thrive in the modern
               digital landscape
             </p>
@@ -135,29 +134,29 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 relative">
+      <section className="relative py-20">
         <div className="container mx-auto px-6">
           <h2 className="sr-only">Services</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-2">
             {servicesData.map((service, index) => (
               <div key={index} className="group relative">
-                <div className="relative h-full p-8 rounded-3xl bg-card border border-border overflow-hidden transition-all duration-300 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10">
+                <div className="relative h-full overflow-hidden rounded-3xl border border-border bg-card p-8 transition-all duration-300 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10">
                   {/* Background gradient on hover */}
-                  <div className="absolute inset-0 bg-linear-to-br from-cyan-500/0 to-teal-500/0 group-hover:from-cyan-500/5 group-hover:to-teal-500/5 transition-all duration-500" />
+                  <div className="absolute inset-0 bg-linear-to-br from-cyan-500/0 to-teal-500/0 transition-all duration-500 group-hover:from-cyan-500/5 group-hover:to-teal-500/5" />
 
                   {/* Animated border effect */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="absolute top-0 left-0 w-full h-[2px] bg-linear-to-r from-transparent via-cyan-500 to-transparent animate-shimmer" />
+                  <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    <div className="absolute top-0 left-0 h-0.5 w-full animate-shimmer bg-linear-to-r from-transparent via-cyan-500 to-transparent" />
                   </div>
 
                   <div className="relative z-10">
                     {/* Icon */}
                     <div className="mb-6">
                       <div
-                        className={`inline-flex p-4 rounded-2xl bg-linear-to-br ${
+                        className={`inline-flex rounded-2xl bg-linear-to-br p-4 ${
                           service.color === "cyan"
-                            ? "from-cyan-500/10 to-cyan-600/10 border border-cyan-500/20"
-                            : "from-teal-500/10 to-teal-600/10 border border-teal-500/20"
+                            ? "border border-cyan-500/20 from-cyan-500/10 to-cyan-600/10"
+                            : "border border-teal-500/20 from-teal-500/10 to-teal-600/10"
                         } transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg ${
                           service.color === "cyan"
                             ? "group-hover:shadow-cyan-500/20"
@@ -173,12 +172,12 @@ export default function ServicesPage() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-3xl font-bold mb-3 group-hover:bg-linear-to-r group-hover:from-cyan-500 group-hover:to-teal-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                    <h3 className="mb-3 text-3xl font-bold transition-all duration-300 group-hover:bg-linear-to-r group-hover:from-cyan-500 group-hover:to-teal-500 group-hover:bg-clip-text group-hover:text-transparent">
                       {service.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                    <p className="mb-6 leading-relaxed text-muted-foreground">
                       {service.description}
                     </p>
 
@@ -187,20 +186,20 @@ export default function ServicesPage() {
                       {service.features.map((feature, idx) => (
                         <div
                           key={idx}
-                          className="flex items-start gap-3 group/item"
+                          className="group/item flex items-start gap-3"
                         >
                           <div
-                            className={`mt-0.5 shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${
+                            className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full ${
                               service.color === "cyan"
-                                ? "bg-cyan-500/10 border border-cyan-500/20"
-                                : "bg-teal-500/10 border border-teal-500/20"
+                                ? "border border-cyan-500/20 bg-cyan-500/10"
+                                : "border border-teal-500/20 bg-teal-500/10"
                             } transition-all duration-300 group-hover/item:scale-110`}
                           >
                             <Check
-                              className={`h-3 w-3 ${service.color === "cyan" ? "text-cyan-500" : "text-teal-500"}`}
+                              className={`size-3 ${service.color === "cyan" ? "text-cyan-500" : "text-teal-500"}`}
                             />
                           </div>
-                          <span className="text-sm text-foreground/80 group-hover/item:text-foreground transition-colors">
+                          <span className="text-sm text-foreground/80 transition-colors group-hover/item:text-foreground">
                             {feature}
                           </span>
                         </div>
@@ -215,18 +214,18 @@ export default function ServicesPage() {
       </section>
 
       {/* Process Section */}
-      <section className="py-20 relative overflow-hidden">
+      <section className="relative overflow-hidden py-20">
         <div className="absolute inset-0 bg-linear-to-b from-background via-cyan-500/5 to-background" />
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Our Process</h2>
+        <div className="relative z-10 container mx-auto px-6">
+          <div className="mx-auto mb-16 max-w-3xl text-center">
+            <h2 className="mb-4 text-4xl font-bold md:text-5xl">Our Process</h2>
             <p className="text-xl text-muted-foreground">
               A streamlined approach to delivering exceptional results
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-3">
             {[
               {
                 step: "01",
@@ -246,11 +245,11 @@ export default function ServicesPage() {
             ].map((item, idx) => (
               <div key={idx} className="relative text-center">
                 <div className="mb-4">
-                  <span className="text-6xl font-black bg-linear-to-br from-cyan-500 to-teal-500 bg-clip-text text-transparent opacity-50">
+                  <span className="bg-linear-to-br from-cyan-500 to-teal-500 bg-clip-text text-6xl font-black text-transparent opacity-50">
                     {item.step}
                   </span>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
+                <h3 className="mb-2 text-2xl font-bold">{item.title}</h3>
                 <p className="text-muted-foreground">{item.desc}</p>
               </div>
             ))}
@@ -258,19 +257,16 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Global Reach section */}
-      <GlobalReach />
-
       {/* CTA Section */}
-      <section className="py-20 relative overflow-hidden">
+      <section className="relative overflow-hidden py-20">
         <div className="absolute inset-0 bg-linear-to-r from-cyan-500/10 via-teal-500/10 to-cyan-500/10" />
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">
+        <div className="relative z-10 container mx-auto px-6">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="mb-6 text-4xl font-bold md:text-6xl">
               Ready to Start Your Project?
             </h2>
-            <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="mx-auto mb-10 max-w-2xl text-xl/relaxed text-muted-foreground">
               Let&apos;s collaborate to bring your vision to life
               <br />
               with cutting-edge design and development
@@ -278,10 +274,10 @@ export default function ServicesPage() {
 
             <Link
               href="/contact"
-              className="group inline-flex items-center justify-center px-8 py-4 rounded-full bg-linear-to-r from-cyan-500 to-teal-500 text-white font-bold text-lg transition-all hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/50"
+              className="group inline-flex items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-8 py-4 text-lg font-bold text-white transition-all hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/50"
             >
               Get in Touch
-              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="ml-2 size-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
         </div>

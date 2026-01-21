@@ -6,13 +6,13 @@ import { ArrowLeft, Home } from "lucide-react";
 
 const NotFoundPage = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden py-20">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden py-20">
       {/* Background elements */}
-      <div className="absolute inset-0 grid-pattern opacity-10 z-0" />
-      <div className="absolute inset-0 noise z-0" />
+      <div className="grid-pattern absolute inset-0 z-0 opacity-10" />
+      <div className="noise absolute inset-0 z-0" />
 
       <motion.div
-        className="absolute w-[500px] h-[500px] rounded-full bg-linear-to-r from-cyan-500/10 to-teal-500/10 blur-3xl"
+        className="absolute size-125 rounded-full bg-linear-to-r from-cyan-500/10 to-teal-500/10 blur-3xl"
         animate={{
           x: [0, 100, 0],
           y: [0, 50, 0],
@@ -25,7 +25,7 @@ const NotFoundPage = () => {
       />
 
       <motion.div
-        className="absolute w-[300px] h-[300px] rounded-full bg-linear-to-r from-teal-500/10 to-cyan-500/10 blur-3xl"
+        className="absolute size-75 rounded-full bg-linear-to-r from-teal-500/10 to-cyan-500/10 blur-3xl"
         animate={{
           x: [0, -100, 0],
           y: [0, -50, 0],
@@ -37,11 +37,11 @@ const NotFoundPage = () => {
         }}
       />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-8">
+      <div className="relative z-10 container mx-auto px-6">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-8 text-center">
             <motion.div
-              className="inline-block text-9xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-500 to-teal-500"
+              className="inline-block bg-linear-to-r from-cyan-500 to-teal-500 bg-clip-text text-9xl font-bold text-transparent"
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{
@@ -56,45 +56,45 @@ const NotFoundPage = () => {
           </div>
 
           <motion.div
-            className="text-center mb-12"
+            className="mb-12 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">
+            <h1 className="mb-4 text-3xl font-bold md:text-4xl">
               Page Not Found
             </h1>
-            <p className="text-muted-foreground text-lg max-w-lg mx-auto">
+            <p className="mx-auto max-w-lg text-lg text-muted-foreground">
               We couldn&apos;t find the page you&apos;re looking for. It might
               have been moved, deleted, or never existed.
             </p>
           </motion.div>
 
           <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-col items-center justify-center gap-4 sm:flex-row"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
             <Link
               href="/"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium transition-all hover:bg-primary/90"
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-all hover:bg-primary/90"
             >
-              <Home className="mr-2 h-4 w-4" />
+              <Home className="mr-2 size-4" />
               Back to Home
             </Link>
             <button
               onClick={() => window.history.back()}
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium transition-all hover:bg-secondary/80"
+              className="inline-flex items-center justify-center rounded-lg bg-secondary px-6 py-3 font-medium text-secondary-foreground transition-all hover:bg-secondary/80"
             >
-              <ArrowLeft className="mr-2 h-4 w-4" />
+              <ArrowLeft className="mr-2 size-4" />
               Go Back
             </button>
           </motion.div>
 
           {/* 404 Illustration */}
           <motion.div
-            className="mt-16 relative max-w-md mx-auto"
+            className="relative mx-auto mt-16 max-w-md"
             initial={{
               opacity: 0,
               y: 30,
@@ -106,27 +106,27 @@ const NotFoundPage = () => {
             transition={{ duration: 0.8, delay: 0.7 }}
           >
             <div className="relative aspect-square">
-              <div className="absolute inset-0 rounded-full bg-linear-to-br from-cyan-500/20 to-teal-500/20 animate-pulse" />
+              <div className="absolute inset-0 animate-pulse rounded-full bg-linear-to-br from-cyan-500/20 to-teal-500/20" />
 
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative w-3/4 h-3/4">
+                <div className="relative size-3/4">
                   {/* Circular grid pattern */}
                   <div
-                    className="absolute inset-0 rounded-full border-4 border-dashed border-muted/30 animate-spin"
+                    className="absolute inset-0 animate-spin rounded-full border-4 border-dashed border-muted/30"
                     style={{ animationDuration: "30s" }}
                   />
 
                   {/* Broken link visualization */}
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 flex items-center">
-                    <div className="w-1/2 h-4 bg-primary/50 rounded-l-full" />
-                    <div className="w-4 h-4 rounded-full bg-background border-2 border-primary/50 ml-4" />
+                  <div className="absolute top-1/2 left-1/2 flex w-1/2 -translate-1/2 transform items-center">
+                    <div className="h-4 w-1/2 rounded-l-full bg-primary/50" />
+                    <div className="ml-4 size-4 rounded-full border-2 border-primary/50 bg-background" />
                   </div>
 
                   {/* Animated dots */}
                   {[0, 1, 2, 3, 4, 5].map((i) => (
                     <motion.div
                       key={i}
-                      className="absolute w-3 h-3 rounded-full bg-primary/70"
+                      className="absolute size-3 rounded-full bg-primary/70"
                       style={{
                         top: `${Math.sin((i / 6) * Math.PI * 2) * 45 + 50}%`,
                         left: `${Math.cos((i / 6) * Math.PI * 2) * 45 + 50}%`,

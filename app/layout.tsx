@@ -150,7 +150,7 @@ export default async function RootLayout({
           forcedTheme="dark"
           disableTransitionOnChange
         >
-          <div className="relative min-h-screen flex flex-col">
+          <div className="relative flex min-h-screen flex-col">
             <Navbar />
             <main className="grow">
               {/* Add priority hint for LCP content */}

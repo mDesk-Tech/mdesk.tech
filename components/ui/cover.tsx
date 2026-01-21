@@ -54,7 +54,7 @@ export const Cover = ({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       ref={ref}
-      className="relative hover:bg-neutral-900 group/cover inline-block dark:bg-neutral-900 bg-neutral-100 px-2 py-2 transition duration-200 rounded-sm"
+      className="group/cover relative inline-block rounded-sm bg-neutral-100 p-2 transition duration-200 hover:bg-neutral-900 dark:bg-neutral-900"
     >
       <AnimatePresence>
         {hovered && (
@@ -146,15 +146,15 @@ export const Cover = ({
           },
         }}
         className={cn(
-          "dark:text-white inline-block text-neutral-900 relative z-20 group-hover/cover:text-white transition duration-200",
+          "relative z-20 inline-block text-neutral-900 transition duration-200 group-hover/cover:text-white dark:text-white",
           className,
         )}
       >
         {children}
       </motion.span>
-      <CircleIcon className="absolute -right-[2px] -top-[2px]" />
-      <CircleIcon className="absolute -bottom-[2px] -right-[2px]" delay={0.4} />
-      <CircleIcon className="absolute -left-[2px] -top-[2px]" delay={0.8} />
+      <CircleIcon className="absolute -top-[2px] -right-[2px]" />
+      <CircleIcon className="absolute -right-[2px] -bottom-[2px]" delay={0.4} />
+      <CircleIcon className="absolute -top-[2px] -left-[2px]" delay={0.8} />
       <CircleIcon className="absolute -bottom-[2px] -left-[2px]" delay={1.6} />
     </span>
   );
@@ -231,7 +231,7 @@ const CircleIcon = ({ className }: { className?: string; delay?: number }) => {
   return (
     <span
       className={cn(
-        `pointer-events-none animate-pulse group-hover/cover:hidden group-hover/cover:opacity-100 group inline-block h-2 w-2 rounded-full bg-neutral-600 dark:bg-white opacity-20 group-hover/cover:bg-white`,
+        `group pointer-events-none inline-block size-2 animate-pulse rounded-full bg-neutral-600 opacity-20 group-hover/cover:hidden group-hover/cover:bg-white group-hover/cover:opacity-100 dark:bg-white`,
         className,
       )}
     ></span>

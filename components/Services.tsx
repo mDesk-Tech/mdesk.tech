@@ -9,7 +9,7 @@ const services = [
     title: "Web Design",
     description:
       "Custom, responsive designs tailored to your brand identity and user experience goals",
-    icon: <Palette className="h-10 w-10" />,
+    icon: <Palette className="size-10" />,
     features: [
       "Custom UI/UX Design",
       "Responsive Layouts",
@@ -21,7 +21,7 @@ const services = [
     title: "Web Development",
     description:
       "Robust, scalable web applications built with cutting-edge technologies and best practices",
-    icon: <Code2 className="h-10 w-10" />,
+    icon: <Code2 className="size-10" />,
     features: [
       "React & Next.js",
       "API Integration",
@@ -33,7 +33,7 @@ const services = [
     title: "Hosting Solutions",
     description:
       "Reliable, secure hosting infrastructure with 99.9% uptime guarantee and 24/7 monitoring",
-    icon: <Server className="h-10 w-10" />,
+    icon: <Server className="size-10" />,
     features: [
       "99.9% Uptime",
       "SSL Certificates",
@@ -45,7 +45,7 @@ const services = [
     title: "SEO Optimization",
     description:
       "Improve your online visibility and search engine rankings with proven strategies",
-    icon: <TrendingUp className="h-10 w-10" />,
+    icon: <TrendingUp className="size-10" />,
     features: [
       "Keyword Research",
       "On-Page SEO",
@@ -57,15 +57,15 @@ const services = [
 
 const Services = memo(() => {
   return (
-    <section id="services" className="py-20 sm:py-32 relative overflow-hidden">
-      <div className="absolute inset-0 grid-pattern opacity-20" />
+    <section id="services" className="relative overflow-hidden py-20 sm:py-32">
+      <div className="grid-pattern absolute inset-0 opacity-20" />
       <div className="absolute inset-0 bg-linear-to-b from-background via-transparent to-background" />
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6">
         <SectionHeading
           badge="What We Offer"
           title={
-            <span className="bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70">
+            <span className="bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
               Our <Cover>Services</Cover>
             </span>
           }
@@ -73,31 +73,31 @@ const Services = memo(() => {
           className="mb-12 sm:mb-20"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2">
           {services.map((service) => (
             <div
               key={service.title}
               className="h-auto min-h-[350px] sm:h-[400px]"
             >
-              <GlareCard className="flex flex-col items-start justify-between p-6 sm:p-8 h-full">
+              <GlareCard className="flex h-full flex-col items-start justify-between p-6 sm:p-8">
                 <div>
-                  <div className="inline-flex p-2.5 sm:p-3 rounded-xl bg-primary/10 text-primary mb-4">
+                  <div className="mb-4 inline-flex rounded-xl bg-primary/10 p-2.5 text-primary sm:p-3">
                     {service.icon}
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 text-foreground">
+                  <h3 className="mb-2 text-xl font-bold text-foreground sm:mb-3 sm:text-2xl">
                     {service.title}
                   </h3>
-                  <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 leading-relaxed">
+                  <p className="mb-4 text-sm/relaxed text-muted-foreground sm:mb-6 sm:text-base">
                     {service.description}
                   </p>
                 </div>
-                <div className="space-y-2 w-full">
+                <div className="w-full space-y-2">
                   {service.features.map((feature, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground"
+                      className="flex items-center gap-2 text-xs text-muted-foreground sm:text-sm"
                     >
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                      <div className="size-1.5 shrink-0 rounded-full bg-primary" />
                       <span>{feature}</span>
                     </div>
                   ))}

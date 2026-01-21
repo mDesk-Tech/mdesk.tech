@@ -16,20 +16,20 @@ export const metadata: Metadata = pageMetadata({
  */
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen pt-24 pb-16 relative overflow-hidden">
-      <div className="absolute inset-0 grid-pattern opacity-10 z-0" />
+    <div className="relative min-h-screen overflow-hidden pt-24 pb-16">
+      <div className="grid-pattern absolute inset-0 z-0 opacity-10" />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-3xl mx-auto">
+      <div className="relative z-10 container mx-auto px-6">
+        <div className="mx-auto max-w-3xl">
           <Link
             href="/"
-            className="inline-flex items-center text-muted-foreground hover:text-primary mb-8 transition-colors"
+            className="mb-8 inline-flex items-center text-muted-foreground transition-colors hover:text-primary"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeft className="mr-2 size-4" />
             Back to Home
           </Link>
 
-          <h1 className="text-4xl font-bold mb-8 bg-linear-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">
+          <h1 className="mb-8 bg-linear-to-r from-cyan-400 to-teal-400 bg-clip-text text-4xl font-bold text-transparent">
             Privacy Policy
           </h1>
 
@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
             <p className="text-muted-foreground">Last updated: March 8, 2024</p>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
+              <h2 className="mb-4 text-2xl font-semibold">1. Introduction</h2>
               <p>
                 At mdesk.tech, we take your privacy seriously. This Privacy
                 Policy explains how we collect, use, disclose, and safeguard
@@ -46,30 +46,30 @@ export default function PrivacyPolicy() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">
+              <h2 className="mb-4 text-2xl font-semibold">
                 2. Information We Collect
               </h2>
-              <h3 className="text-xl font-semibold mb-2">
+              <h3 className="mb-2 text-xl font-semibold">
                 2.1 Personal Information
               </h3>
               <p>
                 We may collect personal information that you voluntarily provide
                 to us when you:
               </p>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
+              <ul className="mt-2 list-disc space-y-2 pl-6">
                 <li>Contact us through our website</li>
                 <li>Subscribe to our newsletter</li>
                 <li>Request a quote or consultation</li>
               </ul>
 
-              <h3 className="text-xl font-semibold mt-6 mb-2">
+              <h3 className="mt-6 mb-2 text-xl font-semibold">
                 2.2 Automatically Collected Information
               </h3>
               <p>
                 When you visit our website, we automatically collect certain
                 information about your device, including:
               </p>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
+              <ul className="mt-2 list-disc space-y-2 pl-6">
                 <li>Browser type and version</li>
                 <li>Operating system</li>
                 <li>IP address</li>
@@ -78,11 +78,11 @@ export default function PrivacyPolicy() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">
+              <h2 className="mb-4 text-2xl font-semibold">
                 3. How We Use Your Information
               </h2>
               <p>We use the information we collect to:</p>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
+              <ul className="mt-2 list-disc space-y-2 pl-6">
                 <li>Provide and maintain our services</li>
                 <li>Respond to your inquiries and requests</li>
                 <li>Improve our website and services</li>
@@ -95,7 +95,7 @@ export default function PrivacyPolicy() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">4. Data Security</h2>
+              <h2 className="mb-4 text-2xl font-semibold">4. Data Security</h2>
               <p>
                 We implement appropriate technical and organizational security
                 measures to protect your information. However, please note that
@@ -104,9 +104,9 @@ export default function PrivacyPolicy() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">5. Your Rights</h2>
+              <h2 className="mb-4 text-2xl font-semibold">5. Your Rights</h2>
               <p>You have the right to:</p>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
+              <ul className="mt-2 list-disc space-y-2 pl-6">
                 <li>Access your personal information</li>
                 <li>Correct inaccurate or incomplete information</li>
                 <li>Request deletion of your information</li>
@@ -116,13 +116,13 @@ export default function PrivacyPolicy() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">6. Contact Us</h2>
+              <h2 className="mb-4 text-2xl font-semibold">6. Contact Us</h2>
               <p>
                 If you have any questions about this Privacy Policy, please
                 contact us at{" "}
                 <a
                   href="mailto:hello@mdesk.tech"
-                  className="text-cyan-400 hover:text-teal-400 underline transition-colors"
+                  className="text-cyan-400 underline transition-colors hover:text-teal-400"
                 >
                   hello@mdesk.tech
                 </a>

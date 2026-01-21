@@ -99,9 +99,9 @@ export default function ContactPage() {
   const formContent = (
     <div className="relative z-10 p-6 sm:p-8">
       {isSubmitted ? (
-        <div className="text-center py-8 sm:py-12 animate-fade-up delay-0">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br from-primary/20 to-accent/20 sm:mb-6 sm:h-20 sm:w-20">
-            <CheckCircle className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
+        <div className="animate-fade-up py-8 text-center delay-0 sm:py-12">
+          <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-linear-to-br from-primary/20 to-accent/20 sm:mb-6 sm:size-20">
+            <CheckCircle className="size-8 text-primary sm:size-10" />
           </div>
           <h3 className="mb-3 text-xl font-bold sm:mb-4 sm:text-2xl">
             Message Sent!
@@ -113,7 +113,7 @@ export default function ContactPage() {
           <button
             type="button"
             onClick={() => setIsSubmitted(false)}
-            className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
+            className="inline-flex touch-manipulation items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 sm:px-6 sm:py-3 sm:text-base"
           >
             Send Another Message
           </button>
@@ -125,7 +125,7 @@ export default function ContactPage() {
             data-lcp-element="true"
           >
             <div className="rounded-lg bg-primary/10 p-2">
-              <MessageSquare className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
+              <MessageSquare className="size-4 text-primary sm:size-5" />
             </div>
             <h3 className="text-lg font-bold sm:text-xl">Send us a message</h3>
           </div>
@@ -218,12 +218,12 @@ export default function ContactPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex w-full items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 disabled:opacity-70 touch-manipulation sm:px-6 sm:py-3 sm:text-base"
+              className="inline-flex w-full touch-manipulation items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:scale-105 disabled:opacity-70 sm:px-6 sm:py-3 sm:text-base"
             >
               {isSubmitting ? (
                 <>
                   <svg
-                    className="mr-2 h-4 w-4 animate-spin text-white"
+                    className="mr-2 size-4 animate-spin text-white"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -247,7 +247,7 @@ export default function ContactPage() {
               ) : (
                 <>
                   Send Message
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRight className="ml-2 size-4" />
                 </>
               )}
             </button>
@@ -260,25 +260,25 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden">
+      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-20">
         <div className="absolute inset-0 bg-linear-to-b from-primary/5 via-background to-background" />
-        <div className="absolute inset-0 grid-pattern opacity-20" />
+        <div className="grid-pattern absolute inset-0 opacity-20" />
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="flex flex-col lg:flex-row items-start gap-8 sm:gap-12">
-            <div className="lg:w-1/2 w-full animate-fade-up delay-0">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6">
+          <div className="flex flex-col items-start gap-8 sm:gap-12 lg:flex-row">
+            <div className="animate-fade-up w-full delay-0 lg:w-1/2">
               <Badge className="mb-4 sm:mb-6">Get in touch</Badge>
 
               <div className="mb-6 sm:mb-8">
                 <div className="block sm:hidden">
                   <h1
                     data-lcp-element="true"
-                    className="text-4xl font-black bg-clip-text text-transparent bg-linear-to-r from-primary to-accent"
+                    className="bg-linear-to-r from-primary to-accent bg-clip-text text-4xl font-black text-transparent"
                   >
                     CONTACT
                   </h1>
                 </div>
-                <div className="hidden sm:block h-52">
+                <div className="hidden h-52 sm:block">
                   <Suspense fallback={<div className="h-52" />}>
                     {/* Keep semantic h1 for desktop while using decorative SVG text */}
                     <h1 className="sr-only">CONTACT</h1>
@@ -287,36 +287,36 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-lg">
+              <p className="mb-6 max-w-lg text-base text-muted-foreground sm:mb-8 sm:text-lg">
                 Have a project in mind or just want to say hello?
                 <br />
                 We&apos;d love to hear from you
               </p>
 
               {/* Contact Info Cards */}
-              <div className="space-y-4 mb-6 sm:mb-8">
-                <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-card border border-border transition-colors animate-fade-up delay-300">
-                  <div className="p-2 sm:p-3 rounded-full bg-primary/10 text-primary border">
-                    <Mail className="h-4 w-4 sm:h-5 sm:w-5" />
+              <div className="mb-6 space-y-4 sm:mb-8">
+                <div className="animate-fade-up flex items-start gap-3 rounded-xl border border-border bg-card p-3 transition-colors delay-300 sm:gap-4 sm:p-4">
+                  <div className="rounded-full border bg-primary/10 p-2 text-primary sm:p-3">
+                    <Mail className="size-4 sm:size-5" />
                   </div>
                   <div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">
+                    <div className="text-xs text-muted-foreground sm:text-sm">
                       Email us at
                     </div>
-                    <div className="font-medium text-sm sm:text-base break-all">
+                    <div className="text-sm font-medium break-all sm:text-base">
                       hello@mdesk.tech
                     </div>
                   </div>
                 </div>
 
-                <div className="p-4 sm:p-6 rounded-xl bg-linear-to-br from-primary/10 to-accent/10 border border-primary/20 animate-fade-up delay-400">
-                  <div className="flex items-center gap-3 mb-3 sm:mb-4">
-                    <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                    <h2 className="text-base sm:text-lg font-semibold">
+                <div className="animate-fade-up rounded-xl border border-primary/20 bg-linear-to-br from-primary/10 to-accent/10 p-4 delay-400 sm:p-6">
+                  <div className="mb-3 flex items-center gap-3 sm:mb-4">
+                    <Globe className="size-4 text-primary sm:size-5" />
+                    <h2 className="text-base font-semibold sm:text-lg">
                       We Work Remotely!
                     </h2>
                   </div>
-                  <p className="text-muted-foreground text-xs sm:text-sm">
+                  <p className="text-xs text-muted-foreground sm:text-sm">
                     Our team is distributed across the globe, serving clients
                     worldwide without geographical limitations.
                   </p>
@@ -324,8 +324,8 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="lg:w-1/2 w-full border-none animate-fade-up delay-100">
-              <Card className="relative overflow-hidden rounded-2xl bg-card border-none p-0">
+            <div className="animate-fade-up w-full border-none delay-100 lg:w-1/2">
+              <Card className="relative overflow-hidden rounded-2xl border-none bg-card p-0">
                 <MagicCard
                   gradientColor={"gray"}
                   gradientSize={250}

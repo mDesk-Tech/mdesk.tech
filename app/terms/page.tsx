@@ -20,20 +20,20 @@ export const metadata: Metadata = pageMetadata({
  */
 export default function TermsOfService() {
   return (
-    <div className="min-h-screen pt-24 pb-16 relative overflow-hidden">
-      <div className="absolute inset-0 grid-pattern opacity-10 z-0" />
+    <div className="relative min-h-screen overflow-hidden pt-24 pb-16">
+      <div className="grid-pattern absolute inset-0 z-0 opacity-10" />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-3xl mx-auto">
+      <div className="relative z-10 container mx-auto px-6">
+        <div className="mx-auto max-w-3xl">
           <Link
             href="/"
-            className="inline-flex items-center text-muted-foreground hover:text-primary mb-8 transition-colors"
+            className="mb-8 inline-flex items-center text-muted-foreground transition-colors hover:text-primary"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeft className="mr-2 size-4" />
             Back to Home
           </Link>
 
-          <h1 className="text-4xl font-bold mb-8 bg-linear-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">
+          <h1 className="mb-8 bg-linear-to-r from-cyan-400 to-teal-400 bg-clip-text text-4xl font-bold text-transparent">
             Terms of Service
           </h1>
 
@@ -41,7 +41,7 @@ export default function TermsOfService() {
             <p className="text-muted-foreground">Last updated: March 8, 2024</p>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">
+              <h2 className="mb-4 text-2xl font-semibold">
                 1. Agreement to Terms
               </h2>
               <p>
@@ -53,14 +53,14 @@ export default function TermsOfService() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">2. Use License</h2>
+              <h2 className="mb-4 text-2xl font-semibold">2. Use License</h2>
               <p>
                 Permission is granted to temporarily access the materials on
                 mdesk.tech for personal, non-commercial transitory viewing only.
                 This is the grant of a license, not a transfer of title, and
                 under this license you may not:
               </p>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
+              <ul className="mt-2 list-disc space-y-2 pl-6">
                 <li>Modify or copy the materials</li>
                 <li>Use the materials for any commercial purpose</li>
                 <li>
@@ -79,7 +79,7 @@ export default function TermsOfService() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">3. Services</h2>
+              <h2 className="mb-4 text-2xl font-semibold">3. Services</h2>
               <p>
                 We provide web design, development, and hosting services. The
                 specific details, deliverables, and terms of each service will
@@ -89,7 +89,7 @@ export default function TermsOfService() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">4. Payment Terms</h2>
+              <h2 className="mb-4 text-2xl font-semibold">4. Payment Terms</h2>
               <p>
                 Payment terms will be specified in individual service
                 agreements. Unless otherwise stated, invoices are due within 30
@@ -98,7 +98,7 @@ export default function TermsOfService() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">
+              <h2 className="mb-4 text-2xl font-semibold">
                 5. Intellectual Property
               </h2>
               <p>
@@ -111,7 +111,7 @@ export default function TermsOfService() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">6. Disclaimer</h2>
+              <h2 className="mb-4 text-2xl font-semibold">6. Disclaimer</h2>
               <p>
                 The materials on mdesk.tech are provided on an &apos;as is&apos;
                 basis. We make no warranties, expressed or implied, and hereby
@@ -123,7 +123,7 @@ export default function TermsOfService() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">7. Limitations</h2>
+              <h2 className="mb-4 text-2xl font-semibold">7. Limitations</h2>
               <p>
                 In no event shall mdesk.tech or its suppliers be liable for any
                 damages (including, without limitation, damages for loss of data
@@ -133,7 +133,7 @@ export default function TermsOfService() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">8. Governing Law</h2>
+              <h2 className="mb-4 text-2xl font-semibold">8. Governing Law</h2>
               <p>
                 These terms and conditions are governed by and construed in
                 accordance with the laws, and you irrevocably submit to the
@@ -142,7 +142,7 @@ export default function TermsOfService() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">
+              <h2 className="mb-4 text-2xl font-semibold">
                 9. Changes to Terms
               </h2>
               <p>
@@ -154,7 +154,7 @@ export default function TermsOfService() {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4 text-primary">
+              <h2 className="mb-4 text-2xl font-semibold text-primary">
                 10. Contact Information
               </h2>
               <p>
@@ -162,7 +162,7 @@ export default function TermsOfService() {
                 contact us at{" "}
                 <a
                   href="mailto:hello@mdesk.tech"
-                  className="text-cyan-400 hover:text-teal-400 underline transition-colors"
+                  className="text-cyan-400 underline transition-colors hover:text-teal-400"
                 >
                   hello@mdesk.tech
                 </a>

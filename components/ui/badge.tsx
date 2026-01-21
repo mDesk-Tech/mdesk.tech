@@ -11,12 +11,12 @@ export const Badge = ({ children, className, icon }: BadgeProps) => {
   return (
     <div
       className={cn(
-        "inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm",
+        "inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 backdrop-blur-sm",
         className,
       )}
     >
       {icon}
-      <span className="text-xs sm:text-sm font-semibold text-primary">
+      <span className="text-xs font-semibold text-primary sm:text-sm">
         {children}
       </span>
     </div>

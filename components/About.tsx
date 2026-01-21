@@ -82,13 +82,13 @@ const About = memo(() => {
   return (
     <section
       id="about"
-      className="py-16 sm:py-20 md:py-32 relative overflow-hidden bg-muted/20"
+      className="relative overflow-hidden bg-muted/20 py-16 sm:py-20 md:py-32"
     >
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6">
         <SectionHeading
           badge="Our Story"
           title={
-            <span className="bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70">
+            <span className="bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
               About Us
             </span>
           }
@@ -96,31 +96,31 @@ const About = memo(() => {
           className="mb-12 sm:mb-16 md:mb-20"
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
           {features.map((feature) => (
             <div key={feature.name}>
-              <CardSpotlight className="h-full w-full p-6 sm:p-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2.5 sm:p-3 rounded-xl bg-primary/10 text-primary">
-                    <feature.Icon className="h-5 w-5 sm:h-6 sm:w-6" />
+              <CardSpotlight className="size-full p-6 sm:p-8">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="rounded-xl bg-primary/10 p-2.5 text-primary sm:p-3">
+                    <feature.Icon className="size-5 sm:size-6" />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold relative z-20 text-white">
+                  <h3 className="relative z-20 text-lg font-bold text-white sm:text-xl">
                     {feature.name}
                   </h3>
                 </div>
-                <p className="text-neutral-200 mb-4 relative z-20 text-sm leading-relaxed">
+                <p className="relative z-20 mb-4 text-sm/relaxed text-neutral-200">
                   {feature.description}
                 </p>
-                <ul className="list-none space-y-2 relative z-20">
+                <ul className="relative z-20 list-none space-y-2">
                   {feature.details.map((detail, idx) => (
-                    <li key={idx} className="flex gap-2 items-start">
+                    <li key={idx} className="flex items-start gap-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
                         height="24"
                         viewBox="0 0 24 24"
                         fill="currentColor"
-                        className="h-4 w-4 text-primary mt-1 shrink-0"
+                        className="mt-1 size-4 shrink-0 text-primary"
                       >
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path
@@ -129,7 +129,7 @@ const About = memo(() => {
                           strokeWidth="0"
                         />
                       </svg>
-                      <span className="text-white text-sm">{detail}</span>
+                      <span className="text-sm text-white">{detail}</span>
                     </li>
                   ))}
                 </ul>
@@ -138,20 +138,20 @@ const About = memo(() => {
           ))}
         </div>
 
-        <div className="mt-12 sm:mt-16 md:mt-20 max-w-4xl mx-auto p-6 sm:p-8 md:p-10 rounded-3xl border border-primary/20 bg-linear-to-br from-primary/5 to-accent/5 backdrop-blur-sm">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="mx-auto mt-12 max-w-4xl rounded-3xl border border-primary/20 bg-linear-to-br from-primary/5 to-accent/5 p-6 backdrop-blur-sm sm:mt-16 sm:p-8 md:mt-20 md:p-10">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
             <div>
-              <h3 className="text-2xl sm:text-3xl font-bold mb-2 flex items-center gap-3">
-                <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+              <h3 className="mb-2 flex items-center gap-3 text-2xl font-bold sm:text-3xl">
+                <Heart className="size-6 text-primary sm:size-8" />
                 Ready to work with us?
               </h3>
-              <p className="text-muted-foreground text-base sm:text-lg">
+              <p className="text-base text-muted-foreground sm:text-lg">
                 Let&apos;s create something amazing together.
               </p>
             </div>
             <a
               href="#contact"
-              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-primary text-primary-foreground font-bold transition-all hover:scale-105 hover:shadow-lg hover:shadow-primary/50 whitespace-nowrap touch-manipulation w-full md:w-auto"
+              className="inline-flex w-full touch-manipulation items-center justify-center rounded-full bg-primary px-6 py-3 font-bold whitespace-nowrap text-primary-foreground transition-all hover:scale-105 hover:shadow-lg hover:shadow-primary/50 sm:px-8 sm:py-4 md:w-auto"
             >
               Get in Touch
             </a>

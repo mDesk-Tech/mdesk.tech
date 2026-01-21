@@ -21,7 +21,7 @@ const features: Feature[] = [
     title: "Completely open source",
     description:
       "Powered by powerful open-source projects, standing on giants' shoulders",
-    icon: <Code className="h-8 w-8" />,
+    icon: <Code className="size-8" />,
     details: [
       "Built with Next.js, React, and TypeScript",
       "Leverages industry-standard open-source libraries",
@@ -33,7 +33,7 @@ const features: Feature[] = [
     title: "Dynamic HTML Streaming",
     description:
       "Instantly stream UI from the server, integrated with the App Router and React Suspense.",
-    icon: <Zap className="h-8 w-8" />,
+    icon: <Zap className="size-8" />,
     details: [
       "Progressive rendering for faster perceived performance",
       "Seamless integration with React Suspense boundaries",
@@ -45,7 +45,7 @@ const features: Feature[] = [
     title: "React Server Components",
     description:
       "Add components without sending additional client-side JavaScript. Built on the latest React features.",
-    icon: <Layers className="h-8 w-8" />,
+    icon: <Layers className="size-8" />,
     details: [
       "Zero-bundle-size server components",
       "Direct database access from components",
@@ -57,7 +57,7 @@ const features: Feature[] = [
     title: "AI-Powered Code Generation",
     description:
       "Leverage machine learning to automate repetitive coding tasks and suggest optimizations.",
-    icon: <Globe className="h-8 w-8" />,
+    icon: <Globe className="size-8" />,
     details: [
       "Intelligent code completion and suggestions",
       "Automated refactoring recommendations",
@@ -69,7 +69,7 @@ const features: Feature[] = [
     title: "Advanced Security Features",
     description:
       "Built-in protection against common web vulnerabilities and automated security updates.",
-    icon: <Lock className="h-8 w-8" />,
+    icon: <Lock className="size-8" />,
     details: [
       "CSRF and XSS protection out of the box",
       "Secure headers and content security policies",
@@ -81,7 +81,7 @@ const features: Feature[] = [
     title: "Real-time Collaboration",
     description:
       "Enable seamless team collaboration with live editing and version control integration.",
-    icon: <Users className="h-8 w-8" />,
+    icon: <Users className="size-8" />,
     details: [
       "Live cursor tracking and presence indicators",
       "Conflict-free collaborative editing",
@@ -106,34 +106,34 @@ const FeatureCard = memo(
 
     return (
       <CardContainer containerClassName="py-0">
-        <CardBody className="relative group/card w-full h-auto min-h-[280px] sm:h-[320px] rounded-2xl p-6 sm:p-8 border border-border bg-card flex flex-col cursor-pointer hover:border-primary/50 transition-colors touch-manipulation">
+        <CardBody className="group/card relative flex h-auto min-h-[280px] w-full cursor-pointer touch-manipulation flex-col rounded-2xl border border-border bg-card p-6 transition-colors hover:border-primary/50 sm:h-[320px] sm:p-8">
           <CardItem translateZ="50" className="mb-4">
-            <div className="inline-flex p-3 sm:p-4 rounded-xl bg-primary/10 text-primary">
+            <div className="inline-flex rounded-xl bg-primary/10 p-3 text-primary sm:p-4">
               {feature.icon}
             </div>
           </CardItem>
 
           <CardItem
             translateZ="60"
-            className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-foreground"
+            className="mb-2 text-lg font-bold text-foreground sm:mb-3 sm:text-xl"
           >
             {feature.title}
           </CardItem>
 
           <CardItem
             translateZ="40"
-            className="text-muted-foreground leading-relaxed text-sm flex-1"
+            className="flex-1 text-sm/relaxed text-muted-foreground"
           >
             {feature.description}
           </CardItem>
 
           <CardItem
             translateZ="30"
-            className="text-primary text-sm font-medium mt-4"
+            className="mt-4 text-sm font-medium text-primary"
           >
             <button
               onClick={handleClick}
-              className="hover:underline touch-manipulation py-2"
+              className="touch-manipulation py-2 hover:underline"
             >
               Click to learn more →
             </button>
@@ -180,12 +180,12 @@ const Features = memo(() => {
   useOutsideClick(ref, closeModal);
 
   return (
-    <section className="py-20 sm:py-32 relative overflow-hidden bg-muted/20">
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+    <section className="relative overflow-hidden bg-muted/20 py-20 sm:py-32">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6">
         <SectionHeading
           badge="Why Choose Us"
           title={
-            <span className="bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70">
+            <span className="bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
               Powerful Features
             </span>
           }
@@ -199,7 +199,7 @@ const Features = memo(() => {
           className="mb-12 sm:mb-20"
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
           {features.map((feature, index) => (
             <InView key={index} delay={index * 0.1}>
               <FeatureCard
@@ -218,43 +218,43 @@ const Features = memo(() => {
             <>
               <div
                 key="overlay"
-                className="fixed inset-0 bg-black/80 backdrop-blur-sm z-100 opacity-0 animate-[fade-in_150ms_ease-out_forwards]"
+                className="fixed inset-0 z-100 animate-[fade-in_150ms_ease-out_forwards] bg-black/80 opacity-0 backdrop-blur-sm"
                 onClick={closeModal}
               />
-              <div className="fixed inset-0 flex items-center justify-center z-110 p-4 pointer-events-none">
+              <div className="pointer-events-none fixed inset-0 z-110 flex items-center justify-center p-4">
                 <div
                   key={`modal-${selectedFeature.title}-${id}`}
                   ref={ref}
                   role="dialog"
                   aria-modal="true"
-                  className="w-full max-w-2xl h-auto max-h-[85vh] flex flex-col bg-card rounded-3xl overflow-hidden border border-primary/20 shadow-2xl pointer-events-auto opacity-0 animate-[modal-in_220ms_cubic-bezier(0.2,0.8,0.2,1)_forwards]"
+                  className="pointer-events-auto flex h-auto max-h-[85vh] w-full max-w-2xl animate-[modal-in_220ms_cubic-bezier(0.2,0.8,0.2,1)_forwards] flex-col overflow-hidden rounded-3xl border border-primary/20 bg-card opacity-0 shadow-2xl"
                 >
-                  <div className="p-6 sm:p-8 overflow-y-auto">
-                    <div className="flex items-start gap-4 mb-6">
-                      <div className="p-3 sm:p-4 rounded-xl bg-primary/10 text-primary shrink-0">
+                  <div className="overflow-y-auto p-6 sm:p-8">
+                    <div className="mb-6 flex items-start gap-4">
+                      <div className="shrink-0 rounded-xl bg-primary/10 p-3 text-primary sm:p-4">
                         {selectedFeature.icon}
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-bold text-xl sm:text-2xl text-foreground mb-2">
+                        <h3 className="mb-2 text-xl font-bold text-foreground sm:text-2xl">
                           {selectedFeature.title}
                         </h3>
-                        <p className="text-sm sm:text-base text-muted-foreground">
+                        <p className="text-sm text-muted-foreground sm:text-base">
                           {selectedFeature.description}
                         </p>
                       </div>
                     </div>
 
                     <div className="space-y-3">
-                      <h4 className="text-base sm:text-lg font-semibold mb-4">
+                      <h4 className="mb-4 text-base font-semibold sm:text-lg">
                         Key Benefits:
                       </h4>
                       {selectedFeature.details.map((detail, index) => (
                         <div
                           key={index}
-                          className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 animate-fade-up"
+                          className="animate-fade-up flex items-start gap-3 rounded-lg bg-muted/50 p-3"
                           style={{ animationDelay: `${index * 0.1}s` }}
                         >
-                          <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
+                          <div className="mt-2 size-2 shrink-0 rounded-full bg-primary" />
                           <p className="text-sm">{detail}</p>
                         </div>
                       ))}

@@ -109,13 +109,13 @@ function WorldMap({ dots = [], lineColor }: MapProps) {
 
   if (!mounted) {
     return (
-      <div className="w-full aspect-2/1 dark:bg-black bg-white rounded-lg" />
+      <div className="aspect-2/1 w-full rounded-lg bg-white dark:bg-black" />
     );
   }
 
   return (
-    <div className="w-full aspect-2/1 dark:bg-black bg-white rounded-lg relative font-sans overflow-hidden">
-      <div className="h-full w-full mask-[linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none">
+    <div className="relative aspect-2/1 w-full overflow-hidden rounded-lg bg-white font-sans dark:bg-black">
+      <div className="pointer-events-none size-full mask-[linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] select-none">
         <MapSvg bg={mapColors.bg} dotColor={mapColors.dotColor} />
       </div>
 
@@ -124,7 +124,7 @@ function WorldMap({ dots = [], lineColor }: MapProps) {
         <svg
           ref={svgRef}
           viewBox="0 0 800 400"
-          className="w-full h-full absolute inset-0 pointer-events-none select-none"
+          className="pointer-events-none absolute inset-0 size-full select-none"
         >
           {/* curved paths */}
           {projectedDots.map((d, i) => (

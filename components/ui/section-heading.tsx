@@ -17,24 +17,24 @@ export const SectionHeading = ({
   titleClassName,
 }: SectionHeadingProps) => {
   return (
-    <div className={cn("max-w-4xl mx-auto text-center", className)}>
+    <div className={cn("mx-auto max-w-4xl text-center", className)}>
       {badge && (
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6">
-          <span className="text-xs sm:text-sm font-semibold text-primary">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 backdrop-blur-sm sm:mb-6">
+          <span className="text-xs font-semibold text-primary sm:text-sm">
             {badge}
           </span>
         </div>
       )}
       <h2
         className={cn(
-          "text-3xl sm:text-5xl md:text-7xl font-black mb-4 sm:mb-6",
+          "mb-4 text-3xl font-black sm:mb-6 sm:text-5xl md:text-7xl",
           titleClassName,
         )}
       >
         {title}
       </h2>
       {description && (
-        <p className="text-base sm:text-xl text-muted-foreground leading-relaxed px-4">
+        <p className="px-4 text-base/relaxed text-muted-foreground sm:text-xl">
           {description}
         </p>
       )}

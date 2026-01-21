@@ -77,11 +77,11 @@ export default function AboutPage() {
               experiences that transform businesses.
             </p>
             <div className="grid grid-cols-2 gap-4">
-              <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-                <Calendar className="h-12 w-12 text-primary" />
+              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-cyan-500/20 to-teal-500/20 md:h-44 lg:h-60">
+                <Calendar className="size-12 text-primary" />
               </div>
-              <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-                <Target className="h-12 w-12 text-primary" />
+              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-teal-500/20 to-cyan-500/20 md:h-44 lg:h-60">
+                <Target className="size-12 text-primary" />
               </div>
             </div>
           </div>
@@ -100,11 +100,11 @@ export default function AboutPage() {
               talent worldwide.
             </p>
             <div className="grid grid-cols-2 gap-4">
-              <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-                <Users className="h-12 w-12 text-primary" />
+              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-cyan-500/20 to-teal-500/20 md:h-44 lg:h-60">
+                <Users className="size-12 text-primary" />
               </div>
-              <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-                <Award className="h-12 w-12 text-primary" />
+              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-teal-500/20 to-cyan-500/20 md:h-44 lg:h-60">
+                <Award className="size-12 text-primary" />
               </div>
             </div>
           </div>
@@ -119,29 +119,29 @@ export default function AboutPage() {
             </p>
             <div className="mb-8 space-y-2">
               <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-                <div className="h-2 w-2 rounded-full bg-primary" />
+                <div className="size-2 rounded-full bg-primary" />
                 Started working with clients across Europe, Asia, and North
                 America
               </div>
               <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-                <div className="h-2 w-2 rounded-full bg-primary" />
+                <div className="size-2 rounded-full bg-primary" />
                 Expanded service offerings with cutting-edge technologies
               </div>
               <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-                <div className="h-2 w-2 rounded-full bg-primary" />
+                <div className="size-2 rounded-full bg-primary" />
                 Grew team to 15+ talented professionals
               </div>
               <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-                <div className="h-2 w-2 rounded-full bg-primary" />
+                <div className="size-2 rounded-full bg-primary" />
                 Delivered 100+ successful projects
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="h-20 w-full rounded-lg bg-linear-to-br from-cyan-500/20 to-teal-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-                <Rocket className="h-12 w-12 text-primary" />
+              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-cyan-500/20 to-teal-500/20 md:h-44 lg:h-60">
+                <Rocket className="size-12 text-primary" />
               </div>
-              <div className="h-20 w-full rounded-lg bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-primary/20 flex items-center justify-center md:h-44 lg:h-60">
-                <Heart className="h-12 w-12 text-primary" />
+              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-teal-500/20 to-cyan-500/20 md:h-44 lg:h-60">
+                <Heart className="size-12 text-primary" />
               </div>
             </div>
           </div>
@@ -191,38 +191,38 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-background">
+    <div className="relative min-h-screen overflow-hidden bg-background">
       {/* Background elements */}
-      <div className="absolute inset-0 bg-linear-to-b from-primary/5 via-background to-background z-0" />
+      <div className="absolute inset-0 z-0 bg-linear-to-b from-primary/5 via-background to-background" />
       <div
-        className="hidden sm:block absolute inset-0 opacity-20 grid-pattern"
+        className="grid-pattern absolute inset-0 hidden opacity-20 sm:block"
         aria-hidden="true"
       />
 
-      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-20">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6">
           <div
-            className="max-w-4xl mx-auto text-center"
+            className="mx-auto max-w-4xl text-center"
             data-lcp-element="true"
             data-priority="high"
           >
             <Badge className="mb-4 sm:mb-6">Our Story</Badge>
 
             <div className="mb-6 sm:mb-8">
-              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground sr-only">
+              <h1 className="sr-only text-3xl font-black text-foreground sm:text-4xl md:text-6xl lg:text-7xl">
                 ABOUT US
               </h1>
               <HyperText
                 startOnView
                 delay={800}
-                className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-foreground"
+                className="text-3xl font-black text-foreground sm:text-4xl md:text-6xl lg:text-7xl"
                 aria-hidden="true"
               >
                 ABOUT US
               </HyperText>
             </div>
 
-            <p className="text-base sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto px-4">
+            <p className="mx-auto max-w-2xl px-4 text-base/relaxed text-muted-foreground sm:text-xl">
               We&apos;re passionate about creating exceptional digital
               experiences that transform businesses
             </p>
@@ -230,13 +230,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-12 sm:py-20 relative overflow-hidden hidden md:block">
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+      <section className="relative hidden overflow-hidden py-12 sm:py-20 md:block">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-2xl font-bold sm:text-3xl">
               Explore Our Story
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base px-4">
+            <p className="mx-auto max-w-2xl px-4 text-sm text-muted-foreground sm:text-base">
               Drag the cards around to explore different aspects of our company
               <br />
               They&apos;re interactive and fun to play with
@@ -260,13 +260,13 @@ export default function AboutPage() {
                 }`}
               >
                 <div
-                  className={`h-80 w-full rounded-lg bg-linear-to-br ${card.gradient} border border-primary/20 flex flex-col items-center justify-center p-6`}
+                  className={`h-80 w-full rounded-lg bg-linear-to-br ${card.gradient} flex flex-col items-center justify-center border border-primary/20 p-6`}
                 >
-                  <card.icon className="h-16 w-16 text-primary mb-4" />
-                  <h3 className="text-2xl font-bold text-white mb-3 text-center">
+                  <card.icon className="mb-4 size-16 text-primary" />
+                  <h3 className="mb-3 text-center text-2xl font-bold text-white">
                     {card.title}
                   </h3>
-                  <p className="text-neutral-200 text-center text-sm leading-relaxed">
+                  <p className="text-center text-sm/relaxed text-neutral-200">
                     {card.description}
                   </p>
                 </div>
@@ -276,9 +276,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-4 sm:py-8 border-y border-border/30 sticky top-14 sm:top-20 bg-background/80 backdrop-blur-md z-20">
+      <section className="sticky top-14 z-20 border-y border-border/30 bg-background/80 py-4 backdrop-blur-md sm:top-20 sm:py-8">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex space-x-1 overflow-x-auto pb-2 scrollbar-hide">
+          <div className="scrollbar-hide flex space-x-1 overflow-x-auto pb-2">
             {[
               { id: "mission", label: "Our Mission" },
               { id: "journey", label: "Our Journey" },
@@ -288,9 +288,9 @@ export default function AboutPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveSection(tab.id)}
-                className={`px-4 sm:px-5 py-2 sm:py-2.5 whitespace-nowrap rounded-full text-xs sm:text-sm font-medium transition-all touch-manipulation ${
+                className={`touch-manipulation rounded-full px-4 py-2 text-xs font-medium whitespace-nowrap transition-all sm:px-5 sm:py-2.5 sm:text-sm ${
                   activeSection === tab.id
-                    ? "bg-primary/10 text-primary border border-primary/30"
+                    ? "border border-primary/30 bg-primary/10 text-primary"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -306,17 +306,17 @@ export default function AboutPage() {
         className={`py-16 ${activeSection === "mission" ? "block" : "hidden"}`}
       >
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="bg-background/80 backdrop-blur-sm rounded-lg p-6 border border-border/30">
-              <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
-              <p className="text-muted-foreground mb-6">
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+            <div className="rounded-lg border border-border/30 bg-background/80 p-6 backdrop-blur-sm">
+              <h2 className="mb-6 text-3xl font-bold">Our Mission</h2>
+              <p className="mb-6 text-muted-foreground">
                 At mdesk.tech, we&apos;re on a mission to transform how
                 businesses connect with their audiences in the digital world. We
                 believe that exceptional digital experiences are built at the
                 intersection of cutting-edge technology, beautiful design, and
                 strategic thinking.
               </p>
-              <p className="text-muted-foreground mb-8">
+              <p className="mb-8 text-muted-foreground">
                 We&apos;re committed to creating digital solutions that not only
                 look stunning but also drive real business results. Our approach
                 combines technical expertise with creative innovation to deliver
@@ -332,8 +332,8 @@ export default function AboutPage() {
                   "Push the boundaries of what's possible in web design and development",
                 ].map((item, index) => (
                   <div key={index} className="flex items-start gap-3">
-                    <div className="mt-1 h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                      <Target className="h-3 w-3 text-primary" />
+                    <div className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20">
+                      <Target className="size-3 text-primary" />
                     </div>
                     <span className="text-sm">{item}</span>
                   </div>
@@ -342,19 +342,19 @@ export default function AboutPage() {
             </div>
 
             <div className="relative">
-              <div className="absolute inset-0 bg-linear-to-br from-primary/20 to-accent/20 rounded-2xl blur-xl" />
-              <div className="relative bg-card/80 backdrop-blur-sm border border-primary/20 rounded-2xl p-8 overflow-hidden">
-                <div className="absolute -right-20 -top-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />
-                <div className="absolute -left-20 -bottom-20 w-40 h-40 bg-accent/10 rounded-full blur-3xl" />
+              <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-primary/20 to-accent/20 blur-xl" />
+              <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-card/80 p-8 backdrop-blur-sm">
+                <div className="absolute -top-20 -right-20 size-40 rounded-full bg-primary/10 blur-3xl" />
+                <div className="absolute -bottom-20 -left-20 size-40 rounded-full bg-accent/10 blur-3xl" />
 
-                <h3 className="text-xl font-bold mb-4">Why We Exist</h3>
+                <h3 className="mb-4 text-xl font-bold">Why We Exist</h3>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Heart className="h-5 w-5 text-primary" />
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                      <Heart className="size-5 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-medium mb-1">Excellence</h4>
+                      <h4 className="mb-1 font-medium">Excellence</h4>
                       <p className="text-sm text-muted-foreground">
                         We&apos;re committed to delivering work that exceeds
                         expectations in every detail.
@@ -363,11 +363,11 @@ export default function AboutPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                      <Users className="h-5 w-5 text-primary" />
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent/10">
+                      <Users className="size-5 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-medium mb-1">Partnership</h4>
+                      <h4 className="mb-1 font-medium">Partnership</h4>
                       <p className="text-sm text-muted-foreground">
                         We build lasting relationships with our clients based on
                         trust and mutual success.
@@ -376,11 +376,11 @@ export default function AboutPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Rocket className="h-5 w-5 text-primary" />
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                      <Rocket className="size-5 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-medium mb-1">Innovation</h4>
+                      <h4 className="mb-1 font-medium">Innovation</h4>
                       <p className="text-sm text-muted-foreground">
                         We constantly explore new technologies and approaches to
                         solve complex problems and create better solutions.
@@ -406,67 +406,67 @@ export default function AboutPage() {
         className={`py-16 ${activeSection === "values" ? "block" : "hidden"}`}
       >
         <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto text-center mb-12 bg-background/80 backdrop-blur-md py-6 px-8 rounded-lg border border-primary/20">
-            <h2 className="text-3xl font-bold mb-4">Our Values</h2>
+          <div className="mx-auto mb-12 max-w-3xl rounded-lg border border-primary/20 bg-background/80 px-8 py-6 text-center backdrop-blur-md">
+            <h2 className="mb-4 text-3xl font-bold">Our Values</h2>
             <p className="text-muted-foreground">
               These core principles guide everything we do, from how we work
               with clients to how we build our team.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {[
               {
                 title: "Excellence",
                 description:
                   "We strive for excellence in everything we do, from the code we write to the designs we create.",
-                icon: <Heart className="h-6 w-6" />,
+                icon: <Heart className="size-6" />,
                 color: "bg-primary/10 text-primary",
               },
               {
                 title: "Innovation",
                 description:
                   "We embrace new technologies and approaches to solve complex problems and create better solutions.",
-                icon: <Target className="h-6 w-6 text-white" />,
+                icon: <Target className="size-6 text-white" />,
                 color: "bg-accent/10 text-accent",
               },
               {
                 title: "Collaboration",
                 description:
                   "We believe the best work happens when diverse perspectives come together toward a common goal.",
-                icon: <Users className="h-6 w-6" />,
+                icon: <Users className="size-6" />,
                 color: "bg-primary/10 text-primary",
               },
               {
                 title: "Integrity",
                 description:
                   "We're honest, transparent, and committed to doing what's right for our clients and our team.",
-                icon: <Award className="h-6 w-6 text-white" />,
+                icon: <Award className="size-6 text-white" />,
                 color: "bg-accent/10 text-accent",
               },
             ].map((value, index) => (
               <div
                 key={index}
-                className="bg-background/90 backdrop-blur-md border border-primary/30 rounded-lg p-6 shadow-lg"
+                className="rounded-lg border border-primary/30 bg-background/90 p-6 shadow-lg backdrop-blur-md"
               >
                 <div
-                  className={`w-12 h-12 rounded-lg ${value.color} flex items-center justify-center mb-4`}
+                  className={`size-12 rounded-lg ${value.color} mb-4 flex items-center justify-center`}
                 >
                   {value.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-white">
+                <h3 className="mb-2 text-xl font-bold text-white">
                   {value.title}
                 </h3>
                 <p className="text-gray-300">{value.description}</p>
 
-                <div className="mt-6 pt-6 border-t border-border/50">
-                  <h4 className="text-sm font-medium mb-3">
+                <div className="mt-6 border-t border-border/50 pt-6">
+                  <h4 className="mb-3 text-sm font-medium">
                     How we live this value:
                   </h4>
                   <ul className="space-y-2">
                     {[1, 2, 3].map((item, i) => (
-                      <li key={i} className="flex gap-2 items-start">
-                        <div className="mt-1 h-2 w-2 rounded-full bg-primary/50 shrink-0" />
+                      <li key={i} className="flex items-start gap-2">
+                        <div className="mt-1 size-2 shrink-0 rounded-full bg-primary/50" />
                         <span className="text-sm text-gray-300">
                           {index === 0 &&
                             i === 0 &&
@@ -523,17 +523,17 @@ export default function AboutPage() {
         className={`py-16 ${activeSection === "approach" ? "block" : "hidden"}`}
       >
         <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center mb-12 bg-background/80 backdrop-blur-md py-6 px-8 rounded-lg border border-primary/20">
-            <h2 className="text-3xl font-bold mb-4">Our Approach</h2>
+          <div className="mx-auto mb-12 max-w-4xl rounded-lg border border-primary/20 bg-background/80 px-8 py-6 text-center backdrop-blur-md">
+            <h2 className="mb-4 text-3xl font-bold">Our Approach</h2>
             <p className="text-muted-foreground">
               We follow a collaborative, client-centered approach to ensure your
               project meets your specific needs and goals.
             </p>
           </div>
 
-          <div className="relative max-w-4xl mx-auto">
+          <div className="relative mx-auto max-w-4xl">
             <div
-              className="absolute left-8 top-8 bottom-8 w-px z-0"
+              className="absolute top-8 bottom-8 left-8 z-0 w-px"
               style={{
                 background:
                   "linear-gradient(to bottom, hsl(var(--primary)) 50%, transparent 50%)",
@@ -545,20 +545,20 @@ export default function AboutPage() {
             {steps.map((step, index) => (
               <div
                 key={index}
-                className="relative flex items-start gap-8 mb-12 last:mb-0"
+                className="relative mb-12 flex items-start gap-8 last:mb-0"
               >
                 <div className="relative z-10">
-                  <div className="absolute inset-0 bg-linear-to-br from-primary to-accent rounded-full opacity-20 blur-sm" />
-                  <div className="relative shrink-0 w-16 h-16 rounded-full bg-background border border-primary/30 flex items-center justify-center">
+                  <div className="absolute inset-0 rounded-full bg-linear-to-br from-primary to-accent opacity-20 blur-sm" />
+                  <div className="relative flex size-16 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-background">
                     <div className="absolute inset-0 rounded-full bg-linear-to-br from-primary/10 to-accent/10" />
-                    <span className="relative z-10 text-xl font-bold bg-clip-text text-transparent bg-linear-to-r from-primary to-accent">
+                    <span className="relative z-10 bg-linear-to-r from-primary to-accent bg-clip-text text-xl font-bold text-transparent">
                       {step.number}
                     </span>
                   </div>
                 </div>
 
-                <div className="flex-1 pt-3 bg-background/90 backdrop-blur-md rounded-lg p-6 border border-primary/30 shadow-lg">
-                  <h3 className="text-xl font-bold mb-2 text-white">
+                <div className="flex-1 rounded-lg border border-primary/30 bg-background/90 p-6 pt-3 shadow-lg backdrop-blur-md">
+                  <h3 className="mb-2 text-xl font-bold text-white">
                     {step.title}
                   </h3>
                   <p className="text-gray-300">{step.description}</p>
@@ -570,27 +570,27 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-12 sm:py-20 relative overflow-hidden">
+      <section className="relative overflow-hidden py-12 sm:py-20">
         <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-accent/10" />
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="max-w-4xl mx-auto p-6 sm:p-8 md:p-10 rounded-3xl border border-primary/20 bg-linear-to-br from-primary/5 to-accent/5 backdrop-blur-sm">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6">
+          <div className="mx-auto max-w-4xl rounded-3xl border border-primary/20 bg-linear-to-br from-primary/5 to-accent/5 p-6 backdrop-blur-sm sm:p-8 md:p-10">
+            <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
               <div>
-                <h3 className="text-2xl sm:text-3xl font-bold mb-2 flex items-center gap-3">
-                  <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+                <h3 className="mb-2 flex items-center gap-3 text-2xl font-bold sm:text-3xl">
+                  <Heart className="size-6 text-primary sm:size-8" />
                   Ready to work with us?
                 </h3>
-                <p className="text-muted-foreground text-base sm:text-lg">
+                <p className="text-base text-muted-foreground sm:text-lg">
                   Let&apos;s create something amazing together.
                 </p>
               </div>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-linear-to-r from-cyan-500 to-teal-500 text-white font-bold transition-all hover:scale-105 hover:shadow-lg hover:shadow-primary/50 whitespace-nowrap touch-manipulation w-full md:w-auto text-sm sm:text-base"
+                className="inline-flex w-full touch-manipulation items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-6 py-3 text-sm font-bold whitespace-nowrap text-white transition-all hover:scale-105 hover:shadow-lg hover:shadow-primary/50 sm:px-8 sm:py-4 sm:text-base md:w-auto"
               >
                 Get in Touch
-                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                <ArrowRight className="ml-2 size-4 sm:size-5" />
               </Link>
             </div>
           </div>
