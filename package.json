@@ -45,7 +45,7 @@
     "@typescript/native-preview": "7.0.0-dev.20260216.1",
     "babel-plugin-react-compiler": "^1.0.0",
     "concurrently": "^9.2.1",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.0",
     "eslint-config-next": "^16.1.6",
     "eslint-plugin-better-tailwindcss": "^4.3.0",
     "husky": "^9.1.7",
