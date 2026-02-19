@@ -1,11 +1,11 @@
 import { MongoClient, type Collection } from "mongodb";
 
-// MongoDB connection string
+// MongoDB config
 const uri = process.env.MONGODB_URI || "";
 const dbName = "mdesk";
 const collectionName = "rate_limits";
 
-// Connection cache
+// Cache connection
 let client: MongoClient | null = null;
 let collection: Collection | null = null;
 
@@ -21,7 +21,7 @@ export async function getCollection() {
     const db = client.db(dbName);
     collection = db.collection(collectionName);
 
-    // Create index for timestamp to improve query performance
+    // Index for faster queries
     await collection.createIndex(
       { timestamp: 1 },
       { expireAfterSeconds: 3600 },
@@ -38,7 +38,7 @@ async function cleanup() {
   try {
     const coll = await getCollection();
 
-    // Delete old rate limit entries (older than 1 hour)
+    // Remove old entries
     const oneHourAgo = Date.now() - 60 * 60 * 1000;
     await coll.deleteMany({ timestamp: { $lt: oneHourAgo } });
   } catch (error) {
@@ -46,7 +46,7 @@ async function cleanup() {
   }
 }
 
-// Run cleanup periodically (every hour)
+// Cleanup every hour
 if (typeof setInterval !== "undefined") {
   setInterval(cleanup, 60 * 60 * 1000);
 }

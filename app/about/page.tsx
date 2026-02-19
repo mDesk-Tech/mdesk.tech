@@ -1,599 +1,919 @@
 "use client";
+
 import {
-  Calendar,
   Users,
-  Award,
   Target,
   Rocket,
   Heart,
   ArrowRight,
+  Zap,
+  Globe,
+  Shield,
+  Sparkles,
+  Code,
+  Layers,
+  TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { HyperText } from "@/components/ui/hyper-text";
-import { Timeline } from "@/components/ui/timeline";
-import {
-  DraggableCardBody,
-  DraggableCardContainer,
-} from "@/components/ui/draggable-card";
-import { Badge } from "@/components/ui/badge";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useRef } from "react";
 
-/**
- * Renders the About page including an interactive draggable-card story section, a sticky tab bar to switch
- * between "Our Mission", "Our Journey", "Our Values", and "Our Approach" sections, a memoized timeline,
- * a values grid, a step-by-step approach list, and a final call-to-action.
- *
- * @returns The About page JSX element
- */
+// Stats data
+const stats = [
+  { value: "15+", label: "Team", color: "coral", offset: 0 },
+  { value: "100+", label: "Projects", color: "teal", offset: 40 },
+  { value: "99%", label: "Happy", color: "amber", offset: 20 },
+  { value: "24/7", label: "Support", color: "coral", offset: 60 },
+];
+
+// Timeline
+const milestones = [
+  {
+    year: "2023",
+    title: "The Beginning",
+    description:
+      "mdesk.tech founded with a vision to transform digital experiences",
+    color: "coral",
+  },
+  {
+    year: "2023",
+    title: "First Win",
+    description: "Secured first major client and delivered beyond expectations",
+    color: "teal",
+  },
+  {
+    year: "2024",
+    title: "Global Reach",
+    description:
+      "Started working with clients across Europe, Asia & North America",
+    color: "amber",
+  },
+  {
+    year: "2024",
+    title: "100+ Projects",
+    description: "Delivered over 100 successful projects with 99% satisfaction",
+    color: "coral",
+  },
+];
+
+// Values
+const values = [
+  {
+    title: "Excellence",
+    description: "We strive for excellence in everything we do",
+    icon: Heart,
+    color: "coral",
+  },
+  {
+    title: "Innovation",
+    description: "Embracing new technologies and approaches",
+    icon: Zap,
+    color: "teal",
+  },
+  {
+    title: "Collaboration",
+    description: "Best work comes from diverse perspectives",
+    icon: Users,
+    color: "amber",
+  },
+  {
+    title: "Integrity",
+    description: "Honest, transparent, committed to doing right",
+    icon: Shield,
+    color: "coral",
+  },
+];
+
+// Process
+const processSteps = [
+  {
+    number: "01",
+    title: "Discovery",
+    description: "Understanding your business and goals",
+  },
+  {
+    number: "02",
+    title: "Strategy",
+    description: "Developing comprehensive approach",
+  },
+  {
+    number: "03",
+    title: "Design",
+    description: "Creating intuitive, engaging interfaces",
+  },
+  {
+    number: "04",
+    title: "Develop",
+    description: "Bringing designs to life with clean code",
+  },
+  {
+    number: "05",
+    title: "Launch",
+    description: "Rigorous testing before deployment",
+  },
+  {
+    number: "06",
+    title: "Support",
+    description: "Ongoing optimization and maintenance",
+  },
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
+  },
+};
+
+const slideInLeft = {
+  hidden: { opacity: 0, x: -60 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const },
+  },
+};
+
+const slideInRight = {
+  hidden: { opacity: 0, x: 60 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const },
+  },
+};
+
 export default function AboutPage() {
-  const [activeSection, setActiveSection] = useState("mission");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
 
-  const draggableCards = [
-    {
-      title: "Our Mission",
-      icon: Target,
-      description:
-        "Empowering businesses with cutting-edge web solutions that drive growth and success",
-      gradient: "from-cyan-500/20 to-teal-500/20",
-    },
-    {
-      title: "Founded 2023",
-      icon: Calendar,
-      description:
-        "Started with a vision to bridge the gap between complex technology and beautiful design",
-      gradient: "from-teal-500/20 to-cyan-500/20",
-    },
-    {
-      title: "15+ Team Members",
-      icon: Users,
-      description:
-        "A diverse team of passionate developers, designers, and strategists",
-      gradient: "from-cyan-500/20 to-teal-500/20",
-    },
-    {
-      title: "100+ Projects",
-      icon: Award,
-      description:
-        "Successfully delivered projects for clients worldwide across various industries",
-      gradient: "from-teal-500/20 to-cyan-500/20",
-    },
-    {
-      title: "Innovation First",
-      icon: Rocket,
-      description:
-        "We stay ahead of the curve with the latest technologies and best practices",
-      gradient: "from-cyan-500/20 to-teal-500/20",
-    },
-  ];
-
-  const timelineData = useMemo(
-    () => [
-      {
-        title: "2023",
-        content: (
-          <div>
-            <p className="mb-8 text-xs font-normal text-muted-foreground md:text-sm">
-              mdesk.tech was founded with a vision to create exceptional digital
-              experiences that transform businesses.
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-cyan-500/20 to-teal-500/20 md:h-44 lg:h-60">
-                <Calendar className="size-12 text-primary" />
-              </div>
-              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-teal-500/20 to-cyan-500/20 md:h-44 lg:h-60">
-                <Target className="size-12 text-primary" />
-              </div>
-            </div>
-          </div>
-        ),
-      },
-      {
-        title: "Early 2023",
-        content: (
-          <div>
-            <p className="mb-4 text-xs font-normal text-muted-foreground md:text-sm">
-              Secured our first major client and delivered a project that
-              exceeded expectations.
-            </p>
-            <p className="mb-8 text-xs font-normal text-muted-foreground md:text-sm">
-              Established our remote-first culture, enabling us to work with
-              talent worldwide.
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-cyan-500/20 to-teal-500/20 md:h-44 lg:h-60">
-                <Users className="size-12 text-primary" />
-              </div>
-              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-teal-500/20 to-cyan-500/20 md:h-44 lg:h-60">
-                <Award className="size-12 text-primary" />
-              </div>
-            </div>
-          </div>
-        ),
-      },
-      {
-        title: "2024",
-        content: (
-          <div>
-            <p className="mb-4 text-xs font-normal text-muted-foreground md:text-sm">
-              Major milestones achieved this year
-            </p>
-            <div className="mb-8 space-y-2">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-                <div className="size-2 rounded-full bg-primary" />
-                Started working with clients across Europe, Asia, and North
-                America
-              </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-                <div className="size-2 rounded-full bg-primary" />
-                Expanded service offerings with cutting-edge technologies
-              </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-                <div className="size-2 rounded-full bg-primary" />
-                Grew team to 15+ talented professionals
-              </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground md:text-sm">
-                <div className="size-2 rounded-full bg-primary" />
-                Delivered 100+ successful projects
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-cyan-500/20 to-teal-500/20 md:h-44 lg:h-60">
-                <Rocket className="size-12 text-primary" />
-              </div>
-              <div className="flex h-20 w-full items-center justify-center rounded-lg border border-primary/20 bg-linear-to-br from-teal-500/20 to-cyan-500/20 md:h-44 lg:h-60">
-                <Heart className="size-12 text-primary" />
-              </div>
-            </div>
-          </div>
-        ),
-      },
-    ],
-    [],
-  );
-
-  const steps = [
-    {
-      number: "01",
-      title: "Discovery",
-      description:
-        "We start by understanding your business, goals, and audience to ensure our solution addresses your specific needs.",
-    },
-    {
-      number: "02",
-      title: "Strategy",
-      description:
-        "Based on our findings, we develop a comprehensive strategy that outlines the approach, technologies, and timeline.",
-    },
-    {
-      number: "03",
-      title: "Design",
-      description:
-        "Our designers create intuitive, engaging interfaces that reflect your brand and resonate with your audience.",
-    },
-    {
-      number: "04",
-      title: "Development",
-      description:
-        "Our development team brings the designs to life with clean, efficient code and cutting-edge technologies.",
-    },
-    {
-      number: "05",
-      title: "Testing & Launch",
-      description:
-        "We rigorously test every aspect of your project before launch to ensure a flawless user experience.",
-    },
-    {
-      number: "06",
-      title: "Ongoing Support",
-      description:
-        "Our relationship doesn't end at launch. We provide ongoing support and optimization to ensure long-term success.",
-    },
-  ];
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 15]);
+  const rotate2 = useTransform(scrollYProgress, [0, 1], [0, -10]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background">
-      {/* Background elements */}
-      <div className="absolute inset-0 z-0 bg-linear-to-b from-primary/5 via-background to-background" />
+    <div
+      ref={containerRef}
+      className="relative min-h-screen overflow-hidden bg-[#0a0a0a]"
+    >
+      {/* Background grid */}
       <div
-        className="grid-pattern absolute inset-0 hidden opacity-20 sm:block"
-        aria-hidden="true"
+        className="fixed inset-0 z-0 opacity-10"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255, 107, 53, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 107, 53, 0.1) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+        }}
       />
+      <div className="scanlines fixed inset-0 z-0 opacity-5" />
 
-      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-20">
+      {/* Hero */}
+      <section className="relative overflow-hidden pt-24 pb-20 sm:pt-32 md:min-h-screen">
+        {/* Parallax elements */}
+        <motion.div
+          style={{ y: y1, rotate: rotate1 }}
+          className="absolute top-40 -left-20 size-40 border-4 border-coral/20"
+        />
+        <motion.div
+          style={{ y: y2, rotate: rotate2 }}
+          className="absolute top-60 right-10 size-60 border-4 border-teal/20"
+        />
+        <motion.div
+          style={{ y: y3 }}
+          className="absolute bottom-40 left-1/4 size-20 bg-amber/10"
+        />
+
         <div className="relative z-10 container mx-auto px-4 sm:px-6">
-          <div
-            className="mx-auto max-w-4xl text-center"
-            data-lcp-element="true"
-            data-priority="high"
-          >
-            <Badge className="mb-4 sm:mb-6">Our Story</Badge>
+          {/* Title */}
+          <div className="relative mb-12 sm:mb-20">
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <span className="font-mono text-sm tracking-widest text-coral uppercase">
+                Who We Are
+              </span>
+            </motion.div>
 
-            <div className="mb-6 sm:mb-8">
-              <h1 className="sr-only text-3xl font-black text-foreground sm:text-4xl md:text-6xl lg:text-7xl">
-                ABOUT US
-              </h1>
-              <HyperText
-                startOnView
-                delay={800}
-                className="text-3xl font-black text-foreground sm:text-4xl md:text-6xl lg:text-7xl"
-                aria-hidden="true"
+            <motion.h1
+              initial={{ opacity: 0, y: 80 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative mt-6"
+            >
+              <span className="block text-5xl font-black tracking-tighter text-white sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[12rem]">
+                ABOUT
+              </span>
+              <motion.span
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="relative -mt-2 block text-5xl font-black tracking-tighter text-coral sm:-mt-4 sm:text-8xl md:-mt-6 md:text-9xl lg:-mt-8 lg:text-[10rem] xl:text-[12rem]"
               >
-                ABOUT US
-              </HyperText>
-            </div>
+                US
+              </motion.span>
+            </motion.h1>
 
-            <p className="mx-auto max-w-2xl px-4 text-base/relaxed text-muted-foreground sm:text-xl">
-              We&apos;re passionate about creating exceptional digital
-              experiences that transform businesses
-            </p>
+            {/* Accent */}
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.8, type: "spring" }}
+              className="absolute top-0 right-0 size-8 bg-coral sm:size-12"
+            />
+          </div>
+
+          {/* Intro */}
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="lg:col-span-7"
+            >
+              <p className="text-xl/relaxed text-[#a0a0a0] sm:text-2xl">
+                We&apos;re a team of passionate creators, developers, and
+                strategists dedicated to crafting exceptional digital
+                experiences that transform businesses and delight users.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="lg:col-span-5 lg:pl-12"
+            >
+              <div className="border-l-4 border-coral pl-6">
+                <p className="text-lg text-white">
+                  Founded in 2023, we&apos;ve grown from a small team with big
+                  dreams to a global agency delivering world-class digital
+                  solutions.
+                </p>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      <section className="relative hidden overflow-hidden py-12 sm:py-20 md:block">
-        <div className="relative z-10 container mx-auto px-4 sm:px-6">
-          <div className="mb-12 text-center">
-            <h2 className="mb-4 text-2xl font-bold sm:text-3xl">
-              Explore Our Story
-            </h2>
-            <p className="mx-auto max-w-2xl px-4 text-sm text-muted-foreground sm:text-base">
-              Drag the cards around to explore different aspects of our company
-              <br />
-              They&apos;re interactive and fun to play with
-            </p>
-          </div>
-
-          <DraggableCardContainer className="relative flex min-h-[600px] w-full items-center justify-center overflow-clip">
-            {draggableCards.map((card, index) => (
-              <DraggableCardBody
-                key={card.title}
-                className={`absolute ${
-                  index === 0
-                    ? "top-10 left-[10%] rotate-[-5deg]"
-                    : index === 1
-                      ? "top-40 left-[20%] rotate-[-7deg]"
-                      : index === 2
-                        ? "top-5 left-[40%] rotate-[8deg]"
-                        : index === 3
-                          ? "top-32 left-[55%] rotate-10"
-                          : "top-20 right-[20%] rotate-2"
-                }`}
-              >
-                <div
-                  className={`h-80 w-full rounded-lg bg-linear-to-br ${card.gradient} flex flex-col items-center justify-center border border-primary/20 p-6`}
-                >
-                  <card.icon className="mb-4 size-16 text-primary" />
-                  <h3 className="mb-3 text-center text-2xl font-bold text-white">
-                    {card.title}
-                  </h3>
-                  <p className="text-center text-sm/relaxed text-neutral-200">
-                    {card.description}
-                  </p>
-                </div>
-              </DraggableCardBody>
-            ))}
-          </DraggableCardContainer>
-        </div>
-      </section>
-
-      <section className="sticky top-14 z-20 border-y border-border/30 bg-background/80 py-4 backdrop-blur-md sm:top-20 sm:py-8">
+      {/* Stats */}
+      <section className="relative py-20">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="scrollbar-hide flex space-x-1 overflow-x-auto pb-2">
-            {[
-              { id: "mission", label: "Our Mission" },
-              { id: "journey", label: "Our Journey" },
-              { id: "values", label: "Our Values" },
-              { id: "approach", label: "Our Approach" },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveSection(tab.id)}
-                className={`touch-manipulation rounded-full px-4 py-2 text-xs font-medium whitespace-nowrap transition-all sm:px-5 sm:py-2.5 sm:text-sm ${
-                  activeSection === tab.id
-                    ? "border border-primary/30 bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="relative"
+          >
+            {/* Label */}
+            <motion.div variants={itemVariants} className="mb-12">
+              <span className="font-mono text-sm tracking-widest text-teal uppercase">
+                By The Numbers
+              </span>
+            </motion.div>
+
+            {/* Grid */}
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                  className={`group relative border-4 ${
+                    stat.color === "coral"
+                      ? "border-coral"
+                      : stat.color === "teal"
+                        ? "border-teal"
+                        : "border-amber"
+                  } bg-[#141414] p-6 sm:p-8`}
+                >
+                  {/* Pixel corner */}
+                  <div
+                    className={`absolute top-0 right-0 size-4 ${
+                      stat.color === "coral"
+                        ? "bg-coral"
+                        : stat.color === "teal"
+                          ? "bg-teal"
+                          : "bg-amber"
+                    }`}
+                  />
+
+                  <div
+                    className={`font-mono text-4xl font-black sm:text-5xl md:text-6xl ${
+                      stat.color === "coral"
+                        ? "text-coral"
+                        : stat.color === "teal"
+                          ? "text-teal"
+                          : "text-amber"
+                    }`}
+                  >
+                    {stat.value}
+                  </div>
+                  <div className="mt-2 text-sm tracking-wider text-[#a0a0a0] uppercase">
+                    {stat.label}
+                  </div>
+
+                  {/* Hover shadow */}
+                  <div
+                    className={`absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100`}
+                    style={{
+                      boxShadow:
+                        stat.color === "coral"
+                          ? "8px 8px 0 0 rgba(255,107,53,0.3)"
+                          : stat.color === "teal"
+                            ? "8px 8px 0 0 rgba(0,212,170,0.3)"
+                            : "8px 8px 0 0 rgba(255,184,0,0.3)",
+                    }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      <section
-        id="mission"
-        className={`py-16 ${activeSection === "mission" ? "block" : "hidden"}`}
-      >
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-            <div className="rounded-lg border border-border/30 bg-background/80 p-6 backdrop-blur-sm">
-              <h2 className="mb-6 text-3xl font-bold">Our Mission</h2>
-              <p className="mb-6 text-muted-foreground">
-                At mdesk.tech, we&apos;re on a mission to transform how
-                businesses connect with their audiences in the digital world. We
-                believe that exceptional digital experiences are built at the
-                intersection of cutting-edge technology, beautiful design, and
-                strategic thinking.
-              </p>
-              <p className="mb-8 text-muted-foreground">
-                We&apos;re committed to creating digital solutions that not only
-                look stunning but also drive real business results. Our approach
-                combines technical expertise with creative innovation to deliver
-                websites and applications that stand out in today&apos;s crowded
-                digital landscape.
-              </p>
+      {/* Mission */}
+      <section className="relative overflow-hidden py-16 sm:py-24 md:py-32">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="relative grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+            {/* Left */}
+            <motion.div
+              variants={slideInLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className="relative z-10"
+            >
+              <span className="font-mono text-sm tracking-widest text-coral uppercase">
+                Our Mission
+              </span>
 
-              <div className="space-y-4">
+              <h2 className="mt-4 text-3xl/tight font-black text-white sm:text-4xl md:text-5xl lg:text-6xl">
+                TRANSFORMING
+                <br />
+                <span className="text-coral">DIGITAL</span>
+                <br />
+                EXPERIENCES
+              </h2>
+
+              <div className="mt-8 space-y-4 text-lg text-[#a0a0a0]">
+                <p>
+                  We believe exceptional digital experiences are built at the
+                  intersection of cutting-edge technology, beautiful design, and
+                  strategic thinking.
+                </p>
+                <p>
+                  Our mission is to empower businesses with digital solutions
+                  that drive real results and create lasting impressions.
+                </p>
+              </div>
+
+              {/* Mission points */}
+              <div className="mt-8 space-y-4">
                 {[
-                  "Create exceptional digital experiences that drive growth",
-                  "Empower businesses with technology that works for them",
-                  "Build long-term partnerships based on trust and results",
-                  "Push the boundaries of what's possible in web design and development",
+                  "Create exceptional experiences that drive growth",
+                  "Empower businesses with technology that works",
+                  "Build long-term partnerships based on trust",
                 ].map((item, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <div className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20">
-                      <Target className="size-3 text-primary" />
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-center gap-4"
+                  >
+                    <div className="flex size-8 items-center justify-center border-2 border-coral">
+                      <Target className="size-4 text-coral" />
                     </div>
-                    <span className="text-sm">{item}</span>
-                  </div>
+                    <span className="text-white">{item}</span>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="relative">
-              <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-primary/20 to-accent/20 blur-xl" />
-              <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-card/80 p-8 backdrop-blur-sm">
-                <div className="absolute -top-20 -right-20 size-40 rounded-full bg-primary/10 blur-3xl" />
-                <div className="absolute -bottom-20 -left-20 size-40 rounded-full bg-accent/10 blur-3xl" />
+            {/* Right */}
+            <motion.div
+              variants={slideInRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className="relative"
+            >
+              {/* Background */}
+              <div className="absolute top-4 left-4 size-full border-4 border-teal/30 bg-[#141414] sm:top-8 sm:left-8" />
 
-                <h3 className="mb-4 text-xl font-bold">Why We Exist</h3>
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Heart className="size-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="mb-1 font-medium">Excellence</h4>
-                      <p className="text-sm text-muted-foreground">
-                        We&apos;re committed to delivering work that exceeds
-                        expectations in every detail.
-                      </p>
-                    </div>
-                  </div>
+              {/* Main */}
+              <div className="relative border-4 border-teal bg-[#141414] p-8 sm:p-12">
+                <div className="absolute top-0 right-0 size-6 bg-teal" />
 
-                  <div className="flex items-start gap-4">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent/10">
-                      <Users className="size-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="mb-1 font-medium">Partnership</h4>
-                      <p className="text-sm text-muted-foreground">
-                        We build lasting relationships with our clients based on
-                        trust and mutual success.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Rocket className="size-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="mb-1 font-medium">Innovation</h4>
-                      <p className="text-sm text-muted-foreground">
-                        We constantly explore new technologies and approaches to
-                        solve complex problems and create better solutions.
-                      </p>
-                    </div>
-                  </div>
+                <div className="space-y-8">
+                  {[
+                    {
+                      icon: Heart,
+                      title: "Excellence",
+                      desc: "Committed to exceeding expectations",
+                      color: "coral",
+                    },
+                    {
+                      icon: Users,
+                      title: "Partnership",
+                      desc: "Building lasting relationships",
+                      color: "teal",
+                    },
+                    {
+                      icon: Rocket,
+                      title: "Innovation",
+                      desc: "Exploring new technologies",
+                      color: "amber",
+                    },
+                  ].map((item, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.15 }}
+                      whileHover={{ x: 8 }}
+                      className="group flex items-start gap-4"
+                    >
+                      <div
+                        className={`flex size-12 shrink-0 items-center justify-center border-2 ${
+                          item.color === "coral"
+                            ? "border-coral bg-coral/10"
+                            : item.color === "teal"
+                              ? "border-teal bg-teal/10"
+                              : "border-amber bg-amber/10"
+                        }`}
+                      >
+                        <item.icon
+                          className={`size-6 ${
+                            item.color === "coral"
+                              ? "text-coral"
+                              : item.color === "teal"
+                                ? "text-teal"
+                                : "text-amber"
+                          }`}
+                        />
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-white transition-colors group-hover:text-coral">
+                          {item.title}
+                        </h4>
+                        <p className="text-sm text-[#a0a0a0]">{item.desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
               </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="relative overflow-hidden py-16 sm:py-24 md:py-32">
+        <div className="container mx-auto px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12 sm:mb-20"
+          >
+            <span className="font-mono text-sm tracking-widest text-amber uppercase">
+              Our Journey
+            </span>
+            <h2 className="mt-4 text-3xl font-black text-white sm:text-4xl md:text-5xl lg:text-6xl">
+              THE PATH WE
+              <br />
+              <span className="text-amber">TRAVELED</span>
+            </h2>
+          </motion.div>
+
+          {/* Timeline */}
+          <div className="relative">
+            {/* Center line */}
+            <div className="absolute inset-y-0 left-1/2 hidden w-px bg-linear-to-b from-coral via-teal to-amber md:block" />
+
+            <div className="space-y-16 md:space-y-24">
+              {milestones.map((milestone, index) => (
+                <motion.div
+                  key={index}
+                  initial={{
+                    opacity: 0,
+                    y: 30,
+                  }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.7, delay: index * 0.1 }}
+                  className={`relative grid grid-cols-1 gap-8 md:grid-cols-2 ${
+                    index % 2 === 0 ? "" : "md:text-right"
+                  }`}
+                >
+                  {/* Content */}
+                  <div
+                    className={
+                      index % 2 === 0 ? "md:pr-16" : "md:order-2 md:pl-16"
+                    }
+                  >
+                    <div
+                      className={`border-4 ${
+                        milestone.color === "coral"
+                          ? "border-coral"
+                          : milestone.color === "teal"
+                            ? "border-teal"
+                            : "border-amber"
+                      } bg-[#141414] p-6 sm:p-8`}
+                    >
+                      <div
+                        className={`absolute top-0 ${
+                          index % 2 === 0 ? "right-0" : "left-0"
+                        } size-4 ${
+                          milestone.color === "coral"
+                            ? "bg-coral"
+                            : milestone.color === "teal"
+                              ? "bg-teal"
+                              : "bg-amber"
+                        }`}
+                      />
+                      <span
+                        className={`font-mono text-5xl font-black ${
+                          milestone.color === "coral"
+                            ? "text-coral"
+                            : milestone.color === "teal"
+                              ? "text-teal"
+                              : "text-amber"
+                        }`}
+                      >
+                        {milestone.year}
+                      </span>
+                      <h3 className="mt-2 text-2xl font-bold text-white">
+                        {milestone.title}
+                      </h3>
+                      <p className="mt-2 text-[#a0a0a0]">
+                        {milestone.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Center dot */}
+                  <div className="hidden items-center justify-center md:flex">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 + 0.3, type: "spring" }}
+                      className={`size-6 border-4 border-[#0a0a0a] ${
+                        milestone.color === "coral"
+                          ? "bg-coral"
+                          : milestone.color === "teal"
+                            ? "bg-teal"
+                            : "bg-amber"
+                      }`}
+                    />
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section
-        id="journey"
-        className={`py-16 ${activeSection === "journey" ? "block" : "hidden"}`}
-      >
-        <Timeline data={timelineData} />
-      </section>
+      {/* Values */}
+      <section className="relative overflow-hidden py-16 sm:py-24 md:py-32">
+        <div className="container mx-auto px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-20 text-center"
+          >
+            <span className="font-mono text-sm tracking-widest text-coral uppercase">
+              What Drives Us
+            </span>
+            <h2 className="mt-4 text-3xl font-black text-white sm:text-4xl md:text-5xl lg:text-6xl">
+              OUR <span className="text-coral">VALUES</span>
+            </h2>
+          </motion.div>
 
-      <section
-        id="values"
-        className={`py-16 ${activeSection === "values" ? "block" : "hidden"}`}
-      >
-        <div className="container mx-auto px-6">
-          <div className="mx-auto mb-12 max-w-3xl rounded-lg border border-primary/20 bg-background/80 px-8 py-6 text-center backdrop-blur-md">
-            <h2 className="mb-4 text-3xl font-bold">Our Values</h2>
-            <p className="text-muted-foreground">
-              These core principles guide everything we do, from how we work
-              with clients to how we build our team.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            {[
-              {
-                title: "Excellence",
-                description:
-                  "We strive for excellence in everything we do, from the code we write to the designs we create.",
-                icon: <Heart className="size-6" />,
-                color: "bg-primary/10 text-primary",
-              },
-              {
-                title: "Innovation",
-                description:
-                  "We embrace new technologies and approaches to solve complex problems and create better solutions.",
-                icon: <Target className="size-6 text-white" />,
-                color: "bg-accent/10 text-accent",
-              },
-              {
-                title: "Collaboration",
-                description:
-                  "We believe the best work happens when diverse perspectives come together toward a common goal.",
-                icon: <Users className="size-6" />,
-                color: "bg-primary/10 text-primary",
-              },
-              {
-                title: "Integrity",
-                description:
-                  "We're honest, transparent, and committed to doing what's right for our clients and our team.",
-                icon: <Award className="size-6 text-white" />,
-                color: "bg-accent/10 text-accent",
-              },
-            ].map((value, index) => (
-              <div
+          {/* Cards */}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {values.map((value, index) => (
+              <motion.div
                 key={index}
-                className="rounded-lg border border-primary/30 bg-background/90 p-6 shadow-lg backdrop-blur-md"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                style={{ marginTop: index % 2 === 1 ? "2rem" : 0 }}
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                className={`group relative border-4 ${
+                  value.color === "coral"
+                    ? "border-coral"
+                    : value.color === "teal"
+                      ? "border-teal"
+                      : "border-amber"
+                } bg-[#141414] p-8`}
               >
+                {/* Pixel accent */}
                 <div
-                  className={`size-12 rounded-lg ${value.color} mb-4 flex items-center justify-center`}
-                >
-                  {value.icon}
+                  className={`absolute top-0 right-0 size-6 ${
+                    value.color === "coral"
+                      ? "bg-coral"
+                      : value.color === "teal"
+                        ? "bg-teal"
+                        : "bg-amber"
+                  }`}
+                />
+
+                <div className="flex items-start gap-6">
+                  <div
+                    className={`flex size-16 shrink-0 items-center justify-center border-2 ${
+                      value.color === "coral"
+                        ? "border-coral bg-coral/10"
+                        : value.color === "teal"
+                          ? "border-teal bg-teal/10"
+                          : "border-amber bg-amber/10"
+                    }`}
+                  >
+                    <value.icon
+                      className={`size-8 ${
+                        value.color === "coral"
+                          ? "text-coral"
+                          : value.color === "teal"
+                            ? "text-teal"
+                            : "text-amber"
+                      }`}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-white transition-colors group-hover:text-coral">
+                      {value.title}
+                    </h3>
+                    <p className="mt-2 text-[#a0a0a0]">{value.description}</p>
+                  </div>
                 </div>
-                <h3 className="mb-2 text-xl font-bold text-white">
-                  {value.title}
-                </h3>
-                <p className="text-gray-300">{value.description}</p>
 
-                <div className="mt-6 border-t border-border/50 pt-6">
-                  <h4 className="mb-3 text-sm font-medium">
-                    How we live this value:
-                  </h4>
-                  <ul className="space-y-2">
-                    {[1, 2, 3].map((item, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <div className="mt-1 size-2 shrink-0 rounded-full bg-primary/50" />
-                        <span className="text-sm text-gray-300">
-                          {index === 0 &&
-                            i === 0 &&
-                            "Rigorous code reviews and quality assurance"}
-                          {index === 0 &&
-                            i === 1 &&
-                            "Continuous learning and skill development"}
-                          {index === 0 &&
-                            i === 2 &&
-                            "Attention to detail in every deliverable"}
-
-                          {index === 1 &&
-                            i === 0 &&
-                            "Exploring emerging technologies"}
-                          {index === 1 &&
-                            i === 1 &&
-                            "Regular innovation workshops"}
-                          {index === 1 &&
-                            i === 2 &&
-                            "Encouraging creative problem-solving"}
-
-                          {index === 2 &&
-                            i === 0 &&
-                            "Cross-functional team collaboration"}
-                          {index === 2 &&
-                            i === 1 &&
-                            "Open and transparent communication"}
-                          {index === 2 &&
-                            i === 2 &&
-                            "Valuing diverse perspectives"}
-
-                          {index === 3 &&
-                            i === 0 &&
-                            "Honest client relationships"}
-                          {index === 3 &&
-                            i === 1 &&
-                            "Ethical business practices"}
-                          {index === 3 &&
-                            i === 2 &&
-                            "Taking responsibility for our work"}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+                {/* Hover glow */}
+                <div
+                  className="pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
+                  style={{
+                    background:
+                      value.color === "coral"
+                        ? "radial-gradient(circle at 50% 0%, rgba(255,107,53,0.1), transparent 60%)"
+                        : value.color === "teal"
+                          ? "radial-gradient(circle at 50% 0%, rgba(0,212,170,0.1), transparent 60%)"
+                          : "radial-gradient(circle at 50% 0%, rgba(255,184,0,0.1), transparent 60%)",
+                  }}
+                />
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section
-        id="approach"
-        className={`py-16 ${activeSection === "approach" ? "block" : "hidden"}`}
-      >
-        <div className="container mx-auto px-6">
-          <div className="mx-auto mb-12 max-w-4xl rounded-lg border border-primary/20 bg-background/80 px-8 py-6 text-center backdrop-blur-md">
-            <h2 className="mb-4 text-3xl font-bold">Our Approach</h2>
-            <p className="text-muted-foreground">
-              We follow a collaborative, client-centered approach to ensure your
-              project meets your specific needs and goals.
-            </p>
-          </div>
+      {/* Process */}
+      <section className="relative overflow-hidden py-16 sm:py-24 md:py-32">
+        <div className="container mx-auto px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12 sm:mb-20"
+          >
+            <span className="font-mono text-sm tracking-widest text-teal uppercase">
+              How We Work
+            </span>
+            <h2 className="mt-4 text-3xl font-black text-white sm:text-4xl md:text-5xl lg:text-6xl">
+              OUR <span className="text-teal">PROCESS</span>
+            </h2>
+          </motion.div>
 
-          <div className="relative mx-auto max-w-4xl">
-            <div
-              className="absolute top-8 bottom-8 left-8 z-0 w-px"
-              style={{
-                background:
-                  "linear-gradient(to bottom, hsl(var(--primary)) 50%, transparent 50%)",
-                backgroundSize: "1px 8px",
-                opacity: 0.6,
-              }}
-            />
+          {/* Steps */}
+          <div className="relative">
+            {/* Connection line */}
+            <div className="absolute inset-x-0 top-12 hidden h-1 bg-linear-to-r from-coral via-teal to-amber md:block" />
 
-            {steps.map((step, index) => (
-              <div
-                key={index}
-                className="relative mb-12 flex items-start gap-8 last:mb-0"
-              >
-                <div className="relative z-10">
-                  <div className="absolute inset-0 rounded-full bg-linear-to-br from-primary to-accent opacity-20 blur-sm" />
-                  <div className="relative flex size-16 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-background">
-                    <div className="absolute inset-0 rounded-full bg-linear-to-br from-primary/10 to-accent/10" />
-                    <span className="relative z-10 bg-linear-to-r from-primary to-accent bg-clip-text text-xl font-bold text-transparent">
+            <div className="grid grid-cols-2 gap-4 sm:gap-8 md:grid-cols-3 lg:grid-cols-6">
+              {processSteps.map((step, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -8 }}
+                  className="group relative"
+                >
+                  {/* Number circle */}
+                  <div className="relative z-10 mx-auto mb-4 flex size-16 items-center justify-center border-4 border-coral bg-[#0a0a0a] sm:size-24 md:mx-0">
+                    <span className="font-mono text-2xl font-black text-coral">
                       {step.number}
                     </span>
                   </div>
+
+                  {/* Content card */}
+                  <div className="border-2 border-[#333] bg-[#141414] p-3 transition-colors group-hover:border-coral sm:min-h-32.5 sm:p-4">
+                    <h4 className="font-bold text-white">{step.title}</h4>
+                    <p className="mt-1 text-sm text-[#a0a0a0]">
+                      {step.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Us */}
+      <section className="relative overflow-hidden py-16 sm:py-24 md:py-32">
+        <div className="container mx-auto px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12 sm:mb-20"
+          >
+            <span className="font-mono text-sm tracking-widest text-coral uppercase">
+              Why Us
+            </span>
+            <h2 className="mt-4 text-3xl font-black text-white sm:text-4xl md:text-5xl lg:text-6xl">
+              WHY <span className="text-coral">CHOOSE</span> US
+            </h2>
+          </motion.div>
+
+          {/* Grid */}
+          <div className="grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                icon: Code,
+                title: "Expert Development",
+                desc: "Clean, efficient code with modern technologies",
+                color: "coral",
+              },
+              {
+                icon: Sparkles,
+                title: "Stunning Design",
+                desc: "Beautiful interfaces that captivate users",
+                color: "teal",
+              },
+              {
+                icon: TrendingUp,
+                title: "Results Driven",
+                desc: "Focused on delivering measurable business outcomes",
+                color: "amber",
+              },
+              {
+                icon: Globe,
+                title: "Global Reach",
+                desc: "Working with clients worldwide",
+                color: "amber",
+              },
+              {
+                icon: Layers,
+                title: "Full Stack",
+                desc: "End-to-end solutions from concept to deployment",
+                color: "coral",
+              },
+              {
+                icon: Shield,
+                title: "Secure & Reliable",
+                desc: "Enterprise-grade security and 99.9% uptime guarantee",
+                color: "teal",
+              },
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -8 }}
+                className={`group relative border-4 ${
+                  feature.color === "coral"
+                    ? "border-coral"
+                    : feature.color === "teal"
+                      ? "border-teal"
+                      : "border-amber"
+                } bg-[#141414] p-6`}
+              >
+                <div
+                  className={`absolute top-0 right-0 size-4 ${
+                    feature.color === "coral"
+                      ? "bg-coral"
+                      : feature.color === "teal"
+                        ? "bg-teal"
+                        : "bg-amber"
+                  }`}
+                />
+
+                <div
+                  className={`mb-4 inline-flex border-2 ${
+                    feature.color === "coral"
+                      ? "border-coral bg-coral/10"
+                      : feature.color === "teal"
+                        ? "border-teal bg-teal/10"
+                        : "border-amber bg-amber/10"
+                  } p-3`}
+                >
+                  <feature.icon
+                    className={`size-6 ${
+                      feature.color === "coral"
+                        ? "text-coral"
+                        : feature.color === "teal"
+                          ? "text-teal"
+                          : "text-amber"
+                    }`}
+                  />
                 </div>
 
-                <div className="flex-1 rounded-lg border border-primary/30 bg-background/90 p-6 pt-3 shadow-lg backdrop-blur-md">
-                  <h3 className="mb-2 text-xl font-bold text-white">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-300">{step.description}</p>
-                  <div className="mt-4 h-1 w-24 rounded-full bg-linear-to-r from-primary/40 to-accent/40" />
-                </div>
-              </div>
+                <h3 className="text-xl font-bold text-white transition-colors group-hover:text-coral">
+                  {feature.title}
+                </h3>
+                <p className="mt-2 text-[#a0a0a0]">{feature.desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden py-12 sm:py-20">
-        <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-accent/10" />
+      {/* CTA */}
+      <section className="relative overflow-hidden py-16 sm:py-24 md:py-32">
+        <div className="container mx-auto px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative mx-auto max-w-4xl overflow-hidden border-4 border-coral bg-[#141414] p-8 sm:p-16"
+          >
+            {/* Corner decorations */}
+            <div className="absolute top-0 left-0 size-8 bg-coral" />
+            <div className="absolute top-0 right-0 size-8 bg-teal" />
+            <div className="absolute bottom-0 left-0 size-8 bg-teal" />
+            <div className="absolute right-0 bottom-0 size-8 bg-coral" />
 
-        <div className="relative z-10 container mx-auto px-4 sm:px-6">
-          <div className="mx-auto max-w-4xl rounded-3xl border border-primary/20 bg-linear-to-br from-primary/5 to-accent/5 p-6 backdrop-blur-sm sm:p-8 md:p-10">
-            <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-              <div>
-                <h3 className="mb-2 flex items-center gap-3 text-2xl font-bold sm:text-3xl">
-                  <Heart className="size-6 text-primary sm:size-8" />
-                  Ready to work with us?
-                </h3>
-                <p className="text-base text-muted-foreground sm:text-lg">
-                  Let&apos;s create something amazing together.
-                </p>
-              </div>
-              <Link
-                href="/contact"
-                className="inline-flex w-full touch-manipulation items-center justify-center rounded-full bg-linear-to-r from-cyan-500 to-teal-500 px-6 py-3 text-sm font-bold whitespace-nowrap text-white transition-all hover:scale-105 hover:shadow-lg hover:shadow-primary/50 sm:px-8 sm:py-4 sm:text-base md:w-auto"
+            {/* Inner border */}
+            <div className="absolute inset-4 border-2 border-coral/30" />
+
+            <div className="relative z-10 text-center">
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-3xl font-black text-white sm:text-4xl md:text-5xl"
               >
-                Get in Touch
-                <ArrowRight className="ml-2 size-4 sm:size-5" />
-              </Link>
+                READY TO CREATE
+                <br />
+                <span className="text-coral">SOMETHING AMAZING?</span>
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="mx-auto mt-6 max-w-xl text-lg text-[#a0a0a0]"
+              >
+                Let&apos;s collaborate to bring your vision to life with
+                cutting-edge design and development.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="mt-8"
+              >
+                <Link
+                  href="/contact"
+                  className="btn-retro inline-flex items-center gap-2 px-8 py-4 text-lg"
+                >
+                  Get in Touch
+                  <ArrowRight className="size-5" />
+                </Link>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

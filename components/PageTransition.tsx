@@ -2,25 +2,47 @@
 
 import type React from "react";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useState } from "react";
 
 /**
- * Wraps children in a div keyed to the current pathname to enable remount-based page transitions and applies a base CSS class with an optional additional class.
- *
- * @param children - Content to render inside the transition wrapper.
- * @param className - Optional additional CSS class to append to `page-transition`.
- * @returns A JSX element: a div with the `page-transition` class (plus `className` if provided) and a `key` tied to the current pathname.
+ * Smooth page transitions with AnimatePresence
  */
 export default function PageTransition({
   children,
-  className,
 }: {
   children: React.ReactNode;
-  className?: string;
 }) {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return <>{children}</>;
+  }
+
   return (
-    <div key={pathname} className={`page-transition ${className ?? ""}`}>
-      {children}
-    </div>
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={pathname}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{
+          duration: 0.3,
+          ease: [0.25, 0.46, 0.45, 0.94],
+        }}
+        style={{
+          willChange: "opacity, transform",
+        }}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
   );
 }

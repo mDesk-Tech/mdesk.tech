@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
+import type React from "react";
 
 export const metadata: Metadata = pageMetadata({
   title: "About | mdesk.tech",
@@ -7,4 +8,10 @@ export const metadata: Metadata = pageMetadata({
   path: "/about",
 });
 
-export { default } from "@/components/PassthroughLayout";
+export default function AboutLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <>{children}</>;
+}

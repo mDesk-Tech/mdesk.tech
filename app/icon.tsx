@@ -1,9 +1,7 @@
-import { ImageResponse } from "next/og";
+import { ImageResponse } from "@takumi-rs/image-response";
 
-// Route segment config
-export const runtime = "edge";
+export const runtime = "nodejs";
 
-// Image metadata
 export const size = {
   width: 32,
   height: 32,
@@ -11,57 +9,73 @@ export const size = {
 
 export const contentType = "image/png";
 
-// Image generation
-export default async function Icon() {
+/**
+ * Dynamic favicon generator
+ */
+export default function Icon() {
   return new ImageResponse(
     <div
+      tw="flex items-center justify-center w-full h-full relative"
       style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: "100%",
-        backgroundColor: "black",
-        position: "relative",
+        background: "#0a0a0a",
       }}
     >
+      {/* Outer border */}
       <div
         style={{
           position: "absolute",
-          width: "24px",
-          height: "24px",
-          background: "linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%)",
-          borderRadius: "4px",
-          transform: "rotate(45deg)",
+          inset: 2,
+          border: "2px solid #ff6b35",
+          borderRadius: 4,
         }}
       />
+
+      {/* Inner border */}
       <div
         style={{
           position: "absolute",
-          width: "24px",
-          height: "24px",
-          background: "linear-gradient(45deg, #06b6d4 0%, #14b8a6 100%)",
-          borderRadius: "4px",
-          transform: "rotate(12deg)",
-          opacity: 0.7,
+          inset: 4,
+          border: "1px solid #00d4aa",
+          borderRadius: 2,
         }}
       />
+
+      {/* M letter */}
       <div
+        tw="font-bold text-center"
         style={{
-          position: "absolute",
-          width: "18px",
-          height: "18px",
-          backgroundColor: "black",
-          borderRadius: "2px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          fontSize: 18,
+          fontFamily: "Geist Mono",
+          color: "#ff6b35",
+          lineHeight: 1,
+          letterSpacing: "-0.05em",
+          textShadow: "0 0 4px rgba(255, 107, 53, 0.5)",
         }}
       >
-        <span style={{ color: "white", fontWeight: "bold", fontSize: "12px" }}>
-          m
-        </span>
+        M
       </div>
+
+      {/* Pixel dots */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 5,
+          right: 5,
+          width: 3,
+          height: 3,
+          background: "#00d4aa",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: 5,
+          left: 5,
+          width: 2,
+          height: 2,
+          background: "#ff6b35",
+        }}
+      />
     </div>,
     {
       ...size,

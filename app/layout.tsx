@@ -71,19 +71,16 @@ export const metadata: Metadata = {
 };
 
 /**
- * Renders the application's root HTML layout with global styles, theming, navigation, footer, and performance/analytics hooks.
+ * Root layout - handles theming, nav, footer, and analytics
  *
- * Applies inline critical CSS and LCP priority hints, forces a dark theme, wraps page content with a page transition, and conditionally loads production analytics (including Google Analytics when a GA ID is configured).
- *
- * @param children - The page content to render inside the layout
- * @returns The root HTML element (JSX) that wraps head, body, and the provided page content
+ * @param children - Page content
  */
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const currentYear = new Date().getFullYear();
+  const currentYear = 2026;
   return (
     <html
       lang="en"
@@ -91,7 +88,7 @@ export default async function RootLayout({
       style={{ colorScheme: "dark" }}
     >
       <head>
-        {/* Resource hints for performance - preconnect for critical third-party domains */}
+        {/* Preconnect to speed up external resources */}
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
@@ -101,7 +98,7 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
-        {/* Inline critical CSS for faster FCP and LCP */}
+        {/* Critical CSS - loaded inline for speed */}
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -110,26 +107,26 @@ export default async function RootLayout({
                 color-scheme: dark;
               }
               
-              /* Critical path: ensure above-the-fold content renders immediately */
+              /* Show critical content immediately */
               h1, [data-lcp-element="true"] {
                 opacity: 1 !important;
                 visibility: visible !important;
                 content-visibility: visible !important;
               }
               
-              /* Prevent layout shifts (CLS optimization) */
+              /* Prevent layout shifts */
               img, video {
                 height: auto;
                 max-width: 100%;
                 display: block;
               }
               
-              /* Optimize main content visibility for LCP */
+              /* LCP optimization */
               .critical-content {
                 contain: layout style;
               }
-              
-              /* Reduced motion support for accessibility */
+
+              /* Reduced motion */
               @media (prefers-reduced-motion: reduce) {
                 *, *::before, *::after {
                   animation-duration: 0.01ms !important;
@@ -153,7 +150,7 @@ export default async function RootLayout({
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
             <main className="grow">
-              {/* Add priority hint for LCP content */}
+              {/* Priority hint for LCP */}
               <PageTransition>
                 <div className="critical-content" data-priority="high">
                   {children}
@@ -163,9 +160,9 @@ export default async function RootLayout({
             <Footer year={currentYear} />
           </div>
 
-          {/* Performance optimizers are loaded in page.tsx */}
+          {/* Performance tools loaded in page.tsx */}
 
-          {/* Load analytics only in production */}
+          {/* Analytics - production only */}
           {process.env.NODE_ENV === "production" && (
             <>
               <Analytics />

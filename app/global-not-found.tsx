@@ -7,7 +7,7 @@ import { ArrowLeft, Home } from "lucide-react";
 const NotFoundPage = () => {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden py-20">
-      {/* Background elements */}
+      {/* Background */}
       <div className="grid-pattern absolute inset-0 z-0 opacity-10" />
       <div className="noise absolute inset-0 z-0" />
 
@@ -92,7 +92,7 @@ const NotFoundPage = () => {
             </button>
           </motion.div>
 
-          {/* 404 Illustration */}
+          {/* Illustration */}
           <motion.div
             className="relative mx-auto mt-16 max-w-md"
             initial={{
@@ -110,19 +110,19 @@ const NotFoundPage = () => {
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative size-3/4">
-                  {/* Circular grid pattern */}
+                  {/* Grid */}
                   <div
                     className="absolute inset-0 animate-spin rounded-full border-4 border-dashed border-muted/30"
                     style={{ animationDuration: "30s" }}
                   />
 
-                  {/* Broken link visualization */}
+                  {/* Broken link */}
                   <div className="absolute top-1/2 left-1/2 flex w-1/2 -translate-1/2 transform items-center">
                     <div className="h-4 w-1/2 rounded-l-full bg-primary/50" />
                     <div className="ml-4 size-4 rounded-full border-2 border-primary/50 bg-background" />
                   </div>
 
-                  {/* Animated dots */}
+                  {/* Dots */}
                   {[0, 1, 2, 3, 4, 5].map((i) => (
                     <motion.div
                       key={i}

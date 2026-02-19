@@ -1,9 +1,7 @@
-import { ImageResponse } from "next/og";
+import { ImageResponse } from "@takumi-rs/image-response";
 
-// Route segment config
-export const runtime = "edge";
+export const runtime = "nodejs";
 
-// Image metadata
 export const size = {
   width: 180,
   height: 180,
@@ -11,58 +9,98 @@ export const size = {
 
 export const contentType = "image/png";
 
-// Image generation
-export default async function Icon() {
+/**
+ * Apple touch icon
+ */
+export default function AppleIcon() {
   return new ImageResponse(
     <div
       style={{
+        width: "100%",
+        height: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        width: "100%",
-        height: "100%",
-        backgroundColor: "black",
+        background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)",
         position: "relative",
-        borderRadius: "36px",
+        borderRadius: 22,
       }}
     >
+      {/* Outer border */}
       <div
         style={{
           position: "absolute",
-          width: "120px",
-          height: "120px",
-          background: "linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%)",
-          borderRadius: "16px",
-          transform: "rotate(45deg)",
+          inset: 8,
+          border: "4px solid #ff6b35",
+          borderRadius: 16,
         }}
       />
+
+      {/* Inner border */}
       <div
         style={{
           position: "absolute",
-          width: "120px",
-          height: "120px",
-          background: "linear-gradient(45deg, #06b6d4 0%, #14b8a6 100%)",
-          borderRadius: "16px",
-          transform: "rotate(12deg)",
-          opacity: 0.7,
+          inset: 14,
+          border: "2px solid #00d4aa",
+          borderRadius: 10,
         }}
       />
+
+      {/* M letter */}
       <div
         style={{
-          position: "absolute",
-          width: "90px",
-          height: "90px",
-          backgroundColor: "black",
-          borderRadius: "8px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          fontSize: 100,
+          fontWeight: 900,
+          fontFamily: "monospace",
+          color: "#ff6b35",
+          lineHeight: 1,
+          letterSpacing: "-0.05em",
         }}
       >
-        <span style={{ color: "white", fontWeight: "bold", fontSize: "50px" }}>
-          m
-        </span>
+        M
       </div>
+
+      {/* Corners */}
+      <div
+        style={{
+          position: "absolute",
+          top: 18,
+          left: 18,
+          width: 8,
+          height: 8,
+          background: "#00d4aa",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: 18,
+          right: 18,
+          width: 8,
+          height: 8,
+          background: "#ff6b35",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: 18,
+          left: 18,
+          width: 8,
+          height: 8,
+          background: "#ff6b35",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: 18,
+          right: 18,
+          width: 8,
+          height: 8,
+          background: "#00d4aa",
+        }}
+      />
     </div>,
     {
       ...size,

@@ -1,21 +1,23 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback, memo } from "react";
+import { useRef, useEffect, useState, memo } from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 const Hero = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
   const [isHydrated, setIsHydrated] = useState(false);
+  const mousePosRef = useRef({ x: 0, y: 0 });
+  const glowRef = useRef<HTMLDivElement>(null);
 
-  // Track scroll-driven fade/translate without animation library
+  // Scroll-based transforms
   const opacityRef = useRef(1);
   const translateYRef = useRef(0);
 
-  // Defer non-critical visual effects until after hydration
+  // Delay effects until hydration
   useEffect(() => {
-    // Use requestIdleCallback if available for non-critical work
     const scheduleHydration = () => {
       setIsHydrated(true);
     };
@@ -23,7 +25,6 @@ const Hero = memo(() => {
     if (typeof requestIdleCallback !== "undefined") {
       requestIdleCallback(scheduleHydration, { timeout: 100 });
     } else {
-      // Fallback for browsers without requestIdleCallback
       setTimeout(scheduleHydration, 50);
     }
   }, []);
@@ -49,7 +50,31 @@ const Hero = memo(() => {
     };
   }, []);
 
-  // Apply scroll-based transforms via a lightweight handler
+  // Mouse glow effect
+  useEffect(() => {
+    let rafId: number;
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!containerRef.current) return;
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const rect = containerRef.current!.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        mousePosRef.current = { x, y };
+        if (glowRef.current) {
+          glowRef.current.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255, 107, 53, 0.12) 0%, transparent 20%)`;
+        }
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // Scroll transforms
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -61,12 +86,8 @@ const Hero = memo(() => {
       requestAnimationFrame(() => {
         const rect = el.getBoundingClientRect();
         const height = Math.max(1, rect.height);
-        // Emulate Framer Motion's useScroll with offsets ["start start", "end start"]
-        // progress = clamp(-top / height, 0, 1)
         const progress = Math.min(1, Math.max(0, -rect.top / height));
-        // Fade out over the first 30% of scroll range
         const nextOpacity = 1 - Math.min(1, progress / 0.3);
-        // Translate up to 50px over the first 50% of range
         const nextTranslateY = Math.min(50, Math.min(1, progress / 0.5) * 50);
         opacityRef.current = nextOpacity;
         translateYRef.current = nextTranslateY;
@@ -83,77 +104,135 @@ const Hero = memo(() => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollToSection = useCallback((id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  }, []);
-
   return (
     <section
       ref={containerRef}
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a0a0a]"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px]" />
+      {/* Glow */}
+      <div
+        ref={glowRef}
+        className="pointer-events-none absolute inset-0 opacity-30"
+      />
 
-      {/* Defer decorative blobs until after hydration for better INP */}
+      {/* Grid */}
+      <div className="grid-pattern pointer-events-none absolute inset-0 opacity-50" />
+
+      {/* Scanlines */}
+      <div className="scanlines pointer-events-none absolute inset-0 opacity-30" />
+
+      {/* Noise */}
+      <div className="noise pointer-events-none absolute inset-0" />
+
+      {/* Border frame */}
+      <div className="pointer-events-none absolute inset-8 border border-[#333] opacity-30 sm:inset-12">
+        <div className="absolute -top-px left-0 h-px w-16 animate-pulse bg-linear-to-r from-transparent via-coral to-transparent" />
+        <div
+          className="absolute top-0 -right-px h-16 w-px animate-pulse bg-linear-to-b from-transparent via-teal to-transparent"
+          style={{ animationDelay: "0.5s" }}
+        />
+        <div
+          className="absolute right-0 -bottom-px h-px w-16 animate-pulse bg-linear-to-l from-transparent via-coral to-transparent"
+          style={{ animationDelay: "1s" }}
+        />
+        <div
+          className="absolute bottom-0 -left-px h-16 w-px animate-pulse bg-linear-to-t from-transparent via-teal to-transparent"
+          style={{ animationDelay: "1.5s" }}
+        />
+      </div>
+
+      {/* Blobs */}
       {isHydrated && isMobile === false && (
         <>
-          <div className="animate-blob-a pointer-events-none absolute top-1/4 -left-1/4 size-96 rounded-full bg-primary/20 blur-3xl will-change-transform" />
-          <div className="animate-blob-b pointer-events-none absolute -right-1/4 bottom-1/4 size-96 rounded-full bg-accent/20 blur-3xl will-change-transform" />
+          <div className="animate-blob pointer-events-none absolute top-1/4 -left-1/4 size-96 rounded-full bg-coral/10 blur-3xl will-change-transform" />
+          <div className="animate-blob animation-delay-2000 pointer-events-none absolute -right-1/4 bottom-1/4 size-96 rounded-full bg-teal/10 blur-3xl will-change-transform" />
         </>
       )}
+
+      {/* Corners */}
+      <div className="pointer-events-none absolute top-24 left-8 hidden lg:block">
+        <div className="flex flex-col gap-2">
+          <div className="size-4 bg-coral" />
+          <div className="size-4 bg-teal" />
+          <div className="size-4 border-2 border-coral" />
+        </div>
+      </div>
+      <div className="pointer-events-none absolute right-8 bottom-24 hidden lg:block">
+        <div className="flex flex-col items-end gap-2">
+          <div className="size-4 border-2 border-teal" />
+          <div className="size-4 bg-coral" />
+          <div className="size-4 bg-teal" />
+        </div>
+      </div>
 
       <div
         ref={contentRef}
         className="relative z-10 container px-4 py-20 sm:px-6 sm:py-32"
       >
-        <div className="mx-auto max-w-6xl text-center">
-          <div className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 backdrop-blur-sm delay-0 sm:mb-8 sm:px-6 sm:py-3">
-            <Sparkles className="size-3 text-primary sm:size-4" />
-            <span className="text-xs font-semibold text-primary sm:text-sm">
-              Next-Generation Web Solutions
+        <div className="mx-auto max-w-5xl text-center">
+          {/* Badge */}
+          <div className="animate-fade-up mb-6 inline-flex items-center gap-2 border-2 border-coral/30 bg-coral/5 px-4 py-2 transition-all duration-300 hover:border-coral/60 sm:mb-8 sm:px-6">
+            <Sparkles className="size-3 text-coral sm:size-4" />
+            <span className="font-mono text-xs font-semibold tracking-wider text-coral uppercase">
+              Next-Gen Web Solutions
             </span>
           </div>
 
-          {/* LCP element - visible immediately, no animation delay */}
+          {/* Headline */}
           <h1
-            className="mb-6 text-4xl/tight font-black tracking-tight sm:mb-8 sm:text-6xl md:text-7xl lg:text-8xl"
+            className="mb-6 text-4xl font-black tracking-tight sm:mb-8 sm:text-6xl md:text-7xl lg:text-8xl"
             data-lcp-element="true"
           >
-            <span className="block">Designing Your</span>
-            <span className="block bg-linear-to-b from-primary to-accent bg-clip-text text-transparent">
-              Digital Future
-            </span>
+            <span className="block text-white">Designing Your</span>
+            <span className="neon-text-coral mt-2 block">Digital Future</span>
           </h1>
 
-          <p className="animate-fade-up mx-auto mb-8 max-w-4xl px-4 text-base/relaxed font-light text-muted-foreground delay-200 sm:mb-12 sm:text-xl md:text-2xl lg:text-3xl">
+          {/* Subheadline */}
+          <p className="animate-fade-up mx-auto mb-8 max-w-3xl px-4 text-base/relaxed font-light text-[#a0a0a0] delay-200 sm:mb-12 sm:text-xl md:text-2xl">
             Cutting-edge web design and reliable hosting solutions
-            <br />
-            for businesses that want to stand out in the digital landscape
+            <br className="hidden sm:block" />
+            for businesses that want to stand out
           </p>
 
-          <div className="animate-fade-up flex flex-col justify-center gap-3 px-4 delay-300 sm:flex-row sm:gap-4">
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="group relative inline-flex cursor-pointer touch-manipulation items-center justify-center overflow-hidden rounded-full bg-primary px-6 py-4 text-base font-bold text-primary-foreground transition-all hover:scale-105 hover:shadow-2xl hover:shadow-primary/50 sm:px-10 sm:py-5 sm:text-lg"
+          {/* CTAs */}
+          <div className="animate-fade-up flex flex-col justify-center gap-4 px-4 delay-300 sm:flex-row">
+            <Link
+              href="/contact"
+              className="group btn-neon inline-flex items-center justify-center gap-2 px-8 py-4 text-base sm:px-10 sm:py-5 sm:text-lg"
             >
-              <span className="relative z-10 flex items-center gap-2">
-                Get Started
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1 sm:size-5" />
-              </span>
-              <div className="absolute inset-0 bg-linear-to-r from-primary to-accent opacity-0 transition-opacity group-hover:opacity-100" />
-            </button>
-            <button
-              onClick={() => scrollToSection("services")}
-              className="inline-flex cursor-pointer touch-manipulation items-center justify-center rounded-full border-2 border-primary/20 bg-transparent px-6 py-4 text-base font-bold text-foreground transition-all hover:border-primary hover:bg-primary/10 sm:px-10 sm:py-5 sm:text-lg"
+              <span className="relative z-10">Get Started</span>
+              <ArrowRight className="relative z-10 size-4 transition-transform group-hover:translate-x-1 sm:size-5" />
+            </Link>
+            <Link
+              href="/services"
+              className="btn-retro-outline inline-flex items-center justify-center px-8 py-4 text-base transition-all duration-300 sm:px-10 sm:py-5 sm:text-lg"
             >
               Explore Services
-            </button>
+            </Link>
+          </div>
+
+          {/* Stats */}
+          <div className="animate-fade-up mt-16 grid grid-cols-3 gap-4 border-t-2 border-[#333] pt-8 delay-400 sm:mt-20 sm:gap-8">
+            {[
+              { value: "100+", label: "Projects Delivered" },
+              { value: "15+", label: "Team Members" },
+              { value: "99%", label: "Client Satisfaction" },
+            ].map((stat, index) => (
+              <div key={index} className="group text-center">
+                <div className="font-mono text-2xl font-bold text-coral transition-all duration-300 sm:text-3xl md:text-4xl">
+                  {stat.value}
+                </div>
+                <div className="mt-1 text-xs text-[#666] sm:text-sm">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
+
+      {/* Bottom line */}
+      <div className="absolute inset-x-0 bottom-0 h-1 bg-linear-to-r from-coral via-teal to-coral" />
     </section>
   );
 });

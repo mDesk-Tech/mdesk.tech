@@ -2,78 +2,108 @@
 @import "tw-animate-css";
 
 /*
-  Critical CSS
+  Design System: Retro-Futuristic Neo-Brutalist
 
-  Theme tokens are defined in two places on purpose:
-  1) OKLCH values here (outside any @layer) allow using tokens directly
-     as colors in raw CSS, e.g. `background-color: var(--background)`.
-  2) HSL channel values are defined later inside `@layer base` so they
-     can be consumed via `hsl(var(--token))` in the Tailwind @theme
-     mappings. Those later definitions override these by cascade.
-
-  This dual setup exists for compatibility while we migrate all direct
-  CSS usages to `hsl(var(--...))` (or Tailwind utilities like
-  `bg-background`, `border-border`). Once no direct `var(--token)` color
-  usages remain, the OKLCH block can be removed and the `@layer base`
-  HSL definitions will be the single source of truth.
+  Colors:
+  - Coral (#ff6b35): accents, buttons, borders
+  - Teal (#00d4aa): highlights, secondary elements
+  - Background: #0a0a0a
+  - Surface: #141414
+  - Text: white primary, gray secondary
 */
+
 :root {
   --animate-duration: 0.5s;
-  --sidebar: hsl(0deg 0% 98%);
-  --sidebar-foreground: hsl(240deg 5.3% 26.1%);
-  --sidebar-primary: hsl(240deg 5.9% 10%);
-  --sidebar-primary-foreground: hsl(0deg 0% 98%);
-  --sidebar-accent: hsl(240deg 4.8% 95.9%);
-  --sidebar-accent-foreground: hsl(240deg 5.9% 10%);
-  --sidebar-border: hsl(220deg 13% 91%);
-  --sidebar-ring: hsl(217.2deg 91.2% 59.8%);
-  --background: oklch(100% 0 0deg);
-  --foreground: oklch(14.5% 0 0deg);
-  --card: oklch(100% 0 0deg);
-  --card-foreground: oklch(14.5% 0 0deg);
-  --popover: oklch(100% 0 0deg);
-  --popover-foreground: oklch(14.5% 0 0deg);
-  --primary: oklch(20.5% 0 0deg);
-  --primary-foreground: oklch(98.5% 0 0deg);
-  --secondary: oklch(97% 0 0deg);
-  --secondary-foreground: oklch(20.5% 0 0deg);
-  --muted: oklch(97% 0 0deg);
-  --muted-foreground: oklch(55.6% 0 0deg);
-  --accent: oklch(97% 0 0deg);
-  --accent-foreground: oklch(20.5% 0 0deg);
-  --destructive: oklch(57.7% 0.245 27.325deg);
-  --destructive-foreground: oklch(57.7% 0.245 27.325deg);
-  --border: oklch(92.2% 0 0deg);
-  --input: oklch(92.2% 0 0deg);
-  --ring: oklch(70.8% 0 0deg);
-  --chart-1: oklch(64.6% 0.222 41.116deg);
-  --chart-2: oklch(60% 0.118 184.704deg);
-  --chart-3: oklch(39.8% 0.07 227.392deg);
-  --chart-4: oklch(82.8% 0.189 84.429deg);
-  --chart-5: oklch(76.9% 0.188 70.08deg);
-  --radius: 0.625rem;
+
+  /* Brand colors */
+  --coral: 17 100% 60%;
+  --coral-bright: 17 100% 65%;
+  --teal: 162 100% 42%;
+  --teal-bright: 162 100% 50%;
+  --amber: 45 100% 51%;
+  --background: 0 0% 4%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 8%;
+  --card-foreground: 0 0% 100%;
+  --popover: 0 0% 6%;
+  --popover-foreground: 0 0% 100%;
+  --primary: var(--coral);
+  --primary-foreground: 0 0% 4%;
+  --secondary: var(--teal);
+  --secondary-foreground: 0 0% 4%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 63%;
+  --accent: var(--teal);
+  --accent-foreground: 0 0% 4%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 20%;
+  --input: 0 0% 15%;
+  --ring: var(--coral);
+  --radius: 0.5rem;
+
+  /* Sidebar */
+  --sidebar: 0 0% 6%;
+  --sidebar-foreground: 0 0% 100%;
+  --sidebar-primary: var(--coral);
+  --sidebar-primary-foreground: 0 0% 4%;
+  --sidebar-accent: 0 0% 12%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 0 0% 15%;
+  --sidebar-ring: var(--coral);
 }
 
-/* Optimize paint performance */
+.dark {
+  --background: 0 0% 4%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 8%;
+  --card-foreground: 0 0% 100%;
+  --popover: 0 0% 6%;
+  --popover-foreground: 0 0% 100%;
+  --primary: var(--coral);
+  --primary-foreground: 0 0% 4%;
+  --secondary: var(--teal);
+  --secondary-foreground: 0 0% 4%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 63%;
+  --accent: var(--teal);
+  --accent-foreground: 0 0% 4%;
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 20%;
+  --input: 0 0% 15%;
+  --ring: var(--coral);
+  --sidebar: 0 0% 6%;
+  --sidebar-foreground: 0 0% 100%;
+  --sidebar-primary: var(--coral);
+  --sidebar-primary-foreground: 0 0% 4%;
+  --sidebar-accent: 0 0% 12%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 0 0% 15%;
+  --sidebar-ring: var(--coral);
+}
+
 .composite-layer {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
 }
 
-/* Content visibility optimization for off-screen content */
 .content-visibility-auto {
   content-visibility: auto;
   contain-intrinsic-size: auto 500px;
 }
 
-/* Optimize sections below the fold */
-section:not(:first-of-type) {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 600px;
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
-/* Optimize animations for reduced motion */
+[data-parallax-container] {
+  contain: layout style paint;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -83,7 +113,6 @@ section:not(:first-of-type) {
   }
 }
 
-/* Optimize will-change usage - only apply to elements that are animating */
 .will-change-transform {
   will-change: transform;
 }
@@ -92,58 +121,13 @@ section:not(:first-of-type) {
   will-change: opacity;
 }
 
-/* Remove will-change from elements not actively animating */
 .animate-complete {
   will-change: auto;
 }
 
 @custom-variant dark (&:is(.dark *));
 
-/*
-  Dark mode OKLCH values (see note above). These are overridden by the
-  HSL channel values defined in `@layer base .dark` later in this file,
-  which are used by `hsl(var(--...))` consumers.
-*/
-.dark {
-  --background: oklch(14.5% 0 0deg);
-  --foreground: oklch(98.5% 0 0deg);
-  --card: oklch(14.5% 0 0deg);
-  --card-foreground: oklch(98.5% 0 0deg);
-  --popover: oklch(14.5% 0 0deg);
-  --popover-foreground: oklch(98.5% 0 0deg);
-  --primary: oklch(98.5% 0 0deg);
-  --primary-foreground: oklch(20.5% 0 0deg);
-  --secondary: oklch(26.9% 0 0deg);
-  --secondary-foreground: oklch(98.5% 0 0deg);
-  --muted: oklch(26.9% 0 0deg);
-  --muted-foreground: oklch(70.8% 0 0deg);
-  --accent: oklch(26.9% 0 0deg);
-  --accent-foreground: oklch(98.5% 0 0deg);
-  --destructive: oklch(39.6% 0.141 25.723deg);
-  --destructive-foreground: oklch(63.7% 0.237 25.331deg);
-  --border: oklch(26.9% 0 0deg);
-  --input: oklch(26.9% 0 0deg);
-  --ring: oklch(43.9% 0 0deg);
-  --chart-1: oklch(48.8% 0.243 264.376deg);
-  --chart-2: oklch(69.6% 0.17 162.48deg);
-  --chart-3: oklch(76.9% 0.188 70.08deg);
-  --chart-4: oklch(62.7% 0.265 303.9deg);
-  --chart-5: oklch(64.5% 0.246 16.439deg);
-  --sidebar: oklch(20.5% 0 0deg);
-  --sidebar-foreground: oklch(98.5% 0 0deg);
-  --sidebar-primary: oklch(48.8% 0.243 264.376deg);
-  --sidebar-primary-foreground: oklch(98.5% 0 0deg);
-  --sidebar-accent: oklch(26.9% 0 0deg);
-  --sidebar-accent-foreground: oklch(98.5% 0 0deg);
-  --sidebar-border: oklch(26.9% 0 0deg);
-  --sidebar-ring: oklch(43.9% 0 0deg);
-}
-
-/*
-  Tailwind v4 theme mappings. These consume HSL channel variables via
-  `hsl(var(--...))`, so ensure the active values for `--background`,
-  `--foreground`, etc. are HSL channel triples (set in `@layer base`).
-*/
+/* Tailwind theme */
 @theme {
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -164,6 +148,13 @@ section:not(:first-of-type) {
   --color-popover-foreground: hsl(var(--popover-foreground));
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
+
+  /* Brand colors */
+  --color-coral: #ff6b35;
+  --color-coral-bright: #ff8555;
+  --color-teal: #00d4aa;
+  --color-teal-bright: #00f5c4;
+  --color-amber: #ffb800;
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
@@ -173,6 +164,9 @@ section:not(:first-of-type) {
   --animate-pulse: pulse 3s ease-in-out infinite;
   --animate-shimmer: shimmer 2s linear infinite;
   --animate-gradient-x: gradient-x 15s ease infinite;
+  --animate-scanline: scanline 8s linear infinite;
+  --animate-glitch: glitch 0.3s ease-in-out;
+  --animate-flicker: flicker 2s linear infinite;
 
   @keyframes accordion-down {
     from {
@@ -236,153 +230,117 @@ section:not(:first-of-type) {
       background-position: 100% 50%;
     }
   }
+
+  @keyframes scanline {
+    0% {
+      transform: translateY(-100%);
+    }
+
+    100% {
+      transform: translateY(100vh);
+    }
+  }
+
+  @keyframes glitch {
+    0%,
+    100% {
+      transform: translate(0);
+    }
+
+    20% {
+      transform: translate(-2px, 2px);
+    }
+
+    40% {
+      transform: translate(-2px, -2px);
+    }
+
+    60% {
+      transform: translate(2px, 2px);
+    }
+
+    80% {
+      transform: translate(2px, -2px);
+    }
+  }
+
+  @keyframes flicker {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.95;
+    }
+
+    52% {
+      opacity: 0.5;
+    }
+
+    54% {
+      opacity: 0.95;
+    }
+  }
 }
 
+/* Navbar Styles */
 .navbar {
-  background-color: hsl(var(--background));
-  border-bottom: 1px solid hsl(var(--border));
-  backdrop-filter: none;
+  border-bottom: 2px solid hsl(var(--border));
   transition:
-    background-color 250ms ease,
     border-color 250ms ease,
-    backdrop-filter 250ms ease,
     box-shadow 250ms ease;
-  box-shadow: none;
 }
 
 @media (width >= 768px) {
   .navbar {
-    /* Desktop: translucent/blurred, not solid by default */
-    background-color: transparent;
-    border-bottom: 1px solid transparent;
     backdrop-filter: blur(10px);
   }
 }
 
 .navbar[data-nav-state="scrolled"] {
-  background-color: hsl(var(--background));
-  border-color: hsl(var(--border));
-  box-shadow: 0 12px 30px rgb(15 23 42 / 8%);
+  border-color: hsl(var(--coral) / 30%);
+  box-shadow:
+    0 4px 0 0 hsl(var(--coral) / 20%),
+    0 12px 30px rgb(0 0 0 / 50%);
 }
 
 .navbar[data-nav-state="mobile-open"] {
-  background-color: #0a0a0a;
-  border-color: hsl(var(--border));
-  box-shadow: 0 18px 38px rgb(15 23 42 / 12%);
-  backdrop-filter: blur(14px);
+  border-color: hsl(var(--coral));
 }
 
-@media (width <= 767px) {
-  .navbar[data-nav-state="mobile-open"] {
-    backdrop-filter: none;
+@layer utilities {
+  .container {
+    margin-inline: auto;
+    padding-inline: 1rem;
   }
-}
 
-/* Hard-stop transparency on phones */
-@media (width <= 767px) {
-  .navbar,
-  .navbar[data-nav-state="scrolled"],
-  .navbar[data-nav-state="mobile-open"] {
-    background-color: #000 !important;
-    border-bottom-color: hsl(var(--border)) !important;
-    backdrop-filter: none !important;
-  }
-}
-
-.dark .navbar {
-  box-shadow: none;
-}
-
-.dark .navbar[data-nav-state="scrolled"],
-.dark .navbar[data-nav-state="mobile-open"] {
-  box-shadow: 0 16px 34px rgb(3 7 18 / 45%);
-}
-
-@utility container {
-  margin-inline: auto;
-  padding-inline: 2rem;
-
-  /* stylelint-disable no-invalid-position-declaration */
   @media (width >= 640px) {
-    max-width: none;
+    .container {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  @media (width >= 1024px) {
+    .container {
+      padding-inline: 2rem;
+    }
   }
 
   @media (width >= 1400px) {
-    max-width: 1400px;
+    .container {
+      max-width: 1400px;
+    }
   }
-  /* stylelint-enable no-invalid-position-declaration */
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-  }
-}
-
-@layer base {
-  /*
-    Active theme tokens for Tailwind and CSS: HSL channel values
-    (e.g. `0 0% 100%`) intended to be wrapped in `hsl(...)` at use sites.
-    These override the OKLCH defaults above and are consumed by the
-    `@theme` mappings like `--color-background: hsl(var(--background));`.
-  */
-  :root {
-    /* Updated to modern dark theme with vibrant cyan/teal accents */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 5%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 5%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
-    --primary: 189 94% 43%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 10%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 189 94% 43%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 189 94% 43%;
-    --radius: 0.75rem;
-  }
-
-  .dark {
-    /* Dark mode with vibrant cyan accents */
-    --background: 0 0% 5%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 189 94% 53%;
-    --primary-foreground: 0 0% 5%;
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 189 94% 53%;
-    --accent-foreground: 0 0% 5%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 189 94% 53%;
+    border-color: hsl(var(--border));
   }
 }
 
@@ -390,44 +348,178 @@ section:not(:first-of-type) {
   * {
     @apply border-border outline-ring/50;
 
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+
+    background-color: #0a0a0a;
+    overflow-x: hidden;
   }
 
-  /* Hide scrollbar for Chrome, Safari and Opera */
   ::-webkit-scrollbar {
     display: none;
   }
+
+  /* Selection styling */
+  ::selection {
+    background-color: hsl(var(--coral) / 30%);
+    color: white;
+  }
 }
 
+/* Utility classes */
+
+/* Text gradients */
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-teal-400;
+  @apply bg-clip-text text-transparent;
+
+  background-image: linear-gradient(135deg, #ff6b35 0%, #00d4aa 100%);
 }
 
-.glow {
-  box-shadow: 0 0 20px 5px rgb(0 255 255 / 20%);
+.text-gradient-coral {
+  @apply bg-clip-text text-transparent;
+
+  background-image: linear-gradient(135deg, #ff6b35 0%, #ff8555 100%);
 }
 
-.glow-text {
-  text-shadow: 0 0 10px rgb(0 255 255 / 50%);
+.text-gradient-teal {
+  @apply bg-clip-text text-transparent;
+
+  background-image: linear-gradient(135deg, #00d4aa 0%, #00f5c4 100%);
 }
 
+/* Glow effects */
+.glow-coral {
+  box-shadow: 0 0 10px 2px hsl(17deg 100% 60% / 15%);
+}
+
+.glow-teal {
+  box-shadow: 0 0 10px 2px hsl(162deg 100% 42% / 15%);
+}
+
+.glow-text-coral {
+  text-shadow: 0 0 8px hsl(17deg 100% 60% / 30%);
+}
+
+.glow-text-teal {
+  text-shadow: 0 0 8px hsl(162deg 100% 42% / 30%);
+}
+
+/* Border styles */
+.border-brutal {
+  border: 3px solid #ff6b35;
+  box-shadow: 4px 4px 0 0 #00d4aa;
+}
+
+.border-brutal-teal {
+  border: 3px solid #00d4aa;
+  box-shadow: 4px 4px 0 0 #ff6b35;
+}
+
+/* Background patterns */
 .grid-pattern {
   background-image:
-    linear-gradient(rgb(255 255 255 / 2%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 2%) 1px, transparent 1px);
+    linear-gradient(rgb(255 107 53 / 10%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 107 53 / 10%) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
-.noise {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.05;
+.grid-pattern-teal {
+  background-image:
+    linear-gradient(rgb(0 212 170 / 10%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 212 170 / 10%) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
+/* Dots */
+.dot-pattern {
+  background-image: radial-gradient(rgb(255 107 53 / 30%) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Noise overlay */
+.noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+}
+
+/* Scanlines */
+.scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgb(0 212 170 / 3%) 2px,
+    rgb(0 212 170 / 3%) 4px
+  );
+}
+
+/* Button styles */
+.btn-retro {
+  @apply relative font-bold uppercase tracking-wider;
+
+  background: #ff6b35;
+  border: 3px solid #ff6b35;
+  box-shadow: 4px 4px 0 0 #00d4aa;
+  transition: all 150ms ease;
+}
+
+.btn-retro:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 #00d4aa;
+}
+
+.btn-retro:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 0 #00d4aa;
+}
+
+.btn-retro-outline {
+  @apply relative font-bold uppercase tracking-wider;
+
+  background: transparent;
+  border: 3px solid #ff6b35;
+  color: #ff6b35;
+  box-shadow: 4px 4px 0 0 rgb(255 107 53 / 30%);
+  transition: all 150ms ease;
+}
+
+.btn-retro-outline:hover {
+  background: rgb(255 107 53 / 10%);
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 rgb(255 107 53 / 30%);
+}
+
+/* Cards */
+.card-retro {
+  background: #141414;
+  border: 2px solid #333;
+  transition: all 200ms ease;
+}
+
+.card-retro:hover {
+  border-color: #ff6b35;
+  box-shadow: 6px 6px 0 0 rgb(255 107 53 / 20%);
+  transform: translate(-2px, -2px);
+}
+
+/* Pixel accents */
+.pixel-accent {
+  width: 8px;
+  height: 8px;
+  background: #ff6b35;
+}
+
+.pixel-accent-teal {
+  width: 8px;
+  height: 8px;
+  background: #00d4aa;
+}
+
+/* Animation helpers */
 .animate-gradient-x {
   will-change: background-position;
 }
@@ -440,16 +532,320 @@ section:not(:first-of-type) {
   will-change: opacity;
 }
 
-@property --shine-x {
-  syntax: "<percentage>";
-  inherits: false;
-  initial-value: 0%;
+.animate-scanline {
+  animation: scanline 8s linear infinite;
 }
 
-@property --shine-y {
-  syntax: "<percentage>";
-  inherits: false;
-  initial-value: 0%;
+.animate-flicker {
+  animation: flicker 2s linear infinite;
+}
+
+/* Transitions */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 500ms ease-out both;
+  will-change: opacity, transform;
+}
+
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+/* Background blobs */
+@keyframes blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Glitch hover */
+.hover-glitch:hover {
+  animation: glitch 0.3s ease-in-out;
+}
+
+.neon-text-coral {
+  color: #ff6b35;
+  text-shadow:
+    0 0 10px rgb(255 107 53 / 80%),
+    0 0 20px rgb(255 107 53 / 50%),
+    0 0 40px rgb(255 107 53 / 30%);
+  animation: neon-flicker 3s infinite;
+}
+
+@keyframes neon-flicker {
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
+  100% {
+    opacity: 1;
+    text-shadow:
+      0 0 10px rgb(255 107 53 / 80%),
+      0 0 20px rgb(255 107 53 / 50%),
+      0 0 40px rgb(255 107 53 / 30%);
+  }
+
+  20%,
+  24%,
+  55% {
+    opacity: 0.2;
+    text-shadow: none;
+  }
+}
+
+.neon-text-teal {
+  color: #00d4aa;
+  text-shadow:
+    0 0 10px rgb(0 212 170 / 80%),
+    0 0 20px rgb(0 212 170 / 50%),
+    0 0 40px rgb(0 212 170 / 30%);
+}
+
+/* Text shadows */
+.text-shadow-neon {
+  text-shadow: 0 0 6px rgb(255 107 53 / 30%);
+}
+
+/* Neon buttons */
+.btn-neon {
+  @apply relative font-bold uppercase tracking-wider overflow-hidden;
+
+  background: #ff6b35;
+  border: 3px solid #ff6b35;
+  color: #0a0a0a;
+  box-shadow:
+    0 0 6px rgb(255 107 53 / 30%),
+    0 0 12px rgb(255 107 53 / 15%);
+  transition: all 200ms ease;
+}
+
+.btn-neon:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 10px rgb(255 107 53 / 40%),
+    0 0 20px rgb(255 107 53 / 20%);
+}
+
+/* Glitch keyframes */
+@keyframes glitch-text {
+  0% {
+    clip-path: inset(40% 0 61% 0);
+    transform: translate(-2px, 2px);
+  }
+
+  20% {
+    clip-path: inset(92% 0 1% 0);
+    transform: translate(2px, -2px);
+  }
+
+  40% {
+    clip-path: inset(43% 0 1% 0);
+    transform: translate(-2px, 2px);
+  }
+
+  60% {
+    clip-path: inset(25% 0 58% 0);
+    transform: translate(2px, -2px);
+  }
+
+  80% {
+    clip-path: inset(54% 0 7% 0);
+    transform: translate(-2px, 2px);
+  }
+
+  100% {
+    clip-path: inset(58% 0 43% 0);
+    transform: translate(0);
+  }
+}
+
+.animate-glitch-text {
+  animation: glitch-text 0.3s ease-in-out;
+}
+
+@keyframes glitch-scale {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.05) translateX(2px);
+  }
+
+  50% {
+    transform: scale(0.95) translateX(-2px);
+  }
+
+  75% {
+    transform: scale(1.02) translateX(1px);
+  }
+}
+
+.animate-glitch-scale {
+  animation: glitch-scale 0.3s ease-in-out;
+}
+
+/* Pulse ring */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(1.1);
+    opacity: 0;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 1s ease-out;
+}
+
+/* Corner lines */
+@keyframes corner-draw {
+  0% {
+    stroke-dashoffset: 100;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Spotlight cards */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgb(255 107 53 / 10%),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
+/* Icon shake */
+@keyframes icon-shake {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-5deg);
+  }
+
+  50% {
+    transform: rotate(5deg);
+  }
+
+  75% {
+    transform: rotate(-5deg);
+  }
+}
+
+.animate-icon-shake {
+  animation: icon-shake 0.5s ease-in-out;
+}
+
+/* 3D transforms */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Focus states */
+.focus-retro:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px hsl(var(--coral) / 50%);
+}
+
+/* Fonts */
+.font-mono-retro {
+  font-family: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+  letter-spacing: 0.05em;
+}
+
+/* Spacing */
+.section-padding {
+  @apply py-20 md:py-28 lg:py-32;
+}
+
+/* Container */
+.container-retro {
+  @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
 }
 
 @theme inline {
@@ -483,26 +879,9 @@ section:not(:first-of-type) {
       height: 0;
     }
   }
-
-  --animate-shine: shine var(--duration) infinite linear;
-
-  @keyframes shine {
-    0% {
-      background-position: 0% 0%;
-    }
-
-    50% {
-      background-position: 100% 100%;
-    }
-
-    100% {
-      background-position: 0% 0%;
-    }
-  }
 }
 
 @theme inline {
-  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -522,144 +901,8 @@ section:not(:first-of-type) {
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-}
-
-/* CSS-only animations to replace simple JS animations */
-@keyframes blob-a {
-  0% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
-
-  50% {
-    transform: scale(1.2);
-    opacity: 0.4;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
-}
-
-@keyframes blob-b {
-  0% {
-    transform: scale(1.2);
-    opacity: 0.4;
-  }
-
-  50% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
-
-  100% {
-    transform: scale(1.2);
-    opacity: 0.4;
-  }
-}
-
-.animate-blob-a {
-  animation: blob-a 8s ease-in-out infinite;
-}
-
-.animate-blob-b {
-  animation: blob-b 8s ease-in-out infinite;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-/* Page transition: small, unobtrusive fade/translate on route change */
-@keyframes page-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (width >= 768px) {
-  .page-transition {
-    animation: page-fade-in 220ms ease-out both;
-    will-change: opacity, transform;
-  }
-}
-
-@keyframes modal-in {
-  from {
-    opacity: 0;
-    transform: translateY(50px) scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Hero entry animations (CSS-only) */
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-up {
-  animation: fade-up 400ms ease-out both;
-  will-change: opacity, transform;
-}
-
-.delay-0 {
-  animation-delay: 0s;
-}
-
-.delay-100 {
-  animation-delay: 0.1s;
-}
-
-.delay-200 {
-  animation-delay: 0.2s;
-}
-
-.delay-300 {
-  animation-delay: 0.3s;
-}
-
-.delay-400 {
-  animation-delay: 0.4s;
 }

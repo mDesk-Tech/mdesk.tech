@@ -11,20 +11,14 @@ export const metadata: Metadata = pageMetadata({
   path: "/",
 });
 
-// Dynamically import below-the-fold components
-// Next.js will automatically code-split these into separate chunks
+// Lazy load sections below the fold
 const Features = dynamic(() => import("@/components/Features"));
 const Services = dynamic(() => import("@/components/Services"));
 const About = dynamic(() => import("@/components/About"));
 const Contact = dynamic(() => import("@/components/Contact"));
 
 /**
- * Renders the homepage layout with a hero section and four below-the-fold sections loaded lazily.
- *
- * The page includes a static Hero component followed by Features, Services, About, and Contact
- * sections each wrapped in a LazySection to defer loading until they approach the viewport.
- *
- * @returns The React element tree for the homepage containing the hero and lazily loaded sections.
+ * Homepage - hero + lazy-loaded sections
  */
 export default async function Home() {
   return (
@@ -33,7 +27,7 @@ export default async function Home() {
       <LazySection minHeight="60vh" rootMargin="400px 0px">
         <Features />
       </LazySection>
-      <LazySection minHeight="60vh" rootMargin="400px 0px">
+      <LazySection minHeight="0" rootMargin="200px 0px">
         <Services />
       </LazySection>
       <LazySection minHeight="60vh" rootMargin="400px 0px">
