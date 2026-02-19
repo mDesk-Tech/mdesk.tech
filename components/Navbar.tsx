@@ -92,11 +92,15 @@ const GlitchLogo = memo(() => {
   const [glitching, setGlitching] = useState(false);
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
     const interval = setInterval(() => {
       setGlitching(true);
-      setTimeout(() => setGlitching(false), 200);
+      timeoutId = setTimeout(() => setGlitching(false), 200);
     }, 5000);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
@@ -262,17 +266,15 @@ const Navbar = memo(() => {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <div
+          <motion.div
             key="mobile-nav"
-            className="fixed inset-0 top-14.25 z-9999 border-t-2 border-coral bg-[#0a0a0a] md:hidden"
+            className="fixed inset-0 top-[57px] z-9999 border-t-2 border-coral bg-[#0a0a0a] md:hidden"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -20, opacity: 0 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <motion.div
-              className="container mx-auto flex h-full flex-col px-4 py-8 sm:px-6"
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            >
+            <div className="container mx-auto flex h-full flex-col px-4 py-8 sm:px-6">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.path}
@@ -336,8 +338,8 @@ const Navbar = memo(() => {
                   style={{ animationDelay: "0.6s" }}
                 />
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </nav>

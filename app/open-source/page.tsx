@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useId } from "react";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
 import {
   Github,
@@ -56,8 +56,59 @@ const networkNodes = [
   { x: 80, y: 55, delay: 0.9 },
 ];
 
+const faqColors = ["#ff6b35", "#00d4aa", "#ffb800", "#ff6b35"];
+
+const BENEFITS = [
+  {
+    icon: Rocket,
+    title: "Boost Your Project",
+    desc: "Professional web development completely free for your open source project",
+    color: "#ff6b35",
+  },
+  {
+    icon: Users,
+    title: "Grow Community",
+    desc: "A polished website helps attract more contributors and users",
+    color: "#00d4aa",
+  },
+  {
+    icon: Heart,
+    title: "Give Back",
+    desc: "Supporting the open source community that powers innovation",
+    color: "#ffb800",
+  },
+];
+
+const IMPACT_STATS = [
+  {
+    icon: Code2,
+    value: "1.2M+",
+    label: "Lines Added",
+    color: "#00d4aa",
+  },
+  {
+    icon: Star,
+    value: "500+",
+    label: "Stars Earned",
+    color: "#ffb800",
+  },
+  {
+    icon: GitBranch,
+    value: "50K+",
+    label: "Branches",
+    color: "#ff6b35",
+  },
+  {
+    icon: Globe,
+    value: "30+",
+    label: "Countries",
+    color: "#00d4aa",
+  },
+];
+
 export default function OpenSourcePage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const lineGradientId = useId() + "lineGradient";
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -79,13 +130,20 @@ export default function OpenSourcePage() {
       <motion.div
         className="fixed inset-x-0 top-0 z-40 h-1 origin-left bg-coral"
         style={{ scaleX }}
+        aria-hidden="true"
       />
 
       {/* Network background */}
-      <div className="fixed inset-0 z-0">
-        <svg className="size-full opacity-20">
+      <div className="fixed inset-0 z-0" aria-hidden="true">
+        <svg className="size-full opacity-20" aria-hidden="true">
           <defs>
-            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient
+              id={lineGradientId}
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+            >
               <stop offset="0%" stopColor="#ff6b35" stopOpacity="0" />
               <stop offset="50%" stopColor="#ff6b35" stopOpacity="1" />
               <stop offset="100%" stopColor="#00d4aa" stopOpacity="0" />
@@ -105,7 +163,7 @@ export default function OpenSourcePage() {
                   y1={`${node.y}%`}
                   x2={`${target.x}%`}
                   y2={`${target.y}%`}
-                  stroke="url(#lineGradient)"
+                  stroke={`url(#${lineGradientId})`}
                   strokeWidth="1"
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: [0.2, 0.5, 0.2] }}
@@ -142,7 +200,10 @@ export default function OpenSourcePage() {
       </div>
 
       {/* Code particles */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      <div
+        className="code-pointers pointer-events-none fixed inset-0 z-0 overflow-hidden"
+        aria-hidden="true"
+      >
         {["{ }", "< />", "[ ]", "( )", "/*", "//", "&&", "||", "==", "=>"].map(
           (char, i) => (
             <motion.div
@@ -438,26 +499,7 @@ export default function OpenSourcePage() {
           </motion.div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {[
-              {
-                icon: Rocket,
-                title: "Boost Your Project",
-                desc: "Professional web development completely free for your open source project",
-                color: "#ff6b35",
-              },
-              {
-                icon: Users,
-                title: "Grow Community",
-                desc: "A polished website helps attract more contributors and users",
-                color: "#00d4aa",
-              },
-              {
-                icon: Heart,
-                title: "Give Back",
-                desc: "Supporting the open source community that powers innovation",
-                color: "#ffb800",
-              },
-            ].map((benefit, index) => (
+            {BENEFITS.map((benefit, index) => (
               <motion.div
                 key={index}
                 initial={{
@@ -539,32 +581,7 @@ export default function OpenSourcePage() {
           </motion.div>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {[
-              {
-                icon: Code2,
-                value: "1.2M+",
-                label: "Lines Added",
-                color: "#00d4aa",
-              },
-              {
-                icon: Star,
-                value: "500+",
-                label: "Stars Earned",
-                color: "#ffb800",
-              },
-              {
-                icon: GitBranch,
-                value: "50K+",
-                label: "Branches",
-                color: "#ff6b35",
-              },
-              {
-                icon: Globe,
-                value: "30+",
-                label: "Countries",
-                color: "#00d4aa",
-              },
-            ].map((stat, index) => (
+            {IMPACT_STATS.map((stat, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -640,8 +657,7 @@ export default function OpenSourcePage() {
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {faqs.map((faq, index) => {
-              const colors = ["#ff6b35", "#00d4aa", "#ffb800", "#ff6b35"];
-              const color = colors[index];
+              const color = faqColors[index % faqColors.length];
 
               return (
                 <motion.div
@@ -726,7 +742,8 @@ export default function OpenSourcePage() {
                 </div>
                 <motion.div
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.5 }}
                   className="mt-2 text-[#a0a0a0]"
                 >
@@ -734,7 +751,8 @@ export default function OpenSourcePage() {
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
                   transition={{ delay: 1 }}
                   className="text-coral"
                 >
@@ -767,7 +785,7 @@ export default function OpenSourcePage() {
               </div>
             </div>
 
-            {/* Gear */}
+            {/* Git branch icon */}
             <motion.div
               style={{ rotate }}
               className="absolute -right-8 -bottom-8 text-coral/10"

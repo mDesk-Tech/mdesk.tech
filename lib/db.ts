@@ -9,6 +9,9 @@ const collectionName = "rate_limits";
 let client: MongoClient | null = null;
 let collection: Collection | null = null;
 
+// Guard against duplicate handler registration in HMR
+let handlersRegistered = false;
+
 export async function getCollection() {
   if (collection) return collection;
 
@@ -41,10 +44,19 @@ async function cleanup() {
 }
 
 // Cleanup every hour
-if (typeof setInterval !== "undefined") {
+// Guard for edge runtime: check process and process.on are available
+if (
+  typeof setInterval !== "undefined" &&
+  typeof process !== "undefined" &&
+  typeof process.on === "function" &&
+  !handlersRegistered
+) {
+  handlersRegistered = true;
   const timer = setInterval(cleanup, 60 * 60 * 1000);
   // Allow the process to exit even if the timer is still running
-  timer.unref();
+  if (typeof timer.unref === "function") {
+    timer.unref();
+  }
 
   // Close MongoDB connection when the application shuts down
   process.on("beforeExit", async () => {
@@ -53,13 +65,23 @@ if (typeof setInterval !== "undefined") {
 
   // Handle termination signals
   process.on("SIGTERM", async () => {
-    await closeClient();
-    process.exit(0);
+    try {
+      await closeClient();
+    } catch (error) {
+      console.error("Error during SIGTERM cleanup:", error);
+    } finally {
+      process.exit(0);
+    }
   });
 
   process.on("SIGINT", async () => {
-    await closeClient();
-    process.exit(0);
+    try {
+      await closeClient();
+    } catch (error) {
+      console.error("Error during SIGINT cleanup:", error);
+    } finally {
+      process.exit(0);
+    }
   });
 }
 

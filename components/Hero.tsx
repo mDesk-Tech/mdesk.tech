@@ -9,7 +9,6 @@ const Hero = memo(() => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
   const [isHydrated, setIsHydrated] = useState(false);
-  const mousePosRef = useRef({ x: 0, y: 0 });
   const glowRef = useRef<HTMLDivElement>(null);
 
   // Scroll-based transforms
@@ -52,7 +51,9 @@ const Hero = memo(() => {
 
   // Mouse glow effect
   useEffect(() => {
-    let rafId: number;
+    if (!isHydrated || isMobile !== false) return;
+
+    let rafId = 0;
     const handleMouseMove = (e: MouseEvent) => {
       const el = containerRef.current;
       if (!el) return;
@@ -61,7 +62,6 @@ const Hero = memo(() => {
         const rect = el.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * 100;
         const y = ((e.clientY - rect.top) / rect.height) * 100;
-        mousePosRef.current = { x, y };
         const glow = glowRef.current;
         if (glow) {
           glow.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255, 107, 53, 0.12) 0%, transparent 20%)`;
@@ -74,7 +74,7 @@ const Hero = memo(() => {
       window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [isHydrated, isMobile]);
 
   // Scroll transforms
   useEffect(() => {
@@ -190,14 +190,14 @@ const Hero = memo(() => {
           </h1>
 
           {/* Subheadline */}
-          <p className="animate-fade-up mx-auto mb-8 max-w-3xl px-4 text-base/relaxed font-light text-[#a0a0a0] delay-200 sm:mb-12 sm:text-xl md:text-2xl">
+          <p className="animate-fade-up animation-delay-200 mx-auto mb-8 max-w-3xl px-4 text-base/relaxed font-light text-[#a0a0a0] sm:mb-12 sm:text-xl md:text-2xl">
             Cutting-edge web design and reliable hosting solutions
             <br className="hidden sm:block" />
             for businesses that want to stand out
           </p>
 
           {/* CTAs */}
-          <div className="animate-fade-up flex flex-col justify-center gap-4 px-4 delay-300 sm:flex-row">
+          <div className="animate-fade-up animation-delay-300 flex flex-col justify-center gap-4 px-4 sm:flex-row">
             <Link
               href="/contact"
               className="group btn-neon inline-flex items-center justify-center gap-2 px-8 py-4 text-base sm:px-10 sm:py-5 sm:text-lg"
@@ -214,7 +214,7 @@ const Hero = memo(() => {
           </div>
 
           {/* Stats */}
-          <div className="animate-fade-up mt-16 grid grid-cols-3 gap-4 border-t-2 border-[#333] pt-8 delay-400 sm:mt-20 sm:gap-8">
+          <div className="animate-fade-up animation-delay-400 mt-16 grid grid-cols-3 gap-4 border-t-2 border-[#333] pt-8 sm:mt-20 sm:gap-8">
             {[
               { value: "100+", label: "Projects Delivered" },
               { value: "15+", label: "Team Members" },

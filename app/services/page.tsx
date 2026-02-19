@@ -20,6 +20,7 @@ export const metadata: Metadata = pageMetadata({
 
 interface Service {
   title: string;
+  slug: string;
   description: string;
   icon: React.ReactNode;
   features: string[];
@@ -29,6 +30,7 @@ interface Service {
 const servicesData: Service[] = [
   {
     title: "Web Design",
+    slug: "web-design",
     description:
       "Transform your vision into stunning, user-centric designs that captivate and convert",
     icon: <Palette className="size-6" />,
@@ -43,6 +45,7 @@ const servicesData: Service[] = [
   },
   {
     title: "Web Development",
+    slug: "web-development",
     description:
       "Build powerful, scalable applications with modern technologies and best practices",
     icon: <Code2 className="size-6" />,
@@ -57,6 +60,7 @@ const servicesData: Service[] = [
   },
   {
     title: "Hosting Solutions",
+    slug: "hosting",
     description:
       "Enterprise-grade hosting infrastructure with guaranteed uptime and security",
     icon: <Server className="size-6" />,
@@ -71,6 +75,7 @@ const servicesData: Service[] = [
   },
   {
     title: "SEO Optimization",
+    slug: "seo",
     description:
       "Dominate search rankings with data-driven strategies and proven techniques",
     icon: <TrendingUp className="size-6" />,
@@ -94,6 +99,7 @@ const accentColors = {
     hoverShadow: "hover:shadow-[6px_6px_0_0_rgba(255,107,53,0.4)]",
     bg10: "bg-coral/10",
     bg20: "bg-coral/20",
+    hoverBg: "hover:bg-coral",
   },
   teal: {
     border: "border-teal",
@@ -103,6 +109,7 @@ const accentColors = {
     hoverShadow: "hover:shadow-[6px_6px_0_0_rgba(0,212,170,0.4)]",
     bg10: "bg-teal/10",
     bg20: "bg-teal/20",
+    hoverBg: "hover:bg-teal",
   },
   amber: {
     border: "border-amber",
@@ -112,6 +119,7 @@ const accentColors = {
     hoverShadow: "hover:shadow-[6px_6px_0_0_rgba(255,184,0,0.4)]",
     bg10: "bg-amber/10",
     bg20: "bg-amber/20",
+    hoverBg: "hover:bg-amber",
   },
 };
 
@@ -222,8 +230,8 @@ export default function ServicesPage() {
 
                     {/* CTA */}
                     <Link
-                      href={`/services/${service.title === "Hosting Solutions" ? "hosting" : service.title === "SEO Optimization" ? "seo" : service.title.toLowerCase().replace(" ", "-")}`}
-                      className={`group/btn mt-6 inline-flex items-center gap-2 border-2 px-4 py-2 text-sm font-bold transition-all ${colors.border} ${colors.text} hover:${colors.bg} hover:text-[#0a0a0a] ${colors.hoverShadow}`}
+                      href={`/services/${service.slug}`}
+                      className={`group/btn mt-6 inline-flex items-center gap-2 border-2 px-4 py-2 text-sm font-bold transition-all ${colors.border} ${colors.text} ${colors.hoverBg} hover:text-[#0a0a0a] ${colors.hoverShadow}`}
                     >
                       Learn More
                       <ArrowRight className="size-4 transition-transform group-hover/btn:translate-x-1" />
