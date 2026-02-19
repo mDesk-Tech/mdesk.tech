@@ -67,21 +67,24 @@ const searchKeywords = [
   "rank #1 on google",
 ];
 
-const binaryStreams = Array.from({ length: 20 }, (_, i) => ({
-  id: i,
-  x: Math.random() * 100,
-  delay: Math.random() * 2,
-  duration: 3 + Math.random() * 4,
-  content: Array.from({ length: 30 }, () =>
-    Math.random() > 0.5 ? "1" : "0",
-  ).join(""),
-}));
-
 export default function SEOPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentKeywordIndex, setCurrentKeywordIndex] = useState(0);
   const [typedText, setTypedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // Generate binary streams on client-side only to avoid SSR mismatch
+  const [binaryStreams] = useState(() =>
+    Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      delay: Math.random() * 2,
+      duration: 3 + Math.random() * 4,
+      content: Array.from({ length: 30 }, () =>
+        Math.random() > 0.5 ? "1" : "0",
+      ).join(""),
+    })),
+  );
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -91,13 +94,15 @@ export default function SEOPage() {
   const heroY = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
   const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
+  // Typing effect
   useEffect(() => {
     const currentKeyword = searchKeywords[currentKeywordIndex];
     const typeSpeed = isDeleting ? 30 : 80;
+    let pauseTimer: NodeJS.Timeout | null = null;
 
     const timer = setTimeout(() => {
       if (!isDeleting && typedText === currentKeyword) {
-        setTimeout(() => setIsDeleting(true), 1500);
+        pauseTimer = setTimeout(() => setIsDeleting(true), 1500);
       } else if (isDeleting && typedText === "") {
         setIsDeleting(false);
         setCurrentKeywordIndex((prev) => (prev + 1) % searchKeywords.length);
@@ -110,7 +115,10 @@ export default function SEOPage() {
       }
     }, typeSpeed);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      if (pauseTimer) clearTimeout(pauseTimer);
+    };
   }, [typedText, isDeleting, currentKeywordIndex]);
 
   return (
@@ -380,10 +388,9 @@ export default function SEOPage() {
                           <motion.div
                             key={i}
                             initial={{ height: 0 }}
-                            animate={{ height: `${h}%` }}
+                            animate={{ height: `${h * 0.24}px` }}
                             transition={{ delay: 0.6 + i * 0.1 }}
                             className="flex-1 rounded-t bg-coral/40"
-                            style={{ height: `${h * 0.24}px` }}
                           />
                         ))}
                       </div>

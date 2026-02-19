@@ -80,7 +80,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const currentYear = 2026;
+  const currentYear = new Date().getFullYear();
   return (
     <html
       lang="en"

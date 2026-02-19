@@ -3,7 +3,7 @@
 import type React from "react";
 import { Code, Zap, Layers, Globe, Lock, Users } from "lucide-react";
 import { useState, memo, useRef } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Dialog,
   DialogContent,
@@ -327,78 +327,81 @@ const Features = memo(() => {
         open={selectedFeature !== null}
         onOpenChange={() => setSelectedFeature(null)}
       >
-        {selectedFeature && (
-          <DialogContent className="max-w-2xl border-2 border-coral bg-[#141414] p-0 shadow-[0_0_30px_rgba(255,107,53,0.3)]">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-            >
-              {/* Header */}
-              <DialogHeader className="flex flex-row items-center justify-between border-b-2 border-[#333] p-4 sm:p-6">
-                <div className="flex items-center gap-4">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.1, type: "spring" }}
-                    className="inline-flex border-2 p-3 shadow-[0_0_15px_rgba(255,107,53,0.3)]"
-                    style={{
-                      borderColor: selectedFeature.color,
-                      color: selectedFeature.color,
-                    }}
-                  >
-                    {selectedFeature.icon}
-                  </motion.div>
-                  <DialogTitle className="text-lg font-bold text-white sm:text-xl">
-                    {selectedFeature.title}
-                  </DialogTitle>
-                </div>
-              </DialogHeader>
-
-              {/* Content */}
-              <div className="p-4 sm:p-6">
-                <DialogDescription className="mb-6 text-sm/relaxed text-[#a0a0a0] sm:text-base">
-                  {selectedFeature.description}
-                </DialogDescription>
-
-                <h4 className="mb-4 font-mono text-xs tracking-wider text-coral uppercase">
-                  Key Benefits
-                </h4>
-
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={{
-                    hidden: { opacity: 0 },
-                    visible: {
-                      opacity: 1,
-                      transition: { staggerChildren: 0.1 },
-                    },
-                  }}
-                  className="space-y-3"
-                >
-                  {selectedFeature.details.map((detail, index) => (
+        <AnimatePresence>
+          {selectedFeature && (
+            <DialogContent className="max-w-2xl border-2 border-coral bg-[#141414] p-0 shadow-[0_0_30px_rgba(255,107,53,0.3)]">
+              <motion.div
+                key={selectedFeature.title}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+              >
+                {/* Header */}
+                <DialogHeader className="flex flex-row items-center justify-between border-b-2 border-[#333] p-4 sm:p-6">
+                  <div className="flex items-center gap-4">
                     <motion.div
-                      key={index}
-                      variants={{
-                        hidden: { opacity: 0, x: -20 },
-                        visible: { opacity: 1, x: 0 },
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.1, type: "spring" }}
+                      className="inline-flex border-2 p-3 shadow-[0_0_15px_rgba(255,107,53,0.3)]"
+                      style={{
+                        borderColor: selectedFeature.color,
+                        color: selectedFeature.color,
                       }}
-                      className="group flex items-start gap-3 border border-[#333] bg-[#0a0a0a] p-3 transition-all duration-300 hover:border-coral/50 hover:shadow-[0_0_15px_rgba(255,107,53,0.1)]"
                     >
-                      <div
-                        className="mt-1.5 size-2 shrink-0 shadow-[0_0_5px_rgba(255,107,53,0.5)]"
-                        style={{ backgroundColor: selectedFeature.color }}
-                      />
-                      <p className="text-sm text-white">{detail}</p>
+                      {selectedFeature.icon}
                     </motion.div>
-                  ))}
-                </motion.div>
-              </div>
-            </motion.div>
-          </DialogContent>
-        )}
+                    <DialogTitle className="text-lg font-bold text-white sm:text-xl">
+                      {selectedFeature.title}
+                    </DialogTitle>
+                  </div>
+                </DialogHeader>
+
+                {/* Content */}
+                <div className="p-4 sm:p-6">
+                  <DialogDescription className="mb-6 text-sm/relaxed text-[#a0a0a0] sm:text-base">
+                    {selectedFeature.description}
+                  </DialogDescription>
+
+                  <h4 className="mb-4 font-mono text-xs tracking-wider text-coral uppercase">
+                    Key Benefits
+                  </h4>
+
+                  <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: {
+                        opacity: 1,
+                        transition: { staggerChildren: 0.1 },
+                      },
+                    }}
+                    className="space-y-3"
+                  >
+                    {selectedFeature.details.map((detail, index) => (
+                      <motion.div
+                        key={index}
+                        variants={{
+                          hidden: { opacity: 0, x: -20 },
+                          visible: { opacity: 1, x: 0 },
+                        }}
+                        className="group flex items-start gap-3 border border-[#333] bg-[#0a0a0a] p-3 transition-all duration-300 hover:border-coral/50 hover:shadow-[0_0_15px_rgba(255,107,53,0.1)]"
+                      >
+                        <div
+                          className="mt-1.5 size-2 shrink-0 shadow-[0_0_5px_rgba(255,107,53,0.5)]"
+                          style={{ backgroundColor: selectedFeature.color }}
+                        />
+                        <p className="text-sm text-white">{detail}</p>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+              </motion.div>
+            </DialogContent>
+          )}
+        </AnimatePresence>
       </Dialog>
     </section>
   );

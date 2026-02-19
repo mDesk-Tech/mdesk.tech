@@ -87,25 +87,31 @@ const servicesData: Service[] = [
 
 const accentColors = {
   coral: {
-    border: "border-[#ff6b35]",
-    bg: "bg-[#ff6b35]",
-    text: "text-[#ff6b35]",
+    border: "border-coral",
+    bg: "bg-coral",
+    text: "text-coral",
     shadow: "shadow-[4px_4px_0_0_rgba(255,107,53,0.3)]",
     hoverShadow: "hover:shadow-[6px_6px_0_0_rgba(255,107,53,0.4)]",
+    bg10: "bg-coral/10",
+    bg20: "bg-coral/20",
   },
   teal: {
-    border: "border-[#00d4aa]",
-    bg: "bg-[#00d4aa]",
-    text: "text-[#00d4aa]",
+    border: "border-teal",
+    bg: "bg-teal",
+    text: "text-teal",
     shadow: "shadow-[4px_4px_0_0_rgba(0,212,170,0.3)]",
     hoverShadow: "hover:shadow-[6px_6px_0_0_rgba(0,212,170,0.4)]",
+    bg10: "bg-teal/10",
+    bg20: "bg-teal/20",
   },
   amber: {
-    border: "border-[#ffb800]",
-    bg: "bg-[#ffb800]",
-    text: "text-[#ffb800]",
+    border: "border-amber",
+    bg: "bg-amber",
+    text: "text-amber",
     shadow: "shadow-[4px_4px_0_0_rgba(255,184,0,0.3)]",
     hoverShadow: "hover:shadow-[6px_6px_0_0_rgba(255,184,0,0.4)]",
+    bg10: "bg-amber/10",
+    bg20: "bg-amber/20",
   },
 };
 
@@ -181,7 +187,7 @@ export default function ServicesPage() {
                     {/* Icon */}
                     <div className="mb-6">
                       <div
-                        className={`inline-flex border-2 ${colors.border} ${colors.bg}/10 p-4 ${colors.text} transition-all duration-300 group-hover:scale-110`}
+                        className={`inline-flex border-2 ${colors.border} ${colors.bg10} p-4 ${colors.text} transition-all duration-300 group-hover:scale-110`}
                       >
                         {service.icon}
                       </div>
@@ -203,7 +209,7 @@ export default function ServicesPage() {
                           className="group/item flex items-start gap-3"
                         >
                           <div
-                            className={`mt-0.5 flex size-5 shrink-0 items-center justify-center border ${colors.border} ${colors.bg}/20`}
+                            className={`mt-0.5 flex size-5 shrink-0 items-center justify-center border ${colors.border} ${colors.bg20}`}
                           >
                             <Check className={`size-3 ${colors.text}`} />
                           </div>

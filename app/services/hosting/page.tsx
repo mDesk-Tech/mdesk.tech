@@ -71,7 +71,7 @@ const plans = [
       "Basic Support",
     ],
     highlight: false,
-    color: "#666",
+    color: "#666666",
   },
   {
     name: "Business",

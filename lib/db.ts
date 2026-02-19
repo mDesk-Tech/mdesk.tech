@@ -21,12 +21,6 @@ export async function getCollection() {
     const db = client.db(dbName);
     collection = db.collection(collectionName);
 
-    // Index for faster queries
-    await collection.createIndex(
-      { timestamp: 1 },
-      { expireAfterSeconds: 3600 },
-    ); // Auto-delete after 1 hour
-
     return collection;
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
@@ -48,14 +42,31 @@ async function cleanup() {
 
 // Cleanup every hour
 if (typeof setInterval !== "undefined") {
-  setInterval(cleanup, 60 * 60 * 1000);
+  const timer = setInterval(cleanup, 60 * 60 * 1000);
+  // Allow the process to exit even if the timer is still running
+  timer.unref();
+
+  // Close MongoDB connection when the application shuts down
+  process.on("beforeExit", async () => {
+    await closeClient();
+  });
+
+  // Handle termination signals
+  process.on("SIGTERM", async () => {
+    await closeClient();
+    process.exit(0);
+  });
+
+  process.on("SIGINT", async () => {
+    await closeClient();
+    process.exit(0);
+  });
 }
 
-// Close MongoDB connection when the application shuts down
-process.on("beforeExit", async () => {
+async function closeClient() {
   if (client) {
     await client.close();
     client = null;
     collection = null;
   }
-});
+}

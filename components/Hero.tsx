@@ -54,15 +54,17 @@ const Hero = memo(() => {
   useEffect(() => {
     let rafId: number;
     const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
+      const el = containerRef.current;
+      if (!el) return;
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        const rect = containerRef.current!.getBoundingClientRect();
+        const rect = el.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * 100;
         const y = ((e.clientY - rect.top) / rect.height) * 100;
         mousePosRef.current = { x, y };
-        if (glowRef.current) {
-          glowRef.current.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255, 107, 53, 0.12) 0%, transparent 20%)`;
+        const glow = glowRef.current;
+        if (glow) {
+          glow.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255, 107, 53, 0.12) 0%, transparent 20%)`;
         }
       });
     };

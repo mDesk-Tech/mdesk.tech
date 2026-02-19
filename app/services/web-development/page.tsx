@@ -396,9 +396,9 @@ export default function WebDevelopmentPage() {
             className="mb-16 flex items-end justify-between"
           >
             <div>
-              <span className="font-mono text-sm text-teal" />
+              <span className="font-mono text-sm text-teal">TECH ARSENAL</span>
               <h3 className="mt-2 text-4xl font-black text-white md:text-5xl">
-                TECH ARSENAL
+                MODERN STACK
               </h3>
             </div>
             <div className="hidden text-right md:block">

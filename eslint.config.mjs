@@ -20,7 +20,7 @@ export default defineConfig([
         // tailwindcss 4: path to the entry file for the css-based tailwind config
         entryPoint: "app/globals.css",
       },
-      react: { version: "19" } 
+      react: { version: "19" },
     },
   },
   // Override default ignores of eslint-config-next.

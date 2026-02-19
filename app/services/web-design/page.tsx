@@ -1,7 +1,13 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring } from "motion/react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useMotionValue,
+} from "motion/react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -69,28 +75,32 @@ const rulerMarks = Array.from({ length: 20 }, (_, i) => i);
 export default function WebDesignPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeColor, setActiveColor] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const cursorX = useSpring(mousePosition.x, { stiffness: 500, damping: 50 });
-  const cursorY = useSpring(mousePosition.y, { stiffness: 500, damping: 50 });
+
+  // Use motion values for cursor to avoid re-renders
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const cursorX = useSpring(mouseX, { stiffness: 500, damping: 50 });
+  const cursorY = useSpring(mouseY, { stiffness: 500, damping: 50 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [mouseX, mouseY]);
 
   return (
     <div
       ref={containerRef}
-      className="relative min-h-screen overflow-hidden bg-[#0a0a0a]"
+      className="relative min-h-screen overflow-hidden bg-[#0a0a0a] lg:cursor-none"
     >
       {/* Custom cursor */}
       <motion.div
@@ -290,11 +300,10 @@ export default function WebDesignPage() {
                 <div className="relative">
                   {/* Selection highlight */}
                   <motion.div
-                    initial={{ width: 0 }}
+                    initial={{ width: "20%" }}
                     animate={{ width: "100%" }}
                     transition={{ delay: 0.8, duration: 0.5 }}
                     className="absolute top-1/2 -left-2 h-24 -translate-y-1/2 bg-coral/20"
-                    style={{ width: "20%" }}
                   />
 
                   <motion.h1
@@ -491,7 +500,7 @@ export default function WebDesignPage() {
                   <motion.div
                     key={i}
                     whileHover={{ scale: 1.05 }}
-                    className="group min-w-[100px] cursor-default"
+                    className="group min-w-25 cursor-default"
                   >
                     <div
                       className="font-mono text-2xl font-black transition-colors sm:text-3xl md:text-4xl"
@@ -506,22 +515,17 @@ export default function WebDesignPage() {
                 ))}
               </div>
 
-              <div className="ml-auto hidden items-center gap-2 sm:flex">
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="flex size-8 items-center justify-center rounded-sm border border-[#333] text-[#666] hover:text-white"
-                >
+              <div
+                className="ml-auto hidden items-center gap-2 sm:flex"
+                aria-hidden="true"
+              >
+                <motion.span className="flex size-8 items-center justify-center rounded-sm border border-[#333] text-[#666]">
                   -
-                </motion.button>
+                </motion.span>
                 <span className="font-mono text-sm text-[#666]">100%</span>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="flex size-8 items-center justify-center rounded-sm border border-[#333] text-[#666] hover:text-white"
-                >
+                <motion.span className="flex size-8 items-center justify-center rounded-sm border border-[#333] text-[#666]">
                   +
-                </motion.button>
+                </motion.span>
               </div>
             </motion.div>
           </motion.div>
@@ -607,7 +611,7 @@ export default function WebDesignPage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.15 }}
-                  className="group flex items-center gap-6"
+                  className="group relative flex items-center gap-6"
                 >
                   {/* Animated circle */}
                   <motion.div
@@ -630,11 +634,10 @@ export default function WebDesignPage() {
                   {/* Progress indicator */}
                   <motion.div
                     initial={{ width: 0 }}
-                    whileInView={{ width: "100%" }}
+                    whileInView={{ width: `${(index + 1) * 25}%` }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.5 + index * 0.2, duration: 0.8 }}
                     className="absolute bottom-0 left-0 h-0.5 bg-coral"
-                    style={{ width: `${(index + 1) * 25}%` }}
                   />
                 </motion.div>
               ))}

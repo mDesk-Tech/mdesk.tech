@@ -79,7 +79,10 @@ const NavLink = memo(function NavLink({
         className={`pointer-events-none absolute inset-0 -z-10 blur-sm transition-opacity duration-300 ${
           isHovered ? "opacity-100" : "opacity-0"
         }`}
-        style={{ color: "#ff6b35" }}
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(255, 107, 53, 0.4) 0%, transparent 70%)",
+        }}
       />
     </Link>
   );
@@ -200,7 +203,7 @@ const Navbar = memo(() => {
         (link.path === "/" && normalizedPath === "/") ||
         (link.path !== "/" &&
           (normalizedPath === link.path ||
-            normalizedPath.startsWith(`${link.path}`)));
+            normalizedPath.startsWith(`${link.path}/`)));
       if (isActive) activeSet.add(link.path);
     }
     return activeSet;
@@ -261,7 +264,7 @@ const Navbar = memo(() => {
         {isMobileMenuOpen && (
           <div
             key="mobile-nav"
-            className="fixed inset-0 top-[57px] z-9999 border-t-2 border-coral bg-[#0a0a0a] md:hidden"
+            className="fixed inset-0 top-14.25 z-9999 border-t-2 border-coral bg-[#0a0a0a] md:hidden"
           >
             <motion.div
               className="container mx-auto flex h-full flex-col px-4 py-8 sm:px-6"

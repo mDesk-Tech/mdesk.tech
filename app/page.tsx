@@ -27,7 +27,7 @@ export default async function Home() {
       <LazySection minHeight="60vh" rootMargin="400px 0px">
         <Features />
       </LazySection>
-      <LazySection minHeight="0" rootMargin="200px 0px">
+      <LazySection minHeight="60vh" rootMargin="400px 0px">
         <Services />
       </LazySection>
       <LazySection minHeight="60vh" rootMargin="400px 0px">
