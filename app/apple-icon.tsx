@@ -10,7 +10,11 @@ export const size = {
 export const contentType = "image/png";
 
 /**
- * Apple touch icon
+ * Render an Apple-style touch icon image.
+ *
+ * Generates an ImageResponse containing a 180×180 PNG of an app icon featuring a diagonal dark gradient background, an outer and inner decorative border, a bold monospace "M" at the center, and four colored corner indicators.
+ *
+ * @returns An ImageResponse containing a 180×180 PNG image of the icon
  */
 export default function AppleIcon() {
   return new ImageResponse(

@@ -9,7 +9,11 @@ export const size = {
 export const contentType = "image/png";
 
 /**
- * OG image generator
+ * Generate the Open Graph image used for mdesk.tech social previews.
+ *
+ * Renders a branded layout featuring a logo box and title, a tagline badge, descriptive subtext, decorative borders and corner accents, a subtle grid and scanline overlay, and a small pixel motif.
+ *
+ * @returns An ImageResponse containing the rendered OG image for mdesk.tech
  */
 export default function OGImage() {
   return new ImageResponse(

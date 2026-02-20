@@ -17,6 +17,12 @@ const globalForDb = globalThis as typeof globalThis & {
 // Use global cached handler flag to survive HMR reloads
 const handlersRegistered = globalForDb.__dbHandlersRegistered ?? false;
 
+/**
+ * Obtain the rate-limits MongoDB collection, establishing and caching a client connection if needed.
+ *
+ * @returns The MongoDB collection for the configured database and collection name.
+ * @throws If establishing the MongoDB connection fails, the error is rethrown.
+ */
 export async function getCollection() {
   // Return existing collection if already connected
   if (globalForDb.__dbCollection) return globalForDb.__dbCollection;
@@ -49,6 +55,12 @@ export async function getCollection() {
   return globalForDb.__dbConnectionPromise;
 }
 
+/**
+ * Delete rate-limit documents older than one hour from the database.
+ *
+ * Connects to the configured `rate_limits` collection and removes documents whose `timestamp`
+ * is earlier than one hour ago. Any errors encountered during the operation are logged to the console.
+ */
 async function cleanup() {
   try {
     const coll = await getCollection();
@@ -107,6 +119,13 @@ if (
   });
 }
 
+/**
+ * Close the cached MongoDB client and clear the cached connection state.
+ *
+ * If a client is present on the module's global cache, this closes the client
+ * and resets `__dbClient`, `__dbCollection`, and `__dbConnectionPromise` so a
+ * future call to getCollection() can establish a new connection.
+ */
 async function closeClient() {
   if (globalForDb.__dbClient) {
     await globalForDb.__dbClient.close();

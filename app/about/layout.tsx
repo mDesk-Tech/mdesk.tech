@@ -8,6 +8,12 @@ export const metadata: Metadata = pageMetadata({
   path: "/about",
 });
 
+/**
+ * Layout component that renders its children without adding markup or behavior.
+ *
+ * @param children - Content to be rendered inside this layout
+ * @returns The provided `children` wrapped in a React fragment
+ */
 export default function AboutLayout({
   children,
 }: {

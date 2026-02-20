@@ -154,6 +154,18 @@ const serverLocations = [
   { city: "Sydney", latency: "62ms", status: "online" },
 ];
 
+/**
+ * Render the hosting landing page UI with hero, animated server rack, global server locations, feature specs, pricing plans, and call-to-action sections.
+ *
+ * Renders a composed React element containing:
+ * - a hero section with status badge, CTAs, and a scroll-driven server rack visualization;
+ * - a global network grid where hovering a location highlights it;
+ * - a features grid with colored icons and hover decorations;
+ * - pricing plan cards with an emphasized "most popular" option and CTAs;
+ * - a final deployment call-to-action.
+ *
+ * @returns The React element representing the full hosting content layout.
+ */
 export default function HostingContent() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeServer, setActiveServer] = useState(0);

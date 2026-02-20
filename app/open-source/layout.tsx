@@ -9,6 +9,12 @@ export const metadata: Metadata = pageMetadata({
   path: "/open-source",
 });
 
+/**
+ * Layout component that renders its children.
+ *
+ * @param children - Elements to render inside the layout
+ * @returns The provided `children` wrapped in a fragment
+ */
 export default function OpenSourceLayout({
   children,
 }: {

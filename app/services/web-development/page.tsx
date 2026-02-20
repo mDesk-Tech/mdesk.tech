@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Render the Web Development page content.
+ *
+ * @returns A JSX element that renders the WebDevelopmentContent component for this page.
+ */
 export default function WebDevelopmentPage() {
   return <WebDevelopmentContent />;
 }

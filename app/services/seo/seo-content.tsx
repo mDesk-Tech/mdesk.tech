@@ -75,6 +75,13 @@ const searchKeywords = [
   "rank #1 on google",
 ];
 
+/**
+ * Renders a feature-rich SEO marketing hero and content page with animated visuals.
+ *
+ * This React component displays a parallax hero with decorative orbs and floating shapes, a client-generated binary rain overlay, a typing keyword effect in a search-like bar, a responsive metrics grid, a stats section, a features grid, a four-step process, and a CTA section. The binary rain is generated on the client at mount to avoid SSR hydration mismatches.
+ *
+ * @returns The JSX element tree for the SEO marketing hero and content page
+ */
 export default function SEOContent() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentKeywordIndex, setCurrentKeywordIndex] = useState(0);

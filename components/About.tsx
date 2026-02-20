@@ -34,6 +34,15 @@ const capabilities = [
   { icon: Zap, title: "Fast", desc: "Rapid turnaround", color: "#ff6b35" },
 ];
 
+/**
+ * Renders the "About" page section with themed content and animated visuals.
+ *
+ * The section includes a large hero, scroll-driven decorative motion, a stats grid,
+ * capability cards, philosophy and team blocks, and a call-to-action. Visuals and
+ * layout adapt responsively and use scroll progress to drive subtle parallax and rotation.
+ *
+ * @returns The About section's JSX markup containing animated layout and content blocks.
+ */
 export default function About() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({

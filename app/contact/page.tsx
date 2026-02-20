@@ -16,6 +16,13 @@ import {
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "motion/react";
 
+/**
+ * Renders the contact page UI containing contact method cards, an animated contact form, availability panels, and a call-to-action section.
+ *
+ * The component manages form state, focus animations, submission state, and sends form data to `/api/contact`. It also drives scroll-based parallax and motion effects for decorative elements.
+ *
+ * @returns The React element for the contact page.
+ */
 export default function ContactPage() {
   const [formState, setFormState] = useState({
     name: "",

@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Page component for the SEO service route that renders the SEOContent UI.
+ *
+ * @returns A JSX element containing the SEOContent component
+ */
 export default function SEOPage() {
   return <SEOContent />;
 }

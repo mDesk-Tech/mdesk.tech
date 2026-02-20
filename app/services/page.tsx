@@ -123,6 +123,13 @@ const accentColors = {
   },
 };
 
+/**
+ * Render the Services page, including the hero, themed service cards, process steps, and a contact call-to-action.
+ *
+ * Renders a full-page layout presenting service offerings with accent-driven styling, feature lists, a three-step process section, and a final CTA to start a project.
+ *
+ * @returns A JSX element representing the complete Services page
+ */
 export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
