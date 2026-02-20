@@ -2,8 +2,56 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import { Home, ArrowLeft, Search, AlertTriangle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Home, ArrowLeft, AlertTriangle } from "lucide-react";
+import { useEffect, useState, useCallback, useMemo } from "react";
+
+// Animation variants
+const glitchVariants = {
+  initial: { x: 0 },
+  animate: {
+    x: [0, -2, 2, -2, 0],
+    transition: {
+      duration: 0.3,
+      repeat: Infinity,
+      repeatDelay: 3,
+    },
+  },
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+    },
+  },
+};
+
+const textShadowAnimation = {
+  textShadow: [
+    "0 0 60px rgba(255, 107, 53, 0.3)",
+    "0 0 80px rgba(255, 107, 53, 0.5)",
+    "0 0 60px rgba(255, 107, 53, 0.3)",
+  ],
+};
+
+const statusIndicatorAnimation = {
+  rotate: [0, 10, -10, 0],
+};
 
 const NotFound = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -27,52 +75,26 @@ const NotFound = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    setMousePosition({
+      x: (e.clientX / window.innerWidth - 0.5) * 20,
+      y: (e.clientY / window.innerHeight - 0.5) * 20,
+    });
   }, []);
 
-  const glitchVariants = {
-    initial: { x: 0 },
-    animate: {
-      x: [0, -2, 2, -2, 0],
-      transition: {
-        duration: 0.3,
-        repeat: Infinity,
-        repeatDelay: 3,
-      },
-    },
-  };
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [handleMouseMove]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.25, 0.46, 0.45, 0.94] as const,
-      },
-    },
-  };
+  // Memoize parallax style to prevent rerenders
+  const parallaxStyle = useMemo(
+    () => ({
+      x: mousePosition.x,
+      y: mousePosition.y,
+    }),
+    [mousePosition.x, mousePosition.y],
+  );
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a0a0a] py-20">
@@ -152,10 +174,7 @@ const NotFound = () => {
           {/* 404 Display with Parallax */}
           <motion.div
             className="relative mb-8 text-center"
-            style={{
-              x: mousePosition.x,
-              y: mousePosition.y,
-            }}
+            style={parallaxStyle}
           >
             {/* Decorative Frame */}
             <div className="absolute inset-0 -m-4 border border-coral/20 sm:-m-8">
@@ -191,13 +210,7 @@ const NotFound = () => {
                 style={{
                   textShadow: "0 0 60px rgba(255, 107, 53, 0.3)",
                 }}
-                animate={{
-                  textShadow: [
-                    "0 0 60px rgba(255, 107, 53, 0.3)",
-                    "0 0 80px rgba(255, 107, 53, 0.5)",
-                    "0 0 60px rgba(255, 107, 53, 0.3)",
-                  ],
-                }}
+                animate={textShadowAnimation}
                 transition={{
                   duration: 2,
                   repeat: Infinity,
@@ -211,9 +224,7 @@ const NotFound = () => {
             {/* Status Indicator */}
             <motion.div
               className="absolute top-0 -right-4 sm:top-4 sm:-right-8"
-              animate={{
-                rotate: [0, 10, -10, 0],
-              }}
+              animate={statusIndicatorAnimation}
               transition={{
                 duration: 2,
                 repeat: Infinity,
@@ -239,29 +250,6 @@ const NotFound = () => {
               digital void. It might have been moved, deleted, or never existed
               in the first place.
             </p>
-          </motion.div>
-
-          {/* Search Suggestion */}
-          <motion.div
-            className="mb-12 flex justify-center"
-            variants={itemVariants}
-          >
-            <div className="flex w-full max-w-md items-center gap-3 border-2 border-[#333] bg-[#141414] px-4 py-3 transition-all duration-300 focus-within:border-coral/50 sm:px-6">
-              <Search className="size-5 text-[#666]" />
-              <input
-                type="text"
-                placeholder="Search for pages..."
-                className="flex-1 bg-transparent text-sm text-white placeholder:text-[#666] focus:outline-none"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    window.location.href = `/services?q=${encodeURIComponent(e.currentTarget.value)}`;
-                  }
-                }}
-              />
-              <span className="hidden font-mono text-xs text-[#666] sm:block">
-                Press Enter
-              </span>
-            </div>
           </motion.div>
 
           {/* Action Buttons */}

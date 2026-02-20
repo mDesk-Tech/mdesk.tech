@@ -10,6 +10,38 @@ interface ErrorProps {
   reset: () => void;
 }
 
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+    },
+  },
+};
+
+const iconShakeAnimation = {
+  rotate: [0, -5, 5, -5, 0],
+};
+
+const glitchAnimation = {
+  x: [0, -2, 2, -2, 2, 0],
+};
+
 const Error = ({ error, reset }: ErrorProps) => {
   const [isHydrated, setIsHydrated] = useState(false);
   const [errorCode] = useState(() =>
@@ -17,48 +49,26 @@ const Error = ({ error, reset }: ErrorProps) => {
   );
 
   useEffect(() => {
-    // Log error to console for debugging
     console.error("Application error:", error);
 
     const scheduleHydration = () => {
       setIsHydrated(true);
     };
 
+    let idleCallbackId: ReturnType<typeof requestIdleCallback> | null = null;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     if (typeof requestIdleCallback !== "undefined") {
-      requestIdleCallback(scheduleHydration, { timeout: 100 });
+      idleCallbackId = requestIdleCallback(scheduleHydration, { timeout: 100 });
     } else {
       timeoutId = setTimeout(scheduleHydration, 50);
     }
 
     return () => {
+      if (idleCallbackId) cancelIdleCallback(idleCallbackId);
       if (timeoutId) clearTimeout(timeoutId);
     };
   }, [error]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.25, 0.46, 0.45, 0.94] as const,
-      },
-    },
-  };
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a0a0a] py-20">
@@ -130,9 +140,7 @@ const Error = ({ error, reset }: ErrorProps) => {
           >
             <motion.div
               className="relative"
-              animate={{
-                rotate: [0, -5, 5, -5, 0],
-              }}
+              animate={iconShakeAnimation}
               transition={{
                 duration: 0.5,
                 repeat: Infinity,
@@ -164,9 +172,7 @@ const Error = ({ error, reset }: ErrorProps) => {
           <motion.div className="mb-6 text-center" variants={itemVariants}>
             <motion.div
               className="relative inline-block"
-              animate={{
-                x: [0, -2, 2, -2, 2, 0],
-              }}
+              animate={glitchAnimation}
               transition={{
                 duration: 0.4,
                 repeat: Infinity,
@@ -192,7 +198,7 @@ const Error = ({ error, reset }: ErrorProps) => {
           </motion.div>
 
           {/* Error Details */}
-          {error.message && (
+          {process.env.NODE_ENV === "development" && error.message && (
             <motion.div
               className="mx-auto mb-8 max-w-2xl"
               variants={itemVariants}

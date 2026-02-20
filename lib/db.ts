@@ -11,28 +11,42 @@ const globalForDb = globalThis as typeof globalThis & {
   __dbHandlersRegistered?: boolean;
   __dbClient?: MongoClient | null;
   __dbCollection?: Collection | null;
+  __dbConnectionPromise?: Promise<Collection> | undefined;
 };
 
 // Use global cached handler flag to survive HMR reloads
 const handlersRegistered = globalForDb.__dbHandlersRegistered ?? false;
 
 export async function getCollection() {
+  // Return existing collection if already connected
   if (globalForDb.__dbCollection) return globalForDb.__dbCollection;
 
-  try {
-    // Connect to MongoDB
-    globalForDb.__dbClient = new MongoClient(uri);
-    await globalForDb.__dbClient.connect();
-
-    // Get database and collection
-    const db = globalForDb.__dbClient.db(dbName);
-    globalForDb.__dbCollection = db.collection(collectionName);
-
-    return globalForDb.__dbCollection;
-  } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
-    throw error;
+  // Return existing promise if connection is in progress
+  if (globalForDb.__dbConnectionPromise) {
+    return globalForDb.__dbConnectionPromise;
   }
+
+  // Create connection promise
+  globalForDb.__dbConnectionPromise = (async () => {
+    try {
+      // Connect to MongoDB
+      globalForDb.__dbClient = new MongoClient(uri);
+      await globalForDb.__dbClient.connect();
+
+      // Get database and collection
+      const db = globalForDb.__dbClient.db(dbName);
+      globalForDb.__dbCollection = db.collection(collectionName);
+
+      return globalForDb.__dbCollection;
+    } catch (err) {
+      // Clear the promise on error so future calls can retry
+      globalForDb.__dbConnectionPromise = undefined;
+      console.error("Error connecting to MongoDB:", err);
+      throw err;
+    }
+  })();
+
+  return globalForDb.__dbConnectionPromise;
 }
 
 async function cleanup() {
@@ -98,5 +112,6 @@ async function closeClient() {
     await globalForDb.__dbClient.close();
     globalForDb.__dbClient = null;
     globalForDb.__dbCollection = null;
+    globalForDb.__dbConnectionPromise = undefined;
   }
 }

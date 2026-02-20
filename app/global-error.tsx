@@ -10,6 +10,42 @@ interface GlobalErrorProps {
   reset: () => void;
 }
 
+// Animation configurations
+const pulseRingAnimation = {
+  scale: [1, 1.5],
+  opacity: [0.5, 0],
+};
+
+const pulseRingTransition = {
+  duration: 2,
+  repeat: Infinity,
+  ease: "easeOut" as const,
+};
+
+const iconGlowAnimation = {
+  boxShadow: [
+    "0 0 20px rgba(239, 68, 68, 0.3)",
+    "0 0 40px rgba(239, 68, 68, 0.5)",
+    "0 0 20px rgba(239, 68, 68, 0.3)",
+  ],
+};
+
+const borderPulseAnimation = {
+  borderColor: [
+    "rgba(239, 68, 68, 0.5)",
+    "rgba(239, 68, 68, 1)",
+    "rgba(239, 68, 68, 0.5)",
+  ],
+};
+
+const blinkAnimation = {
+  opacity: [1, 0.3, 1],
+};
+
+const bottomLineAnimation = {
+  opacity: [0.5, 1, 0.5],
+};
+
 const GlobalError = ({ error, reset }: GlobalErrorProps) => {
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -20,15 +56,17 @@ const GlobalError = ({ error, reset }: GlobalErrorProps) => {
       setIsHydrated(true);
     };
 
+    let idleCallbackId: ReturnType<typeof requestIdleCallback> | null = null;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     if (typeof requestIdleCallback !== "undefined") {
-      requestIdleCallback(scheduleHydration, { timeout: 100 });
+      idleCallbackId = requestIdleCallback(scheduleHydration, { timeout: 100 });
     } else {
       timeoutId = setTimeout(scheduleHydration, 50);
     }
 
     return () => {
+      if (idleCallbackId) cancelIdleCallback(idleCallbackId);
       if (timeoutId) clearTimeout(timeoutId);
     };
   }, [error]);
@@ -84,22 +122,22 @@ const GlobalError = ({ error, reset }: GlobalErrorProps) => {
               <>
                 <motion.div
                   className="absolute -top-2 left-24 h-2 w-8 bg-orange-500"
-                  animate={{ opacity: [1, 0.3, 1] }}
+                  animate={blinkAnimation}
                   transition={{ duration: 1, repeat: Infinity }}
                 />
                 <motion.div
                   className="absolute top-24 -right-2 h-8 w-2 bg-orange-500"
-                  animate={{ opacity: [1, 0.3, 1] }}
+                  animate={blinkAnimation}
                   transition={{ duration: 1, repeat: Infinity, delay: 0.25 }}
                 />
                 <motion.div
                   className="absolute right-24 -bottom-2 h-2 w-8 bg-orange-500"
-                  animate={{ opacity: [1, 0.3, 1] }}
+                  animate={blinkAnimation}
                   transition={{ duration: 1, repeat: Infinity, delay: 0.5 }}
                 />
                 <motion.div
                   className="absolute bottom-24 -left-2 h-8 w-2 bg-orange-500"
-                  animate={{ opacity: [1, 0.3, 1] }}
+                  animate={blinkAnimation}
                   transition={{ duration: 1, repeat: Infinity, delay: 0.75 }}
                 />
               </>
@@ -132,28 +170,13 @@ const GlobalError = ({ error, reset }: GlobalErrorProps) => {
                     <>
                       <motion.div
                         className="absolute inset-0 rounded-full border-2 border-red-500/30"
-                        animate={{
-                          scale: [1, 1.5],
-                          opacity: [0.5, 0],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeOut",
-                        }}
+                        animate={pulseRingAnimation}
+                        transition={pulseRingTransition}
                       />
                       <motion.div
                         className="absolute inset-0 rounded-full border-2 border-red-500/20"
-                        animate={{
-                          scale: [1, 1.8],
-                          opacity: [0.3, 0],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeOut",
-                          delay: 0.5,
-                        }}
+                        animate={{ scale: [1, 1.8], opacity: [0.3, 0] }}
+                        transition={{ ...pulseRingTransition, delay: 0.5 }}
                       />
                     </>
                   )}
@@ -161,13 +184,7 @@ const GlobalError = ({ error, reset }: GlobalErrorProps) => {
                   {/* Main icon */}
                   <motion.div
                     className="relative flex size-28 items-center justify-center rounded-full border-2 border-red-500 bg-red-500/10 sm:size-36"
-                    animate={{
-                      boxShadow: [
-                        "0 0 20px rgba(239, 68, 68, 0.3)",
-                        "0 0 40px rgba(239, 68, 68, 0.5)",
-                        "0 0 20px rgba(239, 68, 68, 0.3)",
-                      ],
-                    }}
+                    animate={iconGlowAnimation}
                     transition={{
                       duration: 2,
                       repeat: Infinity,
@@ -188,13 +205,7 @@ const GlobalError = ({ error, reset }: GlobalErrorProps) => {
               >
                 <motion.div
                   className="mb-2 inline-flex items-center gap-2 border border-red-500/50 bg-red-500/10 px-4 py-1"
-                  animate={{
-                    borderColor: [
-                      "rgba(239, 68, 68, 0.5)",
-                      "rgba(239, 68, 68, 1)",
-                      "rgba(239, 68, 68, 0.5)",
-                    ],
-                  }}
+                  animate={borderPulseAnimation}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
                   <Terminal className="size-4 text-red-500" />
@@ -214,7 +225,7 @@ const GlobalError = ({ error, reset }: GlobalErrorProps) => {
                 <h1 className="mb-4 text-5xl font-black text-white sm:text-6xl md:text-7xl">
                   <span className="text-red-500">5</span>
                   <motion.span
-                    animate={{ opacity: [1, 0.3, 1] }}
+                    animate={blinkAnimation}
                     transition={{ duration: 0.5, repeat: Infinity }}
                   >
                     0
@@ -328,9 +339,7 @@ const GlobalError = ({ error, reset }: GlobalErrorProps) => {
           {/* Bottom Line */}
           <motion.div
             className="absolute inset-x-0 bottom-0 h-1 bg-red-500"
-            animate={{
-              opacity: [0.5, 1, 0.5],
-            }}
+            animate={bottomLineAnimation}
             transition={{
               duration: 2,
               repeat: Infinity,

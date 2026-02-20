@@ -15,7 +15,7 @@
 :root {
   --animate-duration: 0.5s;
 
-  /* Navbar height - sync with Navbar.tsx padding and logo size */
+  /* Navbar height  */
   --navbar-height: 64px;
 
   /* Brand colors */
@@ -24,6 +24,8 @@
   --teal: 162 100% 42%;
   --teal-bright: 162 100% 48%;
   --amber: 45 100% 50%;
+  --rgb-coral: 255, 107, 53;
+  --rgb-teal: 0, 212, 170;
   --background: 0 0% 4%;
   --foreground: 0 0% 100%;
   --card: 0 0% 8%;
@@ -129,10 +131,8 @@ html {
 
   /* Brand colors */
   --color-coral: #ff6b35;
-  --color-coral-rgb: 255, 107, 53;
   --color-coral-bright: #ff8555;
   --color-teal: #00d4aa;
-  --color-teal-rgb: 0, 212, 170;
   --color-teal-bright: #00f5c4;
   --color-amber: #ffb800;
   --radius-lg: var(--radius);
@@ -476,14 +476,14 @@ html {
   background: transparent;
   border: 3px solid var(--color-coral);
   color: var(--color-coral);
-  box-shadow: 4px 4px 0 0 rgb(var(--color-coral-rgb), 0.3);
+  box-shadow: 4px 4px 0 0 rgb(var(--rgb-coral), 0.3);
   transition: all 150ms ease;
 }
 
 .btn-retro-outline:hover {
-  background: rgb(var(--color-coral-rgb), 0.1);
+  background: rgb(var(--rgb-coral), 0.1);
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 0 rgb(var(--color-coral-rgb), 0.3);
+  box-shadow: 2px 2px 0 0 rgb(var(--rgb-coral), 0.3);
 }
 
 /* Cards */
@@ -495,7 +495,7 @@ html {
 
 .card-retro:hover {
   border-color: var(--color-coral);
-  box-shadow: 6px 6px 0 0 rgb(var(--color-coral-rgb), 0.2);
+  box-shadow: 6px 6px 0 0 rgb(var(--rgb-coral), 0.2);
   transform: translate(-2px, -2px);
 }
 

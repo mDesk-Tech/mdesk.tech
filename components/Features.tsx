@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { Code, Zap, Layers, Globe, Lock, Users } from "lucide-react";
-import { useState, memo, useRef, useCallback } from "react";
+import { useState, memo, useRef, useCallback, useMemo } from "react";
 import { motion } from "motion/react";
 import {
   Dialog,
@@ -113,20 +113,42 @@ const SpotlightCard = memo(
     const cardRef = useRef<HTMLDivElement>(null);
     const spotlightRef = useRef<HTMLDivElement>(null);
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!cardRef.current || !spotlightRef.current) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      spotlightRef.current.style.background = `radial-gradient(600px circle at ${x}px ${y}px, ${feature.color}15, transparent 40%)`;
-    };
+    const handleMouseMove = useCallback(
+      (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!cardRef.current || !spotlightRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        spotlightRef.current.style.background = `radial-gradient(600px circle at ${x}px ${y}px, ${feature.color}15, transparent 40%)`;
+      },
+      [feature.color],
+    );
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        onClick?.();
-      }
-    };
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick?.();
+        }
+      },
+      [onClick],
+    );
+
+    // Memoized styles to prevent rerenders
+    const iconStyle = useMemo(
+      () => ({ borderColor: feature.color, color: feature.color }),
+      [feature.color],
+    );
+    const borderGlowStyle = useMemo(
+      () => ({
+        boxShadow: `inset 0 0 20px ${feature.color}20, 0 0 30px ${feature.color}10`,
+      }),
+      [feature.color],
+    );
+    const cornerAccentStyle = useMemo(
+      () => ({ backgroundColor: feature.color }),
+      [feature.color],
+    );
 
     return (
       <motion.div
@@ -153,9 +175,7 @@ const SpotlightCard = memo(
         {/* Border glow */}
         <div
           className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          style={{
-            boxShadow: `inset 0 0 20px ${feature.color}20, 0 0 30px ${feature.color}10`,
-          }}
+          style={borderGlowStyle}
         />
 
         {/* Corner lines */}
@@ -177,11 +197,8 @@ const SpotlightCard = memo(
           {/* Icon */}
           <motion.div
             className="mb-4 inline-flex border-2 p-3 transition-all duration-300 group-hover:scale-110 group-hover:border-coral"
-            style={{ borderColor: feature.color, color: feature.color }}
-            whileHover={{
-              rotate: [0, -5, 5, -5, 5, 0],
-              transition: { duration: 0.5 },
-            }}
+            style={iconStyle}
+            whileHover={iconHoverVariants}
           >
             {feature.icon}
           </motion.div>
@@ -215,15 +232,12 @@ const SpotlightCard = memo(
         {/* Corner accent */}
         <div
           className="absolute -right-1 -bottom-1 size-4 opacity-0 transition-all duration-300 group-hover:scale-125 group-hover:opacity-100"
-          style={{ backgroundColor: feature.color }}
+          style={cornerAccentStyle}
         />
 
         {/* Pulse ring */}
         <div className="group-hover:animate-pulse-ring pointer-events-none absolute inset-0 opacity-0">
-          <div
-            className="absolute inset-0 border-2"
-            style={{ borderColor: feature.color }}
-          />
+          <div className="absolute inset-0 border-2" style={iconStyle} />
         </div>
       </motion.div>
     );
@@ -240,6 +254,21 @@ const headerVariants = {
     transition: {
       duration: 0.6,
       ease: [0.25, 0.46, 0.45, 0.94] as const,
+    },
+  },
+};
+
+const iconHoverVariants = {
+  rotate: [0, -5, 5, -5, 5, 0],
+  transition: { duration: 0.5 },
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
     },
   },
 };
@@ -286,15 +315,7 @@ const Features = memo(() => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.15,
-              },
-            },
-          }}
+          variants={sectionVariants}
           className="mb-12 text-center sm:mb-20"
         >
           <motion.div
