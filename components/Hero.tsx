@@ -21,15 +21,17 @@ const Hero = memo(() => {
       setIsHydrated(true);
     };
 
+    let idleCallbackId: ReturnType<typeof requestIdleCallback> | null = null;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     if (typeof requestIdleCallback !== "undefined") {
-      requestIdleCallback(scheduleHydration, { timeout: 100 });
+      idleCallbackId = requestIdleCallback(scheduleHydration, { timeout: 100 });
     } else {
       timeoutId = setTimeout(scheduleHydration, 50);
     }
 
     return () => {
+      if (idleCallbackId) cancelIdleCallback(idleCallbackId);
       if (timeoutId) clearTimeout(timeoutId);
     };
   }, []);

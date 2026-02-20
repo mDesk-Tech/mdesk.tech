@@ -16,7 +16,7 @@ import {
   Wifi,
 } from "lucide-react";
 
-// CSS keyframes for performance - these run on the compositor thread
+// CSS keyframes for performance
 const cssAnimations = `
   @keyframes pulse-opacity {
     0%, 100% { opacity: 0.3; }
@@ -31,8 +31,8 @@ const cssAnimations = `
     50% { opacity: 1; }
   }
   @keyframes slide-diagonal {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(50px); }
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(50px); }
   }
   .animate-pulse-opacity {
     animation: pulse-opacity 4s ease-in-out infinite;
@@ -172,7 +172,7 @@ export default function HostingContent() {
       {/* Inject CSS animations */}
       <style>{cssAnimations}</style>
 
-      {/* Background grid - uses CSS animation for better performance */}
+      {/* Background grid  */}
       <div className="fixed inset-0 z-0 opacity-5">
         <div
           className="animate-pulse-opacity size-full"

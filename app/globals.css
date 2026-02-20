@@ -20,10 +20,10 @@
 
   /* Brand colors */
   --coral: 17 100% 60%;
-  --coral-bright: 17 100% 65%;
+  --coral-bright: 17 100% 67%;
   --teal: 162 100% 42%;
-  --teal-bright: 162 100% 50%;
-  --amber: 45 100% 51%;
+  --teal-bright: 162 100% 48%;
+  --amber: 45 100% 50%;
   --background: 0 0% 4%;
   --foreground: 0 0% 100%;
   --card: 0 0% 8%;
@@ -129,8 +129,10 @@ html {
 
   /* Brand colors */
   --color-coral: #ff6b35;
+  --color-coral-rgb: 255, 107, 53;
   --color-coral-bright: #ff8555;
   --color-teal: #00d4aa;
+  --color-teal-rgb: 0, 212, 170;
   --color-teal-bright: #00f5c4;
   --color-amber: #ffb800;
   --radius-lg: var(--radius);
@@ -295,6 +297,9 @@ html {
 }
 
 @layer utilities {
+  /* Custom container with responsive padding and max-width constraint.
+     Used extensively throughout the app (52+ times) for consistent content width.
+     Note: Already includes margin-inline: auto, no need for additional mx-auto */
   .container {
     margin-inline: auto;
     padding-inline: 1rem;
@@ -449,36 +454,36 @@ html {
 .btn-retro {
   @apply relative font-bold uppercase tracking-wider;
 
-  background: #ff6b35;
-  border: 3px solid #ff6b35;
-  box-shadow: 4px 4px 0 0 #00d4aa;
+  background: var(--color-coral);
+  border: 3px solid var(--color-coral);
+  box-shadow: 4px 4px 0 0 var(--color-teal);
   transition: all 150ms ease;
 }
 
 .btn-retro:hover {
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 0 #00d4aa;
+  box-shadow: 2px 2px 0 0 var(--color-teal);
 }
 
 .btn-retro:active {
   transform: translate(4px, 4px);
-  box-shadow: 0 0 0 0 #00d4aa;
+  box-shadow: 0 0 0 0 var(--color-teal);
 }
 
 .btn-retro-outline {
   @apply relative font-bold uppercase tracking-wider;
 
   background: transparent;
-  border: 3px solid #ff6b35;
-  color: #ff6b35;
-  box-shadow: 4px 4px 0 0 rgb(255 107 53 / 30%);
+  border: 3px solid var(--color-coral);
+  color: var(--color-coral);
+  box-shadow: 4px 4px 0 0 rgb(var(--color-coral-rgb), 0.3);
   transition: all 150ms ease;
 }
 
 .btn-retro-outline:hover {
-  background: rgb(255 107 53 / 10%);
+  background: rgb(var(--color-coral-rgb), 0.1);
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 0 rgb(255 107 53 / 30%);
+  box-shadow: 2px 2px 0 0 rgb(var(--color-coral-rgb), 0.3);
 }
 
 /* Cards */
@@ -489,8 +494,8 @@ html {
 }
 
 .card-retro:hover {
-  border-color: #ff6b35;
-  box-shadow: 6px 6px 0 0 rgb(255 107 53 / 20%);
+  border-color: var(--color-coral);
+  box-shadow: 6px 6px 0 0 rgb(var(--color-coral-rgb), 0.2);
   transform: translate(-2px, -2px);
 }
 
@@ -498,13 +503,13 @@ html {
 .pixel-accent {
   width: 8px;
   height: 8px;
-  background: #ff6b35;
+  background: var(--color-coral);
 }
 
 .pixel-accent-teal {
   width: 8px;
   height: 8px;
-  background: #00d4aa;
+  background: var(--color-teal);
 }
 
 /* Animation helpers */

@@ -121,6 +121,13 @@ const SpotlightCard = memo(
       spotlightRef.current.style.background = `radial-gradient(600px circle at ${x}px ${y}px, ${feature.color}15, transparent 40%)`;
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onClick?.();
+      }
+    };
+
     return (
       <motion.div
         ref={cardRef}
@@ -130,7 +137,11 @@ const SpotlightCard = memo(
         transition={{ duration: 0.5, delay: index * 0.1 }}
         onClick={onClick}
         onMouseMove={handleMouseMove}
-        className="group relative h-full cursor-pointer overflow-hidden border-2 border-[#333] bg-[#141414] p-6 transition-all duration-500 hover:border-coral sm:p-8"
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+        role="button"
+        aria-label={`Learn more about ${feature.title}`}
+        className="group relative h-full cursor-pointer overflow-hidden border-2 border-[#333] bg-[#141414] p-6 transition-all duration-500 hover:border-coral focus:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] sm:p-8"
         whileHover={{ y: -8, transition: { duration: 0.2 } }}
       >
         {/* Mouse spotlight */}

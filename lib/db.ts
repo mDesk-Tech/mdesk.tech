@@ -5,30 +5,30 @@ const uri = process.env.MONGODB_URI || "";
 const dbName = "mdesk";
 const collectionName = "rate_limits";
 
-// Cache connection
-let client: MongoClient | null = null;
-let collection: Collection | null = null;
-
-// Guard against duplicate handler registration in HMR
+// Guard against duplicate handler registration and connection leaks in HMR
 // Use globalThis to persist across HMR reloads (Next.js pattern)
 const globalForDb = globalThis as typeof globalThis & {
   __dbHandlersRegistered?: boolean;
+  __dbClient?: MongoClient | null;
+  __dbCollection?: Collection | null;
 };
+
+// Use global cached handler flag to survive HMR reloads
 const handlersRegistered = globalForDb.__dbHandlersRegistered ?? false;
 
 export async function getCollection() {
-  if (collection) return collection;
+  if (globalForDb.__dbCollection) return globalForDb.__dbCollection;
 
   try {
     // Connect to MongoDB
-    client = new MongoClient(uri);
-    await client.connect();
+    globalForDb.__dbClient = new MongoClient(uri);
+    await globalForDb.__dbClient.connect();
 
     // Get database and collection
-    const db = client.db(dbName);
-    collection = db.collection(collectionName);
+    const db = globalForDb.__dbClient.db(dbName);
+    globalForDb.__dbCollection = db.collection(collectionName);
 
-    return collection;
+    return globalForDb.__dbCollection;
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
     throw error;
@@ -94,9 +94,9 @@ if (
 }
 
 async function closeClient() {
-  if (client) {
-    await client.close();
-    client = null;
-    collection = null;
+  if (globalForDb.__dbClient) {
+    await globalForDb.__dbClient.close();
+    globalForDb.__dbClient = null;
+    globalForDb.__dbCollection = null;
   }
 }
