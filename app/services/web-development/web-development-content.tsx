@@ -96,6 +96,7 @@ export default function WebDevelopmentContent() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeLine, setActiveLine] = useState(0);
   const [isBuilding, setIsBuilding] = useState(false);
+  const [isHeroHidden, setIsHeroHidden] = useState(false);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -111,6 +112,13 @@ export default function WebDevelopmentContent() {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = opacity.on("change", (latest) => {
+      setIsHeroHidden(latest < 0.05);
+    });
+    return () => unsubscribe();
+  }, [opacity]);
+
   return (
     <div
       ref={containerRef}
@@ -119,6 +127,7 @@ export default function WebDevelopmentContent() {
       {/* Grid background */}
       <div className="fixed inset-0 z-0">
         <div
+          aria-hidden="true"
           className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: `
@@ -131,10 +140,11 @@ export default function WebDevelopmentContent() {
       </div>
 
       {/* Geometric shapes */}
-      <div className="pointer-events-none fixed inset-0 z-0">
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0">
         {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
+            aria-hidden="true"
             className="absolute border border-teal/10"
             style={{
               width: 100 + i * 50,
@@ -157,7 +167,12 @@ export default function WebDevelopmentContent() {
 
       {/* Hero section */}
       <motion.section
-        style={{ y: heroY, opacity }}
+        style={{
+          y: heroY,
+          opacity,
+          pointerEvents: isHeroHidden ? "none" : "auto",
+        }}
+        aria-hidden={isHeroHidden}
         className="relative flex min-h-screen items-center py-20"
       >
         <div className="container mx-auto px-4 sm:px-6">
@@ -231,7 +246,7 @@ export default function WebDevelopmentContent() {
                   onMouseLeave={() => setIsBuilding(false)}
                 >
                   <motion.span
-                    animate={isBuilding ? { rotate: 360 } : {}}
+                    animate={isBuilding ? { rotate: 360 } : { rotate: 0 }}
                     transition={{ duration: 1 }}
                   >
                     <Box className="size-5" />

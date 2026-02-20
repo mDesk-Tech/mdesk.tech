@@ -10,7 +10,11 @@ let client: MongoClient | null = null;
 let collection: Collection | null = null;
 
 // Guard against duplicate handler registration in HMR
-let handlersRegistered = false;
+// Use globalThis to persist across HMR reloads (Next.js pattern)
+const globalForDb = globalThis as typeof globalThis & {
+  __dbHandlersRegistered?: boolean;
+};
+const handlersRegistered = globalForDb.__dbHandlersRegistered ?? false;
 
 export async function getCollection() {
   if (collection) return collection;
@@ -51,7 +55,7 @@ if (
   typeof process.on === "function" &&
   !handlersRegistered
 ) {
-  handlersRegistered = true;
+  globalForDb.__dbHandlersRegistered = true;
   const timer = setInterval(cleanup, 60 * 60 * 1000);
   // Allow the process to exit even if the timer is still running
   if (typeof timer.unref === "function") {
@@ -60,7 +64,11 @@ if (
 
   // Close MongoDB connection when the application shuts down
   process.on("beforeExit", async () => {
-    await closeClient();
+    try {
+      await closeClient();
+    } catch (error) {
+      console.error("Error during beforeExit cleanup:", error);
+    }
   });
 
   // Handle termination signals

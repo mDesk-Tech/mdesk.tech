@@ -16,6 +16,38 @@ import {
   Wifi,
 } from "lucide-react";
 
+// CSS keyframes for performance - these run on the compositor thread
+const cssAnimations = `
+  @keyframes pulse-opacity {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+  @keyframes pulse-scale {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+  @keyframes led-blink {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+  @keyframes slide-diagonal {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(50px); }
+  }
+  .animate-pulse-opacity {
+    animation: pulse-opacity 4s ease-in-out infinite;
+  }
+  .animate-pulse-scale {
+    animation: pulse-scale 2s ease-in-out infinite;
+  }
+  .animate-led-blink {
+    animation: led-blink 1.5s ease-in-out infinite;
+  }
+  .animate-slide-diagonal {
+    animation: slide-diagonal 10s linear infinite;
+  }
+`;
+
 const features = [
   {
     icon: Clock,
@@ -137,11 +169,13 @@ export default function HostingContent() {
       ref={containerRef}
       className="relative min-h-screen overflow-hidden bg-[#0a0a0a]"
     >
+      {/* Inject CSS animations */}
+      <style>{cssAnimations}</style>
+
+      {/* Background grid - uses CSS animation for better performance */}
       <div className="fixed inset-0 z-0 opacity-5">
-        <motion.div
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 4, repeat: Infinity }}
-          className="size-full"
+        <div
+          className="animate-pulse-opacity size-full"
           style={{
             backgroundImage: `
               linear-gradient(90deg, #ffb800 1px, transparent 1px),
@@ -161,11 +195,7 @@ export default function HostingContent() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8 flex items-center gap-4 rounded-sm border border-amber/30 bg-amber/10 px-4 py-2"
           >
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="size-2 rounded-full bg-green-500"
-            />
+            <div className="animate-pulse-scale size-2 rounded-full bg-green-500" />
             <span className="font-mono text-sm text-amber">
               All Systems Operational
             </span>
@@ -239,15 +269,12 @@ export default function HostingContent() {
                       </span>
                       <div className="flex gap-1">
                         {Array.from({ length: 4 }).map((_, j) => (
-                          <motion.div
+                          <div
                             key={j}
-                            animate={{ opacity: [0.3, 1, 0.3] }}
-                            transition={{
-                              duration: 1.5,
-                              repeat: Infinity,
-                              delay: j * 0.2 + i * 0.1,
+                            className="animate-led-blink size-2 bg-amber"
+                            style={{
+                              animationDelay: `${j * 0.2 + i * 0.1}s`,
                             }}
-                            className="size-2 bg-amber"
                           />
                         ))}
                       </div>
@@ -494,10 +521,8 @@ export default function HostingContent() {
           className="container mx-auto px-4 sm:px-6"
         >
           <div className="relative overflow-hidden border-2 border-amber bg-[#141414] p-6 sm:p-12">
-            <motion.div
-              animate={{ x: [0, 100, 0] }}
-              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 opacity-5"
+            <div
+              className="animate-slide-diagonal absolute inset-0 opacity-5"
               style={{
                 backgroundImage:
                   "repeating-linear-gradient(90deg, #ffb800 0, #ffb800 1px, transparent 1px, transparent 50px)",

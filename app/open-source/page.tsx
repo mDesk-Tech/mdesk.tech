@@ -152,13 +152,14 @@ export default function OpenSourcePage() {
           {/* Lines */}
           {networkNodes.map((node, i) =>
             networkNodes.slice(i + 1).map((target, j) => {
+              const targetIndex = i + 1 + j;
               const distance = Math.sqrt(
                 Math.pow(target.x - node.x, 2) + Math.pow(target.y - node.y, 2),
               );
               if (distance > 40) return null;
               return (
                 <motion.line
-                  key={`${i}-${j}`}
+                  key={`${i}-${targetIndex}`}
                   x1={`${node.x}%`}
                   y1={`${node.y}%`}
                   x2={`${target.x}%`}

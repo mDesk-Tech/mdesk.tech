@@ -93,7 +93,7 @@ export default function WebDesignContent() {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
     };
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
@@ -109,6 +109,7 @@ export default function WebDesignContent() {
           x: cursorX,
           y: cursorY,
         }}
+        aria-hidden="true"
       >
         <motion.div
           className="flex size-8 -translate-1/2 items-center justify-center rounded-full border border-white"
@@ -120,7 +121,10 @@ export default function WebDesignContent() {
       </motion.div>
 
       {/* Top ruler */}
-      <div className="fixed inset-x-0 top-0 z-40 hidden h-6 items-end border-b border-[#333] bg-[#141414] px-4 lg:flex">
+      <div
+        className="fixed inset-x-0 top-0 z-40 hidden h-6 items-end border-b border-[#333] bg-[#141414] px-4 lg:flex"
+        aria-hidden="true"
+      >
         {rulerMarks.map((i) => (
           <div
             key={i}
@@ -135,7 +139,10 @@ export default function WebDesignContent() {
       </div>
 
       {/* Left ruler */}
-      <div className="fixed top-6 bottom-0 left-0 z-40 hidden w-6 flex-col border-r border-[#333] bg-[#141414] py-4 lg:flex">
+      <div
+        className="fixed top-6 bottom-0 left-0 z-40 hidden w-6 flex-col border-r border-[#333] bg-[#141414] py-4 lg:flex"
+        aria-hidden="true"
+      >
         {rulerMarks.map((i) => (
           <div
             key={i}
@@ -154,6 +161,7 @@ export default function WebDesignContent() {
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.6 }}
         className="fixed top-24 right-4 z-30 hidden w-48 rounded-lg border border-[#333] bg-[#141414] p-4 lg:block"
+        aria-hidden="true"
       >
         <div className="mb-4 flex items-center gap-2 border-b border-[#333] pb-2">
           <Palette className="size-4 text-coral" />
@@ -374,13 +382,7 @@ export default function WebDesignContent() {
                     Start Designing
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                     {/* Hover ripple effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-white/30"
-                      initial={{ scale: 0, opacity: 0 }}
-                      whileHover={{ scale: 2, opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                      style={{ borderRadius: "50%" }}
-                    />
+                    <div className="pointer-events-none absolute inset-0 scale-0 rounded-full bg-white/30 opacity-0 transition-all duration-500 group-hover:scale-150 group-hover:opacity-100" />
                   </Link>
                 </motion.div>
               </div>

@@ -268,7 +268,7 @@ const Navbar = memo(() => {
         {isMobileMenuOpen && (
           <motion.div
             key="mobile-nav"
-            className="fixed inset-0 top-[57px] z-9999 border-t-2 border-coral bg-[#0a0a0a] md:hidden"
+            className="navbar-mobile-overlay fixed inset-0 border-t-2 border-coral bg-[#0a0a0a] md:hidden"
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -20, opacity: 0 }}
@@ -375,7 +375,7 @@ function MagneticButton({
       href={href}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="btn-retro relative overflow-hidden px-4 py-2 text-xs text-[#0a0a0a]"
+      className="btn-retro group relative overflow-hidden px-4 py-2 text-xs text-[#0a0a0a]"
       style={{
         transform: `translate(${position.x}px, ${position.y}px)`,
         transition: "transform 0.2s ease-out",
@@ -383,7 +383,7 @@ function MagneticButton({
     >
       <span className="relative z-10">{children}</span>
       {/* Glow */}
-      <span className="absolute inset-0 -z-10 bg-linear-to-r from-coral to-coral/80 opacity-0 transition-opacity duration-300 hover:opacity-100" />
+      <span className="absolute inset-0 -z-10 bg-linear-to-r from-coral to-coral/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
     </Link>
   );
 }

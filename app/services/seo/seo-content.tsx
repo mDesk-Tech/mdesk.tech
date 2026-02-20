@@ -115,7 +115,7 @@ export default function SEOContent() {
   useEffect(() => {
     const currentKeyword = searchKeywords[currentKeywordIndex];
     const typeSpeed = isDeleting ? 30 : 80;
-    let pauseTimer: NodeJS.Timeout | null = null;
+    let pauseTimer: ReturnType<typeof setTimeout> | null = null;
 
     const timer = setTimeout(() => {
       if (!isDeleting && typedText === currentKeyword) {
@@ -349,7 +349,7 @@ export default function SEOContent() {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
                       >
-                        best web design agency
+                        {typedText}
                       </motion.span>
                       <motion.span
                         animate={{ opacity: [1, 0, 1] }}

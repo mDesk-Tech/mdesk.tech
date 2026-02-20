@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { Code, Zap, Layers, Globe, Lock, Users } from "lucide-react";
-import { useState, memo, useRef } from "react";
+import { useState, memo, useRef, useCallback } from "react";
 import { motion } from "motion/react";
 import {
   Dialog,
@@ -236,10 +236,14 @@ const headerVariants = {
 const Features = memo(() => {
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
 
+  const handleFeatureClick = useCallback((feature: Feature) => {
+    setSelectedFeature(feature);
+  }, []);
+
   return (
     <section className="relative overflow-hidden bg-[#0a0a0a] py-20 sm:py-32">
       {/* Background */}
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-20" aria-hidden="true">
         <div
           className="absolute inset-0"
           style={{
@@ -249,13 +253,20 @@ const Features = memo(() => {
           }}
         />
       </div>
-      <div className="scanlines absolute inset-0 opacity-20" />
+      <div
+        className="scanlines absolute inset-0 opacity-20"
+        aria-hidden="true"
+      />
 
       {/* Orbs */}
-      <div className="pointer-events-none absolute top-1/4 left-1/4 size-64 animate-pulse rounded-full bg-coral/5 blur-3xl" />
+      <div
+        className="pointer-events-none absolute top-1/4 left-1/4 size-64 animate-pulse rounded-full bg-coral/5 blur-3xl"
+        aria-hidden="true"
+      />
       <div
         className="pointer-events-none absolute right-1/4 bottom-1/4 size-64 animate-pulse rounded-full bg-teal/5 blur-3xl"
         style={{ animationDelay: "1s" }}
+        aria-hidden="true"
       />
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6">
@@ -309,7 +320,7 @@ const Features = memo(() => {
               key={feature.title}
               feature={feature}
               index={index}
-              onClick={() => setSelectedFeature(feature)}
+              onClick={() => handleFeatureClick(feature)}
             />
           ))}
         </div>

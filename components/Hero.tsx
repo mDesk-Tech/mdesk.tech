@@ -21,11 +21,17 @@ const Hero = memo(() => {
       setIsHydrated(true);
     };
 
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
     if (typeof requestIdleCallback !== "undefined") {
       requestIdleCallback(scheduleHydration, { timeout: 100 });
     } else {
-      setTimeout(scheduleHydration, 50);
+      timeoutId = setTimeout(scheduleHydration, 50);
     }
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, []);
 
   useEffect(() => {
@@ -35,7 +41,7 @@ const Hero = memo(() => {
 
     checkMobile();
 
-    let resizeTimeout: NodeJS.Timeout;
+    let resizeTimeout: ReturnType<typeof setTimeout>;
     const debouncedResize = () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(checkMobile, 150);
@@ -115,19 +121,32 @@ const Hero = memo(() => {
       <div
         ref={glowRef}
         className="pointer-events-none absolute inset-0 opacity-30"
+        aria-hidden="true"
       />
 
       {/* Grid */}
-      <div className="grid-pattern pointer-events-none absolute inset-0 opacity-50" />
+      <div
+        className="grid-pattern pointer-events-none absolute inset-0 opacity-50"
+        aria-hidden="true"
+      />
 
       {/* Scanlines */}
-      <div className="scanlines pointer-events-none absolute inset-0 opacity-30" />
+      <div
+        className="scanlines pointer-events-none absolute inset-0 opacity-30"
+        aria-hidden="true"
+      />
 
       {/* Noise */}
-      <div className="noise pointer-events-none absolute inset-0" />
+      <div
+        className="noise pointer-events-none absolute inset-0"
+        aria-hidden="true"
+      />
 
       {/* Border frame */}
-      <div className="pointer-events-none absolute inset-8 border border-[#333] opacity-30 sm:inset-12">
+      <div
+        className="pointer-events-none absolute inset-8 border border-[#333] opacity-30 sm:inset-12"
+        aria-hidden="true"
+      >
         <div className="absolute -top-px left-0 h-px w-16 animate-pulse bg-linear-to-r from-transparent via-coral to-transparent" />
         <div
           className="absolute top-0 -right-px h-16 w-px animate-pulse bg-linear-to-b from-transparent via-teal to-transparent"

@@ -1,9 +1,7 @@
 import type React from "react";
 import type { Metadata } from "next";
-import "./globals.css";
 import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -12,7 +10,10 @@ import Script from "next/script";
 import PageTransition from "@/components/PageTransition";
 import { getSiteUrl } from "@/lib/seo";
 
+import "./globals.css";
+
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
 const SITE_URL = getSiteUrl();
 
 const geist = Geist({
@@ -64,9 +65,11 @@ export const metadata: Metadata = {
     // Use the dynamic Twitter image route with absolute URL to silence warnings
     images: [`${SITE_URL}/twitter-image`],
   },
-  verification: {
-    google: "google-site-verification-code",
-  },
+  ...(googleSiteVerification && {
+    verification: {
+      google: googleSiteVerification,
+    },
+  }),
   manifest: "/manifest.json",
 };
 
@@ -190,7 +193,6 @@ export default function RootLayout({
                       });
                     `}
                   </Script>
-                  <GoogleAnalytics gaId={gaId} />
                 </>
               )}
             </>

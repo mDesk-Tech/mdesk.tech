@@ -15,6 +15,9 @@
 :root {
   --animate-duration: 0.5s;
 
+  /* Navbar height - sync with Navbar.tsx padding and logo size */
+  --navbar-height: 64px;
+
   /* Brand colors */
   --coral: 17 100% 60%;
   --coral-bright: 17 100% 65%;
@@ -262,9 +265,16 @@ html {
 /* Navbar Styles */
 .navbar {
   border-bottom: 2px solid hsl(var(--border));
+  height: var(--navbar-height);
   transition:
     border-color 250ms ease,
     box-shadow 250ms ease;
+}
+
+/* Mobile menu overlay positioned below navbar */
+.navbar-mobile-overlay {
+  top: var(--navbar-height);
+  z-index: 9999;
 }
 
 @media (width >= 768px) {
@@ -322,19 +332,23 @@ html {
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
 
+  html,
+  body {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
 
     overflow-x: hidden;
-  }
-
-  ::-webkit-scrollbar {
-    display: none;
   }
 
   /* Selection styling */
@@ -834,8 +848,5 @@ html {
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
   /* Radius */
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
