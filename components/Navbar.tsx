@@ -346,7 +346,14 @@ const Navbar = memo(() => {
   );
 });
 
-// Magnetic button
+/**
+ * Renders an anchor styled as a magnetic button that visually shifts toward the cursor to create a subtle parallax interaction.
+ *
+ * The element applies a small transform offset while the pointer moves over it and resets when the pointer leaves; it also includes a decorative glow revealed on hover.
+ *
+ * @param href - Destination URL for the button
+ * @param children - Content rendered inside the button
+ */
 function MagneticButton({
   href,
   children,

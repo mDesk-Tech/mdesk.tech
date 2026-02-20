@@ -92,6 +92,13 @@ const codeLines = [
   { text: "};", color: "#ffb800", indent: 0 },
 ];
 
+/**
+ * Render the Web Development landing content with an interactive hero, animated code preview, feature grid, stats, and CTA sections.
+ *
+ * The component manages scroll-driven hero transforms, cycles highlighted code lines, and exposes hover interactions (e.g., a spinning icon when starting a build). It assembles the full page layout including decorative backgrounds, feature cards, KPI blocks, and call-to-action controls.
+ *
+ * @returns The JSX element tree for the WebDevelopmentContent component.
+ */
 export default function WebDevelopmentContent() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeLine, setActiveLine] = useState(0);

@@ -9,7 +9,9 @@ export const size = {
 export const contentType = "image/png";
 
 /**
- * Twitter card generator
+ * Produce the Twitter/Open Graph image used for mdesk.tech social previews.
+ *
+ * @returns An ImageResponse that renders a 1200×630 PNG of the mdesk.tech card containing the logo block, brand name, tagline badge, descriptive subtext, decorative grid and borders, corner accents, pixel strip, and a subtle scanlines overlay.
  */
 export default function TwitterImage() {
   return new ImageResponse(

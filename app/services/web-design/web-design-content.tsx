@@ -72,6 +72,14 @@ const processSteps = [
 
 const rulerMarks = Array.from({ length: 20 }, (_, i) => i);
 
+/**
+ * Renders a comprehensive interactive web design showcase with animated backgrounds, custom cursor,
+ * and detailed sections including color selectors, layered canvas-style hero, capabilities, process overview, and call-to-action.
+ *
+ * The component uses scroll and mouse motion-based animations to enhance visual engagement,
+ * and it dynamically updates the theme color based on user selection.
+ * It includes rulers, layered panels, and responsive layouts optimized for large screens.
+ */
 export default function WebDesignContent() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeColor, setActiveColor] = useState(0);

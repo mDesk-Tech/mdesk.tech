@@ -1,5 +1,12 @@
 import type { MetadataRoute } from "next";
 
+/**
+ * Produce the sitemap entries for mdesk.tech.
+ *
+ * Each entry describes a public site URL and includes `url`, `lastModified` (set to the current date/time), `changeFrequency`, and `priority`.
+ *
+ * @returns An array of sitemap entry objects for the site's pages containing `url`, `lastModified`, `changeFrequency`, and `priority`
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {

@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Page component that renders the web design service content.
+ *
+ * @returns The React element for the Web Design page containing the full content.
+ */
 export default function WebDesignPage() {
   return <WebDesignContent />;
 }

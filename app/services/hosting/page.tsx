@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Renders the hosting service page content.
+ *
+ * @returns A React element containing the hosting page content
+ */
 export default function HostingPage() {
   return <HostingContent />;
 }

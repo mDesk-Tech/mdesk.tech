@@ -6,7 +6,14 @@ import { motion, AnimatePresence } from "motion/react";
 import { useEffect, useState } from "react";
 
 /**
- * Smooth page transitions with AnimatePresence
+ * Wraps page content to apply a keyed enter/exit animation when the route changes.
+ *
+ * When rendering on the client, returns the children wrapped in an AnimatePresence-driven
+ * motion container keyed to the current pathname so each route change animates in and out.
+ * Before client hydration completes, returns the children unchanged to avoid hydration mismatch.
+ *
+ * @param children - The page content to be animated during route transitions.
+ * @returns The children wrapped with motion animations after mount; the raw children before mount.
  */
 export default function PageTransition({
   children,

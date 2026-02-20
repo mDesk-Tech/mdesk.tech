@@ -10,7 +10,9 @@ export const size = {
 export const contentType = "image/png";
 
 /**
- * Dynamic favicon generator
+ * Generate the favicon image response used for the site's icon.
+ *
+ * @returns An ImageResponse containing the rendered favicon graphic
  */
 export default function Icon() {
   return new ImageResponse(

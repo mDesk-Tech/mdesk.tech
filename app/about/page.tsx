@@ -153,6 +153,13 @@ const slideInRight = {
   },
 };
 
+/**
+ * Renders the About page with animated hero, parallax decorations, stats, mission, timeline, values, process, features, and a call-to-action.
+ *
+ * The component wires scroll-driven transforms and motion variants to produce parallax and entrance animations, and composes multiple themed sections (By The Numbers, Our Mission, Our Journey, Our Values, Our Process, Why Choose Us, and CTA).
+ *
+ * @returns The About page React element to be mounted in the application layout.
+ */
 export default function AboutPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({

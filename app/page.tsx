@@ -18,7 +18,9 @@ const About = dynamic(() => import("@/components/About"));
 const Contact = dynamic(() => import("@/components/Contact"));
 
 /**
- * Homepage - hero + lazy-loaded sections
+ * Render the homepage composed of a hero followed by lazy-loaded content sections.
+ *
+ * @returns The homepage React element containing the hero and four lazily loaded sections: Features, Services, About, and Contact.
  */
 export default async function Home() {
   return (

@@ -72,6 +72,11 @@ const sections = [
   },
 ];
 
+/**
+ * Render the site's Privacy Policy page with header, sectioned policy content, and a contact CTA.
+ *
+ * @returns The JSX element containing the privacy policy layout and content
+ */
 export default function PrivacyPolicy() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#0a0a0a] pt-32 pb-20">

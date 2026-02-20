@@ -19,6 +19,12 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Layout component for the Services section that renders its children.
+ *
+ * @param children - Content to render inside the Services layout
+ * @returns The React element that renders the provided `children`
+ */
 export default function ServicesLayout({
   children,
 }: {

@@ -8,6 +8,12 @@ export const metadata: Metadata = pageMetadata({
   path: "/contact",
 });
 
+/**
+ * Layout component that renders content for the Contact page.
+ *
+ * @param children - The React nodes to render inside the contact layout.
+ * @returns A React element (fragment) that contains `children`.
+ */
 export default function ContactLayout({
   children,
 }: {

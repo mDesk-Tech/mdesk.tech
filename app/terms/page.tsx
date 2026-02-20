@@ -73,6 +73,11 @@ const sections = [
   },
 ];
 
+/**
+ * Renders the Terms of Service page with a decorative background, header (including last-updated date and icon), a data-driven list of numbered sections, and a contact panel.
+ *
+ * @returns A React element representing the complete Terms of Service page layout.
+ */
 export default function TermsOfService() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#0a0a0a] pt-32 pb-20">

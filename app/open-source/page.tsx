@@ -106,6 +106,13 @@ const IMPACT_STATS = [
   },
 ];
 
+/**
+ * Render the Open Source landing page with animated hero, network background, stats, benefits, impact metrics, FAQ, and a final call-to-action.
+ *
+ * The component constructs a single-page, interactive landing experience with scroll-driven animations, decorative SVG/network visuals, animated UI elements, and accessible semantic sections for hero, stats, benefits, impact, FAQ, and CTA.
+ *
+ * @returns The page's JSX element representing the complete interactive landing page.
+ */
 export default function OpenSourcePage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const lineGradientId = useId() + "lineGradient";
