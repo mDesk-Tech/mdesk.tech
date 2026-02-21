@@ -44,29 +44,35 @@ const glitchAnimation = {
 
 const Error = ({ error, reset }: ErrorProps) => {
   const [isHydrated, setIsHydrated] = useState(false);
-  const [errorCode] = useState(() =>
-    Math.floor(500 + Math.random() * 99).toString(),
-  );
+  const [errorCode, setErrorCode] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     console.error("Application error:", error);
+
+    // Set error code after mount to avoid hydration mismatch
+    const errorCodeTimer = setTimeout(() => {
+      setErrorCode(
+        error.digest ?? Math.floor(500 + Math.random() * 99).toString(),
+      );
+    }, 0);
 
     const scheduleHydration = () => {
       setIsHydrated(true);
     };
 
     let idleCallbackId: ReturnType<typeof requestIdleCallback> | null = null;
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    let hydrationTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
     if (typeof requestIdleCallback !== "undefined") {
       idleCallbackId = requestIdleCallback(scheduleHydration, { timeout: 100 });
     } else {
-      timeoutId = setTimeout(scheduleHydration, 50);
+      hydrationTimeoutId = setTimeout(scheduleHydration, 50);
     }
 
     return () => {
+      clearTimeout(errorCodeTimer);
       if (idleCallbackId) cancelIdleCallback(idleCallbackId);
-      if (timeoutId) clearTimeout(timeoutId);
+      if (hydrationTimeoutId) clearTimeout(hydrationTimeoutId);
     };
   }, [error]);
 
@@ -180,7 +186,7 @@ const Error = ({ error, reset }: ErrorProps) => {
               }}
             >
               <span className="bg-linear-to-br from-red-500 via-orange-500 to-red-500 bg-clip-text text-7xl font-black text-transparent sm:text-8xl md:text-9xl">
-                {errorCode}
+                {errorCode ?? "..."}
               </span>
             </motion.div>
           </motion.div>
@@ -254,7 +260,7 @@ const Error = ({ error, reset }: ErrorProps) => {
             variants={itemVariants}
           >
             {[
-              { label: "Status", value: errorCode },
+              { label: "Status", value: errorCode ?? "..." },
               { label: "Type", value: "Server Error" },
               { label: "Action", value: "Retry" },
             ].map((item, index) => (

@@ -758,30 +758,6 @@ html {
   }
 }
 
-/* Spotlight cards */
-.spotlight-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.spotlight-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgb(255 107 53 / 10%),
-    transparent 40%
-  );
-  opacity: 0;
-  transition: opacity 300ms ease;
-  pointer-events: none;
-}
-
-.spotlight-card:hover::before {
-  opacity: 1;
-}
-
 /* Icon shake */
 @keyframes icon-shake {
   0%,
@@ -804,6 +780,67 @@ html {
 
 .animate-icon-shake {
   animation: icon-shake 0.5s ease-in-out;
+}
+
+/* Hosting page animations */
+@keyframes pulse-opacity {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes pulse-scale {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes led-blink {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-diagonal {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(50px);
+  }
+}
+
+.animate-pulse-opacity {
+  animation: pulse-opacity 4s ease-in-out infinite;
+}
+
+.animate-pulse-scale {
+  animation: pulse-scale 2s ease-in-out infinite;
+}
+
+.animate-led-blink {
+  animation: led-blink 1.5s ease-in-out infinite;
+}
+
+.animate-slide-diagonal {
+  animation: slide-diagonal 10s linear infinite;
 }
 
 /* 3D transforms */

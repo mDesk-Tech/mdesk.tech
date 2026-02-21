@@ -252,7 +252,7 @@ const GlobalError = ({ error, reset }: GlobalErrorProps) => {
               </motion.div>
 
               {/* Technical Details */}
-              {error.message && (
+              {process.env.NODE_ENV === "development" && error.message && (
                 <motion.div
                   className="mx-auto mb-8 max-w-2xl"
                   initial={{ opacity: 0, y: 20 }}

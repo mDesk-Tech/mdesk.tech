@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import Link from "next/link";
 import { Home, ArrowLeft, AlertTriangle } from "lucide-react";
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 
 // Animation variants
 const glitchVariants = {
@@ -56,35 +56,51 @@ const statusIndicatorAnimation = {
 const NotFound = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHydrated, setIsHydrated] = useState(false);
+  const rafRef = useRef<number | null>(null);
+  const pendingMousePos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const scheduleHydration = () => {
       setIsHydrated(true);
     };
 
+    let idleCallbackId: ReturnType<typeof requestIdleCallback> | null = null;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     if (typeof requestIdleCallback !== "undefined") {
-      requestIdleCallback(scheduleHydration, { timeout: 100 });
+      idleCallbackId = requestIdleCallback(scheduleHydration, { timeout: 100 });
     } else {
       timeoutId = setTimeout(scheduleHydration, 50);
     }
 
     return () => {
+      if (idleCallbackId) cancelIdleCallback(idleCallbackId);
       if (timeoutId) clearTimeout(timeoutId);
     };
   }, []);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    setMousePosition({
+    pendingMousePos.current = {
       x: (e.clientX / window.innerWidth - 0.5) * 20,
       y: (e.clientY / window.innerHeight - 0.5) * 20,
-    });
+    };
+
+    if (rafRef.current === null) {
+      rafRef.current = requestAnimationFrame(() => {
+        setMousePosition(pendingMousePos.current);
+        rafRef.current = null;
+      });
+    }
   }, []);
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
   }, [handleMouseMove]);
 
   // Memoize parallax style to prevent rerenders

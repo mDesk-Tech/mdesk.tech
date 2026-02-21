@@ -47,6 +47,8 @@ export async function getCollection() {
     } catch (err) {
       // Clear the promise on error so future calls can retry
       globalForDb.__dbConnectionPromise = undefined;
+      // Close the client to prevent connection leaks
+      await closeClient();
       console.error("Error connecting to MongoDB:", err);
       throw err;
     }

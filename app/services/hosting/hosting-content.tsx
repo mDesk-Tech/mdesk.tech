@@ -16,38 +16,6 @@ import {
   Wifi,
 } from "lucide-react";
 
-// CSS keyframes for performance
-const cssAnimations = `
-  @keyframes pulse-opacity {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.6; }
-  }
-  @keyframes pulse-scale {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-  }
-  @keyframes led-blink {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
-  }
-  @keyframes slide-diagonal {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(50px); }
-  }
-  .animate-pulse-opacity {
-    animation: pulse-opacity 4s ease-in-out infinite;
-  }
-  .animate-pulse-scale {
-    animation: pulse-scale 2s ease-in-out infinite;
-  }
-  .animate-led-blink {
-    animation: led-blink 1.5s ease-in-out infinite;
-  }
-  .animate-slide-diagonal {
-    animation: slide-diagonal 10s linear infinite;
-  }
-`;
-
 const features = [
   {
     icon: Clock,
@@ -181,9 +149,6 @@ export default function HostingContent() {
       ref={containerRef}
       className="relative min-h-screen overflow-hidden bg-[#0a0a0a]"
     >
-      {/* Inject CSS animations */}
-      <style>{cssAnimations}</style>
-
       {/* Background grid  */}
       <div className="fixed inset-0 z-0 opacity-5">
         <div
