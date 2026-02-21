@@ -108,7 +108,7 @@ export {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogFooter,
+  // DialogFooter,
   DialogTitle,
   DialogDescription,
 };
