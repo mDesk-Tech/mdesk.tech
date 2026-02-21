@@ -11,8 +11,8 @@ interface UseIntersectionObserverOptions {
 }
 
 /**
- * Hook to detect if an element is in viewport using Intersection Observer API.
- * More performant than scroll listeners for triggering animations.
+ * Detect if element is in viewport using Intersection Observer
+ * More performant than scroll listeners
  */
 export const useIntersectionObserver = (
   options: UseIntersectionObserverOptions = {},
@@ -32,7 +32,7 @@ export const useIntersectionObserver = (
     const element = ref.current;
     if (!element) return;
 
-    // If already visible and frozen, don't observe again
+    // Skip if already visible and frozen
     if (freezeOnceVisible && hasBeenVisible) return;
 
     const observer = new IntersectionObserver(

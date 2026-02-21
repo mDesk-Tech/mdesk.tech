@@ -2,270 +2,438 @@
 
 import type React from "react";
 import { Code, Zap, Layers, Globe, Lock, Users } from "lucide-react";
-import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
-import { useState, useEffect, useId, useRef, useCallback, memo } from "react";
-import { createPortal } from "react-dom";
-import { useOutsideClick } from "@/hooks/use-outside-click";
-import { SectionHeading } from "@/components/ui/section-heading";
-import InView from "@/components/InView";
+import { useState, memo, useRef, useCallback, useMemo } from "react";
+import { motion } from "motion/react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 interface Feature {
   title: string;
   description: string;
   icon: React.ReactNode;
   details: string[];
+  color: string;
 }
 
 const features: Feature[] = [
   {
-    title: "Completely open source",
+    title: "Open Source Powered",
     description:
-      "Powered by powerful open-source projects, standing on giants' shoulders",
-    icon: <Code className="size-8" />,
+      "Built on industry-standard open-source technologies, standing on giants' shoulders",
+    icon: <Code className="size-6" />,
     details: [
       "Built with Next.js, React, and TypeScript",
       "Leverages industry-standard open-source libraries",
       "Community-driven development and support",
       "Transparent codebase with regular updates",
     ],
+    color: "#ff6b35",
   },
   {
-    title: "Dynamic HTML Streaming",
+    title: "Dynamic Streaming",
     description:
-      "Instantly stream UI from the server, integrated with the App Router and React Suspense.",
-    icon: <Zap className="size-8" />,
+      "Instantly stream UI from the server with React Suspense for optimal performance",
+    icon: <Zap className="size-6" />,
     details: [
       "Progressive rendering for faster perceived performance",
       "Seamless integration with React Suspense boundaries",
       "Optimized for Core Web Vitals",
       "Reduced time to first byte (TTFB)",
     ],
+    color: "#00d4aa",
   },
   {
-    title: "React Server Components",
+    title: "Server Components",
     description:
-      "Add components without sending additional client-side JavaScript. Built on the latest React features.",
-    icon: <Layers className="size-8" />,
+      "Add components without sending additional client-side JavaScript",
+    icon: <Layers className="size-6" />,
     details: [
       "Zero-bundle-size server components",
       "Direct database access from components",
       "Automatic code splitting",
       "Improved SEO with server-side rendering",
     ],
+    color: "#ffb800",
   },
   {
-    title: "AI-Powered Code Generation",
+    title: "AI Integration",
     description:
-      "Leverage machine learning to automate repetitive coding tasks and suggest optimizations.",
-    icon: <Globe className="size-8" />,
+      "Leverage machine learning to automate tasks and suggest optimizations",
+    icon: <Globe className="size-6" />,
     details: [
       "Intelligent code completion and suggestions",
       "Automated refactoring recommendations",
       "Pattern recognition for best practices",
       "Context-aware documentation generation",
     ],
+    color: "#ff6b35",
   },
   {
-    title: "Advanced Security Features",
-    description:
-      "Built-in protection against common web vulnerabilities and automated security updates.",
-    icon: <Lock className="size-8" />,
+    title: "Advanced Security",
+    description: "Built-in protection against common web vulnerabilities",
+    icon: <Lock className="size-6" />,
     details: [
       "CSRF and XSS protection out of the box",
       "Secure headers and content security policies",
       "Regular security audits and patches",
       "Environment variable encryption",
     ],
+    color: "#00d4aa",
   },
   {
-    title: "Real-time Collaboration",
+    title: "Team Collaboration",
     description:
-      "Enable seamless team collaboration with live editing and version control integration.",
-    icon: <Users className="size-8" />,
+      "Enable seamless collaboration with live editing and version control",
+    icon: <Users className="size-6" />,
     details: [
       "Live cursor tracking and presence indicators",
       "Conflict-free collaborative editing",
       "Git integration for version control",
       "Team activity feeds and notifications",
     ],
+    color: "#ffb800",
   },
 ];
 
-const FeatureCard = memo(
+const SpotlightCard = memo(
   ({
     feature,
+    index,
     onClick,
   }: {
     feature: Feature;
     index: number;
     onClick: () => void;
   }) => {
-    const handleClick = useCallback(() => {
-      onClick();
-    }, [onClick]);
+    const cardRef = useRef<HTMLDivElement>(null);
+    const spotlightRef = useRef<HTMLDivElement>(null);
+
+    const handleMouseMove = useCallback(
+      (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!cardRef.current || !spotlightRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        spotlightRef.current.style.background = `radial-gradient(600px circle at ${x}px ${y}px, ${feature.color}15, transparent 40%)`;
+      },
+      [feature.color],
+    );
+
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick?.();
+        }
+      },
+      [onClick],
+    );
+
+    // Memoized styles to prevent rerenders
+    const iconStyle = useMemo(
+      () => ({ borderColor: feature.color, color: feature.color }),
+      [feature.color],
+    );
+    const borderGlowStyle = useMemo(
+      () => ({
+        boxShadow: `inset 0 0 20px ${feature.color}20, 0 0 30px ${feature.color}10`,
+      }),
+      [feature.color],
+    );
+    const cornerAccentStyle = useMemo(
+      () => ({ backgroundColor: feature.color }),
+      [feature.color],
+    );
 
     return (
-      <CardContainer containerClassName="py-0">
-        <CardBody className="group/card relative flex h-auto min-h-[280px] w-full cursor-pointer touch-manipulation flex-col rounded-2xl border border-border bg-card p-6 transition-colors hover:border-primary/50 sm:h-[320px] sm:p-8">
-          <CardItem translateZ="50" className="mb-4">
-            <div className="inline-flex rounded-xl bg-primary/10 p-3 text-primary sm:p-4">
-              {feature.icon}
-            </div>
-          </CardItem>
+      <motion.div
+        ref={cardRef}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        onClick={onClick}
+        onMouseMove={handleMouseMove}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+        role="button"
+        aria-label={`Learn more about ${feature.title}`}
+        className="group relative h-full cursor-pointer overflow-hidden border-2 border-[#333] bg-[#141414] p-6 transition-all duration-500 hover:border-coral focus:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] sm:p-8"
+        whileHover={{ y: -8, transition: { duration: 0.2 } }}
+      >
+        {/* Mouse spotlight */}
+        <div
+          ref={spotlightRef}
+          className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        />
 
-          <CardItem
-            translateZ="60"
-            className="mb-2 text-lg font-bold text-foreground sm:mb-3 sm:text-xl"
+        {/* Border glow */}
+        <div
+          className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          style={borderGlowStyle}
+        />
+
+        {/* Corner lines */}
+        <div className="absolute top-0 left-0 h-px w-0 bg-linear-to-r from-coral to-transparent transition-all duration-500 group-hover:w-full" />
+        <div
+          className="absolute top-0 right-0 h-0 w-px bg-linear-to-b from-coral to-transparent transition-all duration-500 group-hover:h-full"
+          style={{ transitionDelay: "0.1s" }}
+        />
+        <div
+          className="absolute right-0 bottom-0 h-px w-0 bg-linear-to-l from-teal to-transparent transition-all duration-500 group-hover:w-full"
+          style={{ transitionDelay: "0.2s" }}
+        />
+        <div
+          className="absolute bottom-0 left-0 h-0 w-px bg-linear-to-t from-teal to-transparent transition-all duration-500 group-hover:h-full"
+          style={{ transitionDelay: "0.3s" }}
+        />
+
+        <div className="relative">
+          {/* Icon */}
+          <motion.div
+            className="mb-4 inline-flex border-2 p-3 transition-all duration-300 group-hover:scale-110 group-hover:border-coral"
+            style={iconStyle}
+            whileHover={iconHoverVariants}
           >
+            {feature.icon}
+          </motion.div>
+
+          {/* Number */}
+          <div className="group-hover:text-shadow-neon absolute top-0 right-0 font-mono text-sm text-[#333] transition-all duration-300 group-hover:text-coral">
+            {String(index + 1).padStart(2, "0")}
+          </div>
+
+          {/* Content */}
+          <h3 className="mb-3 text-lg font-bold text-white transition-colors duration-300 group-hover:text-coral sm:text-xl">
             {feature.title}
-          </CardItem>
+          </h3>
 
-          <CardItem
-            translateZ="40"
-            className="flex-1 text-sm/relaxed text-muted-foreground"
-          >
+          <p className="mb-6 text-sm/relaxed text-[#a0a0a0]">
             {feature.description}
-          </CardItem>
+          </p>
 
-          <CardItem
-            translateZ="30"
-            className="mt-4 text-sm font-medium text-primary"
-          >
-            <button
-              onClick={handleClick}
-              className="touch-manipulation py-2 hover:underline"
-            >
-              Click to learn more →
-            </button>
-          </CardItem>
-        </CardBody>
-      </CardContainer>
+          {/* CTA */}
+          <div className="flex items-center gap-2 font-mono text-xs tracking-wider text-coral uppercase">
+            <span className="relative">
+              Learn More
+              <span className="absolute -bottom-1 left-0 h-px w-0 bg-coral transition-all duration-300 group-hover:w-full" />
+            </span>
+            <span className="transition-transform duration-300 group-hover:translate-x-2">
+              →
+            </span>
+          </div>
+        </div>
+
+        {/* Corner accent */}
+        <div
+          className="absolute -right-1 -bottom-1 size-4 opacity-0 transition-all duration-300 group-hover:scale-125 group-hover:opacity-100"
+          style={cornerAccentStyle}
+        />
+
+        {/* Pulse ring */}
+        <div className="group-hover:animate-pulse-ring pointer-events-none absolute inset-0 opacity-0">
+          <div className="absolute inset-0 border-2" style={iconStyle} />
+        </div>
+      </motion.div>
     );
   },
 );
 
-FeatureCard.displayName = "FeatureCard";
+SpotlightCard.displayName = "SpotlightCard";
+
+const headerVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+    },
+  },
+};
+
+const iconHoverVariants = {
+  rotate: [0, -5, 5, -5, 5, 0],
+  transition: { duration: 0.5 },
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 const Features = memo(() => {
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
-  const id = useId();
-  const portalTarget = typeof window !== "undefined" ? document.body : null;
 
-  useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape" && selectedFeature) {
-        setSelectedFeature(null);
-      }
-    }
-
-    if (selectedFeature) {
-      requestAnimationFrame(() => {
-        document.body.style.overflow = "hidden";
-      });
-    } else {
-      requestAnimationFrame(() => {
-        document.body.style.overflow = "auto";
-      });
-    }
-
-    window.addEventListener("keydown", onKeyDown, { passive: true });
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [selectedFeature]);
-
-  const closeModal = useCallback(() => {
-    setSelectedFeature(null);
+  const handleFeatureClick = useCallback((feature: Feature) => {
+    setSelectedFeature(feature);
   }, []);
 
-  useOutsideClick(ref, closeModal);
-
   return (
-    <section className="relative overflow-hidden bg-muted/20 py-20 sm:py-32">
-      <div className="relative z-10 container mx-auto px-4 sm:px-6">
-        <SectionHeading
-          badge="Why Choose Us"
-          title={
-            <span className="bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Powerful Features
-            </span>
-          }
-          description={
-            <>
-              Our platform combines cutting-edge technologies with
-              <br />
-              intuitive design to deliver exceptional digital experiences
-            </>
-          }
-          className="mb-12 sm:mb-20"
+    <section className="relative overflow-hidden bg-[#0a0a0a] py-20 sm:py-32">
+      {/* Background */}
+      <div className="absolute inset-0 opacity-20" aria-hidden="true">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(0, 212, 170, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 170, 0.1) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
         />
+      </div>
+      <div
+        className="scanlines absolute inset-0 opacity-20"
+        aria-hidden="true"
+      />
+
+      {/* Orbs */}
+      <div
+        className="pointer-events-none absolute top-1/4 left-1/4 size-64 animate-pulse rounded-full bg-coral/5 blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute right-1/4 bottom-1/4 size-64 animate-pulse rounded-full bg-teal/5 blur-3xl"
+        style={{ animationDelay: "1s" }}
+        aria-hidden="true"
+      />
+
+      <div className="relative z-10 container mx-auto px-4 sm:px-6">
+        {/* Header */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={sectionVariants}
+          className="mb-12 text-center sm:mb-20"
+        >
+          <motion.div
+            variants={headerVariants}
+            className="mb-4 inline-flex items-center gap-2"
+          >
+            {/* Square */}
+            <div className="size-2 animate-[spin_4s_linear_infinite] bg-teal shadow-[0_0_10px_rgba(0,212,170,0.8)]" />
+            <span className="font-mono text-xs tracking-wider text-teal uppercase">
+              Why Choose Us
+            </span>
+          </motion.div>
+          <motion.h2
+            variants={headerVariants}
+            className="mb-4 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl"
+          >
+            Powerful{" "}
+            <span className="bg-linear-to-r from-teal to-coral bg-clip-text text-transparent">
+              Features
+            </span>
+          </motion.h2>
+          <motion.p
+            variants={headerVariants}
+            className="mx-auto max-w-2xl text-base text-[#a0a0a0]"
+          >
+            Our platform combines cutting-edge technologies with intuitive
+            design to deliver exceptional digital experiences
+          </motion.p>
+        </motion.div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
           {features.map((feature, index) => (
-            <InView key={index} delay={index * 0.1}>
-              <FeatureCard
-                feature={feature}
-                index={index}
-                onClick={() => setSelectedFeature(feature)}
-              />
-            </InView>
+            <SpotlightCard
+              key={feature.title}
+              feature={feature}
+              index={index}
+              onClick={() => handleFeatureClick(feature)}
+            />
           ))}
         </div>
       </div>
 
-      {portalTarget &&
-        createPortal(
-          selectedFeature ? (
-            <>
-              <div
-                key="overlay"
-                className="fixed inset-0 z-100 animate-[fade-in_150ms_ease-out_forwards] bg-black/80 opacity-0 backdrop-blur-sm"
-                onClick={closeModal}
-              />
-              <div className="pointer-events-none fixed inset-0 z-110 flex items-center justify-center p-4">
-                <div
-                  key={`modal-${selectedFeature.title}-${id}`}
-                  ref={ref}
-                  role="dialog"
-                  aria-modal="true"
-                  className="pointer-events-auto flex h-auto max-h-[85vh] w-full max-w-2xl animate-[modal-in_220ms_cubic-bezier(0.2,0.8,0.2,1)_forwards] flex-col overflow-hidden rounded-3xl border border-primary/20 bg-card opacity-0 shadow-2xl"
-                >
-                  <div className="overflow-y-auto p-6 sm:p-8">
-                    <div className="mb-6 flex items-start gap-4">
-                      <div className="shrink-0 rounded-xl bg-primary/10 p-3 text-primary sm:p-4">
-                        {selectedFeature.icon}
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="mb-2 text-xl font-bold text-foreground sm:text-2xl">
-                          {selectedFeature.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground sm:text-base">
-                          {selectedFeature.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <h4 className="mb-4 text-base font-semibold sm:text-lg">
-                        Key Benefits:
-                      </h4>
-                      {selectedFeature.details.map((detail, index) => (
-                        <div
-                          key={index}
-                          className="animate-fade-up flex items-start gap-3 rounded-lg bg-muted/50 p-3"
-                          style={{ animationDelay: `${index * 0.1}s` }}
-                        >
-                          <div className="mt-2 size-2 shrink-0 rounded-full bg-primary" />
-                          <p className="text-sm">{detail}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+      <Dialog
+        open={selectedFeature !== null}
+        onOpenChange={() => setSelectedFeature(null)}
+      >
+        {selectedFeature && (
+          <DialogContent className="max-w-2xl border-2 border-coral bg-[#141414] p-0 shadow-[0_0_30px_rgba(255,107,53,0.3)]">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.2 }}
+            >
+              {/* Header */}
+              <DialogHeader className="flex flex-row items-center justify-between border-b-2 border-[#333] p-4 sm:p-6">
+                <div className="flex items-center gap-4">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.1, type: "spring" }}
+                    className="inline-flex border-2 p-3 shadow-[0_0_15px_rgba(255,107,53,0.3)]"
+                    style={{
+                      borderColor: selectedFeature.color,
+                      color: selectedFeature.color,
+                    }}
+                  >
+                    {selectedFeature.icon}
+                  </motion.div>
+                  <DialogTitle className="text-lg font-bold text-white sm:text-xl">
+                    {selectedFeature.title}
+                  </DialogTitle>
                 </div>
+              </DialogHeader>
+
+              {/* Content */}
+              <div className="p-4 sm:p-6">
+                <DialogDescription className="mb-6 text-sm/relaxed text-[#a0a0a0] sm:text-base">
+                  {selectedFeature.description}
+                </DialogDescription>
+
+                <h4 className="mb-4 font-mono text-xs tracking-wider text-coral uppercase">
+                  Key Benefits
+                </h4>
+
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: { staggerChildren: 0.1 },
+                    },
+                  }}
+                  className="space-y-3"
+                >
+                  {selectedFeature.details.map((detail, index) => (
+                    <motion.div
+                      key={index}
+                      variants={{
+                        hidden: { opacity: 0, x: -20 },
+                        visible: { opacity: 1, x: 0 },
+                      }}
+                      className="group flex items-start gap-3 border border-[#333] bg-[#0a0a0a] p-3 transition-all duration-300 hover:border-coral/50 hover:shadow-[0_0_15px_rgba(255,107,53,0.1)]"
+                    >
+                      <div
+                        className="mt-1.5 size-2 shrink-0 shadow-[0_0_5px_rgba(255,107,53,0.5)]"
+                        style={{ backgroundColor: selectedFeature.color }}
+                      />
+                      <p className="text-sm text-white">{detail}</p>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </div>
-            </>
-          ) : null,
-          portalTarget,
+            </motion.div>
+          </DialogContent>
         )}
+      </Dialog>
     </section>
   );
 });

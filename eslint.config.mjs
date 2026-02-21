@@ -7,9 +7,16 @@ export default defineConfig([
   ...nextVitals,
   ...nextTs,
   {
+    // Settings for eslint-plugin-react (used by nextVitals)
+    settings: {
+      react: { version: "19" },
+    },
+  },
+  {
     // enable all recommended rules from better-tailwindcss
-    extends: [eslintPluginBetterTailwindcss.configs.recommended],
+    ...eslintPluginBetterTailwindcss.configs.recommended,
     rules: {
+      ...eslintPluginBetterTailwindcss.configs.recommended.rules,
       // Fix custom css class in globals.css not detected
       "better-tailwindcss/no-unknown-classes": "off",
       "better-tailwindcss/enforce-consistent-line-wrapping": "off",

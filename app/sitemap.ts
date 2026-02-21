@@ -1,5 +1,12 @@
 import type { MetadataRoute } from "next";
 
+/**
+ * Produce the sitemap entries for mdesk.tech.
+ *
+ * Each entry describes a public site URL and includes `url`, `lastModified` (set to the current date/time), `changeFrequency`, and `priority`.
+ *
+ * @returns An array of sitemap entry objects for the site's pages containing `url`, `lastModified`, `changeFrequency`, and `priority`
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
@@ -25,6 +32,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
+    },
+    {
+      url: "https://mdesk.tech/services/hosting",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: "https://mdesk.tech/services/seo",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: "https://mdesk.tech/services/web-design",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: "https://mdesk.tech/services/web-development",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
     {
       url: "https://mdesk.tech/open-source",

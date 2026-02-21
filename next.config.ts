@@ -1,11 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  turbopack: {
-    root: __dirname,
-  },
+  // Packages with native binaries
+  serverExternalPackages: ["@takumi-rs/image-response", "@takumi-rs/core"],
   typescript: {
-    // Skip type checking during `next build`
+    // Skip type check on build
     ignoreBuildErrors: true,
   },
   compiler: {
@@ -35,7 +34,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // Cache Next.js static assets aggressively
+        // Cache static assets
         source: "/_next/static/:path*",
         headers: [
           {
@@ -45,7 +44,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Add security and performance headers to all pages
+        // Security headers
         source: "/:path*",
         headers: [
           {

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Github, Mail } from "lucide-react";
+import { Github, Mail, ArrowUpRight } from "lucide-react";
 import { memo } from "react";
 
 type FooterProps = {
@@ -21,26 +21,47 @@ const Footer = memo(({ year }: FooterProps) => {
     },
   ];
 
+  const quickLinks = [
+    { name: "Home", href: "/" },
+    { name: "Services", href: "/services" },
+    { name: "Open Source", href: "/open-source" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+  ];
+
   return (
-    <footer className="relative overflow-hidden border-t border-border/40 bg-linear-to-b from-background to-muted/20 pt-12 pb-6 sm:pt-16 sm:pb-8">
-      <div className="noise absolute inset-0 z-0 opacity-30" />
-      <div className="absolute top-0 left-1/4 -z-10 size-96 rounded-full bg-primary/5 blur-3xl" />
-      <div className="absolute right-1/4 bottom-0 -z-10 size-96 rounded-full bg-primary/5 blur-3xl" />
+    <footer className="relative overflow-hidden border-t-2 border-[#333] bg-[#0a0a0a] pt-12 pb-6 sm:pt-16 sm:pb-8">
+      {/* Background */}
+      <div className="noise absolute inset-0" />
+      <div className="absolute top-0 left-1/4 -z-10 size-96 rounded-full bg-coral/5 blur-3xl" />
+      <div className="absolute right-1/4 bottom-0 -z-10 size-96 rounded-full bg-teal/5 blur-3xl" />
+
+      {/* Scanlines */}
+      <div className="scanlines absolute inset-0 opacity-10" />
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-12 lg:grid-cols-4">
+          {/* Brand */}
           <div className="col-span-1 sm:col-span-2">
-            <Link
-              href="/"
-              className="inline-block bg-linear-to-r from-cyan-400 to-teal-400 bg-clip-text text-2xl font-bold text-transparent transition-all hover:from-cyan-300 hover:to-teal-300 sm:text-3xl"
-            >
-              mdesk.tech
+            {/* Logo */}
+            <Link href="/" className="group inline-flex items-center gap-3">
+              <div className="relative flex size-10 items-center justify-center bg-coral transition-transform group-hover:scale-105">
+                <span className="font-mono text-xl font-bold text-[#0a0a0a]">
+                  M
+                </span>
+                <div className="absolute -right-1 -bottom-1 size-2 bg-teal" />
+              </div>
+              <span className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                mdesk<span className="text-coral">.</span>tech
+              </span>
             </Link>
-            <p className="mt-4 max-w-md text-sm/relaxed text-muted-foreground sm:text-base">
+
+            <p className="mt-4 max-w-md text-sm/relaxed text-[#a0a0a0] sm:text-base">
               Designing and hosting your digital future with cutting-edge web
               solutions that drive growth and success.
             </p>
 
+            {/* Social */}
             <div className="mt-6 flex space-x-3">
               {socialLinks.map((social, index) => (
                 <a
@@ -49,7 +70,7 @@ const Footer = memo(({ year }: FooterProps) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="touch-manipulation rounded-xl border border-border/50 bg-muted/30 p-2.5 text-muted-foreground transition-all will-change-transform hover:-translate-y-0.5 hover:scale-[1.03] hover:border-primary/50 hover:bg-primary/10 hover:text-primary sm:p-3"
+                  className="group touch-manipulation border-2 border-[#333] bg-[#141414] p-2.5 text-[#a0a0a0] transition-all hover:border-coral hover:text-coral sm:p-3"
                 >
                   {social.icon}
                 </a>
@@ -57,66 +78,73 @@ const Footer = memo(({ year }: FooterProps) => {
             </div>
           </div>
 
+          {/* Links */}
           <div>
-            <h3 className="mb-4 text-base font-semibold text-foreground sm:text-lg">
+            <h3 className="mb-4 flex items-center gap-2 font-mono text-sm font-semibold tracking-wider text-coral uppercase">
+              <div className="size-1.5 bg-coral" />
               Quick Links
             </h3>
             <ul className="space-y-3">
-              {[
-                { name: "Home", href: "/" },
-                { name: "Services", href: "/services" },
-                { name: "Open Source", href: "/open-source" },
-                { name: "About", href: "/about" },
-                { name: "Contact", href: "/contact" },
-              ].map((link, index) => (
+              {quickLinks.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.href}
                     prefetch={false}
-                    className="group inline-flex touch-manipulation items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary sm:text-base"
+                    className="group inline-flex touch-manipulation items-center gap-2 text-sm text-[#a0a0a0] transition-colors hover:text-white sm:text-base"
                   >
-                    <span className="h-0.5 w-0 bg-primary transition-all group-hover:w-4" />
+                    <span className="font-mono text-xs text-teal">{"//"}</span>
                     {link.name}
+                    <ArrowUpRight className="size-3 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
+          {/* Contact */}
           <div>
-            <h3 className="mb-4 text-base font-semibold text-foreground sm:text-lg">
+            <h3 className="mb-4 flex items-center gap-2 font-mono text-sm font-semibold tracking-wider text-teal uppercase">
+              <div className="size-1.5 bg-teal" />
               Contact Us
             </h3>
             <ul className="space-y-3">
-              <li className="text-sm text-muted-foreground sm:text-base">
+              <li className="text-sm text-[#a0a0a0] sm:text-base">
                 <a
                   href="mailto:hello@mdesk.tech"
-                  className="group inline-flex touch-manipulation items-center gap-2 break-all transition-colors hover:text-primary"
+                  className="group inline-flex touch-manipulation items-center gap-2 break-all transition-colors hover:text-white"
                 >
-                  <Mail className="size-4 shrink-0 transition-colors group-hover:text-primary" />
+                  <Mail className="size-4 shrink-0 text-coral" />
                   hello@mdesk.tech
                 </a>
               </li>
             </ul>
+
+            {/* Pixels */}
+            <div className="mt-6 flex gap-2">
+              <div className="size-3 bg-coral" />
+              <div className="size-3 bg-teal" />
+              <div className="size-3 border border-coral" />
+            </div>
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border/40 pt-6 sm:mt-12 sm:flex-row sm:pt-8">
-          <p className="text-center text-xs text-muted-foreground sm:text-left sm:text-sm">
+        {/* Bottom */}
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t-2 border-[#333] pt-6 sm:mt-12 sm:flex-row sm:pt-8">
+          <p className="text-center font-mono text-xs text-[#666] sm:text-left sm:text-sm">
             © {year} mdesk.tech. All rights reserved.
           </p>
           <div className="flex space-x-4 sm:space-x-6">
             <Link
               href="/privacy"
               prefetch={false}
-              className="touch-manipulation text-xs text-muted-foreground transition-colors hover:text-primary sm:text-sm"
+              className="touch-manipulation text-xs text-[#666] transition-colors hover:text-coral sm:text-sm"
             >
               Privacy Policy
             </Link>
             <Link
               href="/terms"
               prefetch={false}
-              className="touch-manipulation text-xs text-muted-foreground transition-colors hover:text-primary sm:text-sm"
+              className="touch-manipulation text-xs text-[#666] transition-colors hover:text-coral sm:text-sm"
             >
               Terms of Service
             </Link>

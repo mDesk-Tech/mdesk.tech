@@ -20,7 +20,7 @@
     {
       "matchUpdateTypes": ["major"],
       "labels": ["dependencies", "major-update"],
-      "assignees": ["@senior-developer"]
+      "assignees": ["@YueMiyuki"]
     },
     {
       "matchDepTypes": ["devDependencies"],
@@ -40,7 +40,7 @@
   "commitMessageExtra": "to {{newVersion}}",
   "vulnerabilityAlerts": {
     "labels": ["security"],
-    "assignees": ["@security-team"]
+    "assignees": ["@YueMiyuki"]
   },
   "lockFileMaintenance": {
     "enabled": true,
