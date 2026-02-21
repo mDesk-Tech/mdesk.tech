@@ -1,13 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useMotionValue,
-} from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -23,6 +17,62 @@ import {
 } from "lucide-react";
 
 const colorPalette = ["#ff6b35", "#00d4aa", "#ffb800", "#ff4081", "#7c4dff"];
+
+/**
+ * Custom cursor component that only shows within a specific container
+ * Uses CSS transform for exact positioning without spring lag
+ */
+function CustomCursor({
+  containerRef,
+}: {
+  containerRef: React.RefObject<HTMLElement | null>;
+}) {
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const cursor = cursorRef.current;
+    if (!container || !cursor) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+    };
+
+    const handleMouseEnter = () => setIsVisible(true);
+    const handleMouseLeave = () => setIsVisible(false);
+
+    container.addEventListener("mousemove", handleMouseMove, { passive: true });
+    container.addEventListener("mouseenter", handleMouseEnter);
+    container.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseenter", handleMouseEnter);
+      container.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [containerRef]);
+
+  return (
+    <div
+      ref={cursorRef}
+      className="pointer-events-none fixed top-0 left-0 z-50 hidden lg:block"
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transition: "opacity 0.15s ease",
+      }}
+      aria-hidden="true"
+    >
+      <motion.div
+        className="flex size-8 items-center justify-center rounded-full border border-white/80 bg-white/10 backdrop-blur-sm"
+        animate={{ scale: [1, 1.2, 1] }}
+        transition={{ duration: 1, repeat: Infinity }}
+      >
+        <div className="size-1 rounded-full bg-white" />
+      </motion.div>
+    </div>
+  );
+}
 
 const features = [
   {
@@ -82,6 +132,7 @@ const rulerMarks = Array.from({ length: 20 }, (_, i) => i);
  */
 export default function WebDesignContent() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
   const [activeColor, setActiveColor] = useState(0);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -90,44 +141,11 @@ export default function WebDesignContent() {
 
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
-  // Use motion values for cursor to avoid re-renders
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const cursorX = useSpring(mouseX, { stiffness: 500, damping: 50 });
-  const cursorY = useSpring(mouseY, { stiffness: 500, damping: 50 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
-
   return (
     <div
       ref={containerRef}
-      className="relative min-h-screen overflow-hidden bg-[#0a0a0a] lg:cursor-none"
+      className="relative min-h-screen overflow-hidden bg-[#0a0a0a]"
     >
-      {/* Custom cursor */}
-      <motion.div
-        className="pointer-events-none fixed z-50 hidden mix-blend-difference lg:block"
-        style={{
-          x: cursorX,
-          y: cursorY,
-        }}
-        aria-hidden="true"
-      >
-        <motion.div
-          className="flex size-8 -translate-1/2 items-center justify-center rounded-full border border-white"
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 1, repeat: Infinity }}
-        >
-          <div className="size-1 rounded-full bg-white" />
-        </motion.div>
-      </motion.div>
-
       {/* Top ruler */}
       <div
         className="fixed inset-x-0 top-0 z-40 hidden h-6 items-end border-b border-[#333] bg-[#141414] px-4 lg:flex"
@@ -264,7 +282,11 @@ export default function WebDesignContent() {
       </motion.div>
 
       {/* Hero - canvas style */}
-      <section className="relative flex min-h-screen items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
+      <section
+        ref={heroRef}
+        className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-20 sm:px-6 lg:cursor-none lg:px-8"
+      >
+        <CustomCursor containerRef={heroRef} />
         <div className="container mx-auto px-4 sm:px-6">
           {/* Canvas frame */}
           <motion.div
