@@ -72,9 +72,7 @@ Project Structure
 API
 
 - `POST /api/contact` (file: [`app/api/contact/route.ts`](https://github.com/mDesk-Tech/mdesk.tech/blob/main/app/api/contact/route.ts))
-  - Body: `{ name: string; email: string; subject?: string; message: string; isOpenSourceForm?: boolean }
-
-`
+  - Body: `{ name: string; email: string; subject?: string; message: string; isOpenSourceForm?: boolean }`
 
 - Rate limit: 1 request per IP per hour (MongoDB TTL index)
 - Side effect: sends a Discord embed to `DISCORD_WEBHOOK_URL`
