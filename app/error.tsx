@@ -45,15 +45,16 @@ const glitchAnimation = {
 const Error = ({ error, reset }: ErrorProps) => {
   const [isHydrated, setIsHydrated] = useState(false);
   const [errorCode, setErrorCode] = useState<string | undefined>(undefined);
+  const [errorId, setErrorId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     console.error("Application error:", error);
 
     // Set error code after mount to avoid hydration mismatch
+    // Use 3-digit status code for display, store digest separately as reference ID
     const errorCodeTimer = setTimeout(() => {
-      setErrorCode(
-        error.digest ?? Math.floor(500 + Math.random() * 99).toString(),
-      );
+      setErrorCode(Math.floor(500 + Math.random() * 99).toString());
+      setErrorId(error.digest);
     }, 0);
 
     const scheduleHydration = () => {
@@ -219,10 +220,10 @@ const Error = ({ error, reset }: ErrorProps) => {
                 <code className="block max-h-32 overflow-auto font-mono text-sm text-red-400">
                   {error.message}
                 </code>
-                {error.digest && (
+                {errorId && (
                   <div className="mt-2 border-t border-red-500/20 pt-2">
                     <span className="font-mono text-xs text-[#666]">
-                      Error ID: {error.digest}
+                      Error ID: {errorId}
                     </span>
                   </div>
                 )}
