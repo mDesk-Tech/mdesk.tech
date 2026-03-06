@@ -159,9 +159,13 @@ const Navbar = memo(() => {
     }
   }, [pathname]);
 
-  const handleScroll = useDebouncedCallback(() => {
-    setIsScrolled(window.scrollY > 10);
-  }, 50);
+  // Use useCallback to ensure stable reference for the scroll handler
+  const handleScroll = useDebouncedCallback(
+    useCallback(() => {
+      setIsScrolled(window.scrollY > 10);
+    }, []),
+    50,
+  );
 
   useEffect(() => {
     handleScroll();
