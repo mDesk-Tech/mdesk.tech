@@ -11,10 +11,28 @@ import {
   startTransition,
   useRef,
 } from "react";
+
+function useDebouncedCallback<T extends (...args: unknown[]) => unknown>(
+  callback: T,
+  delay: number,
+): (...args: Parameters<T>) => void {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  return useCallback(
+    (...args: Parameters<T>) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        callback(...args);
+      }, delay);
+    },
+    [callback, delay],
+  );
+}
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { debounce } from "@/lib/debounce-util";
 import { AnimatePresence, motion } from "motion/react";
 
 const navLinks = [
@@ -36,34 +54,23 @@ const NavLink = memo(function NavLink({
   isActive,
   onLinkClick,
 }: NavLinkProps) {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <Link
       href={link.path}
       aria-current={isActive ? "page" : undefined}
       onClick={(e) => onLinkClick(e, link.path)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       className={`group relative touch-manipulation text-sm font-medium tracking-wider uppercase transition-colors hover:text-coral ${
         isActive ? "text-coral" : "text-muted-foreground"
       }`}
     >
-      <span className="mr-1 font-mono text-xs text-coral/50">{`//`}</span>
-      {/* Glitch effect */}
+      <span className="mr-1 font-mono text-xs text-coral/50">{"//"}</span>
+      {/* Glitch effect - CSS-only hover */}
       <span className="relative">
         {link.name.split("").map((char, i) => (
           <span
             key={i}
-            className="relative inline-block"
-            style={
-              isHovered
-                ? {
-                    animation: `glitch 0.4s ease forwards`,
-                    animationDelay: `${i * 0.03}s`,
-                  }
-                : {}
-            }
+            className="relative inline-block group-hover:animate-[glitch_0.4s_ease_forwards]"
+            style={{ animationDelay: `${i * 0.03}s` }}
           >
             {char}
           </span>
@@ -74,11 +81,9 @@ const NavLink = memo(function NavLink({
           isActive ? "w-full" : "w-0 group-hover:w-full"
         }`}
       />
-      {/* Glow */}
+      {/* Glow - CSS-only hover */}
       <span
-        className={`pointer-events-none absolute inset-0 -z-10 blur-sm transition-opacity duration-300 ${
-          isHovered ? "opacity-100" : "opacity-0"
-        }`}
+        className="pointer-events-none absolute inset-0 -z-10 opacity-0 blur-sm transition-opacity duration-300 group-hover:opacity-100"
         style={{
           background:
             "radial-gradient(circle at center, rgba(255, 107, 53, 0.4) 0%, transparent 70%)",
@@ -154,15 +159,15 @@ const Navbar = memo(() => {
     }
   }, [pathname]);
 
-  useEffect(() => {
-    const handleScroll = debounce(() => {
-      setIsScrolled(window.scrollY > 10);
-    }, 50);
+  const handleScroll = useDebouncedCallback(() => {
+    setIsScrolled(window.scrollY > 10);
+  }, 50);
 
+  useEffect(() => {
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [handleScroll]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {

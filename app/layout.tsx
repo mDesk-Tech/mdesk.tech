@@ -32,9 +32,9 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "mdesk.tech - Designing and hosting your digital future",
+  title: "mdesk.tech - Web Design That Actually Works",
   description:
-    "mdesk.tech specializes in cutting-edge web design and reliable hosting solutions.",
+    "Small team building solid websites. No fluff, no surprises—just sites that load fast and do what you need.",
   metadataBase: new URL(SITE_URL),
   icons: {
     icon: [{ url: "/icon", type: "image/x-icon" }],
@@ -44,24 +44,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: SITE_URL,
-    title: "mdesk.tech - Designing and hosting your digital future",
+    title: "mdesk.tech - Web Design That Actually Works",
     description:
-      "Cutting-edge web design and reliable hosting solutions for businesses that want to stand out in the digital landscape.",
+      "Small team building solid websites. No fluff, no surprises—just sites that load fast and do what you need.",
     images: [
       {
         // Use the dynamic OG image route with absolute URL to silence warnings
         url: `${SITE_URL}/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: "mdesk.tech - Designing and hosting your digital future",
+        alt: "mdesk.tech - Web Design That Actually Works",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "mdesk.tech - Designing and hosting your digital future",
+    title: "mdesk.tech - Web Design That Actually Works",
     description:
-      "Cutting-edge web design and reliable hosting solutions for businesses that want to stand out in the digital landscape.",
+      "Small team building solid websites. No fluff, no surprises—just sites that load fast and do what you need.",
     // Use the dynamic Twitter image route with absolute URL to silence warnings
     images: [`${SITE_URL}/twitter-image`],
   },

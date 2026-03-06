@@ -89,25 +89,25 @@ export async function POST(request: NextRequest) {
       ],
     };
 
-    // Send to Discord webhook
-    const response = await fetch(webhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(discordMessage),
-    });
+    // Send to Discord webhook and update rate limit in parallel
+    const [response] = await Promise.all([
+      fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(discordMessage),
+      }),
+      collection.updateOne(
+        { ip },
+        { $set: { timestamp: now } },
+        { upsert: true },
+      ),
+    ]);
 
     if (!response.ok) {
       throw new Error(`Discord webhook error: ${response.statusText}`);
     }
-
-    // Update rate limit in MongoDB
-    await collection.updateOne(
-      { ip },
-      { $set: { timestamp: now } },
-      { upsert: true },
-    );
 
     if (isOpenSourceForm) {
       const caseId = body;

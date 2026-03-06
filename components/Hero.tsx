@@ -1,8 +1,15 @@
 "use client";
 
 import { useRef, useEffect, useState, memo } from "react";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+
+// Static data defined outside component to prevent recreations
+const stats = [
+  { value: "40+", label: "Sites Launched" },
+  { value: "5+", label: "Years Building" },
+  { value: "24/7", label: "Support Available" },
+] as const;
 
 const Hero = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -193,28 +200,20 @@ const Hero = memo(() => {
         className="relative z-10 container px-4 py-20 sm:px-6 sm:py-32"
       >
         <div className="mx-auto max-w-5xl text-center">
-          {/* Badge */}
-          <div className="animate-fade-up mb-6 inline-flex items-center gap-2 border-2 border-coral/30 bg-coral/5 px-4 py-2 transition-all duration-300 hover:border-coral/60 sm:mb-8 sm:px-6">
-            <Sparkles className="size-3 text-coral sm:size-4" />
-            <span className="font-mono text-xs font-semibold tracking-wider text-coral uppercase">
-              Next-Gen Web Solutions
-            </span>
-          </div>
-
           {/* Headline */}
           <h1
             className="mb-6 text-4xl font-black tracking-tight sm:mb-8 sm:text-6xl md:text-7xl lg:text-8xl"
             data-lcp-element="true"
           >
-            <span className="block text-white">Designing Your</span>
-            <span className="neon-text-coral mt-2 block">Digital Future</span>
+            <span className="block text-white">Websites That</span>
+            <span className="neon-text-coral mt-2 block">Work For You</span>
           </h1>
 
           {/* Subheadline */}
           <p className="animate-fade-up animation-delay-200 mx-auto mb-8 max-w-3xl px-4 text-base/relaxed font-light text-[#a0a0a0] sm:mb-12 sm:text-xl md:text-2xl">
-            Cutting-edge web design and reliable hosting solutions
+            Small team, focused work. We design and build sites
             <br className="hidden sm:block" />
-            for businesses that want to stand out
+            that help your business grow without the headaches.
           </p>
 
           {/* CTAs */}
@@ -236,11 +235,7 @@ const Hero = memo(() => {
 
           {/* Stats */}
           <div className="animate-fade-up animation-delay-400 mt-16 grid grid-cols-3 gap-4 border-t-2 border-[#333] pt-8 sm:mt-20 sm:gap-8">
-            {[
-              { value: "100+", label: "Projects Delivered" },
-              { value: "15+", label: "Team Members" },
-              { value: "99%", label: "Client Satisfaction" },
-            ].map((stat, index) => (
+            {stats.map((stat, index) => (
               <div key={index} className="group text-center">
                 <div className="font-mono text-2xl font-bold text-coral transition-all duration-300 sm:text-3xl md:text-4xl">
                   {stat.value}

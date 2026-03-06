@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-import { useMemo } from "react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { cn } from "@/lib/utils";
 
@@ -42,14 +41,8 @@ export default function LazySection({
     freezeOnceVisible: true,
   });
 
-  // Compute height values once
-  const { height, containIntrinsicSize } = useMemo(() => {
-    const h = typeof minHeight === "number" ? `${minHeight}px` : minHeight;
-    return {
-      height: h,
-      containIntrinsicSize: `auto ${h}`,
-    };
-  }, [minHeight]);
+  const height = typeof minHeight === "number" ? `${minHeight}px` : minHeight;
+  const containIntrinsicSize = `auto ${height}`;
 
   return (
     <div
