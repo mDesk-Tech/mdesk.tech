@@ -18,6 +18,16 @@ function useDebouncedCallback<T extends (...args: unknown[]) => unknown>(
 ): (...args: Parameters<T>) => void {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Cleanup timeout on unmount to prevent delayed callbacks after component unmounts
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, []);
+
   return useCallback(
     (...args: Parameters<T>) => {
       if (timeoutRef.current) {
@@ -69,7 +79,7 @@ const NavLink = memo(function NavLink({
         {link.name.split("").map((char, i) => (
           <span
             key={i}
-            className="relative inline-block group-hover:animate-[glitch_0.4s_ease_forwards]"
+            className="relative inline-block motion-safe:group-hover:animate-[glitch_0.4s_ease_forwards] motion-reduce:animate-none"
             style={{ animationDelay: `${i * 0.03}s` }}
           >
             {char}
@@ -77,13 +87,13 @@ const NavLink = memo(function NavLink({
         ))}
       </span>
       <span
-        className={`pointer-events-none absolute -bottom-1 left-0 h-0.5 bg-coral transition-[width] duration-300 ease-out ${
-          isActive ? "w-full" : "w-0 group-hover:w-full"
+        className={`pointer-events-none absolute -bottom-1 left-0 h-0.5 bg-coral transition-[width] duration-300 ease-out motion-reduce:transition-none ${
+          isActive ? "w-full" : "w-0 group-hover:w-full motion-reduce:w-full"
         }`}
       />
       {/* Glow - CSS-only hover */}
       <span
-        className="pointer-events-none absolute inset-0 -z-10 opacity-0 blur-sm transition-opacity duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-0 blur-sm transition-opacity duration-300 group-hover:opacity-100 motion-reduce:opacity-100 motion-reduce:transition-none"
         style={{
           background:
             "radial-gradient(circle at center, rgba(255, 107, 53, 0.4) 0%, transparent 70%)",
@@ -146,7 +156,11 @@ GlitchLogo.displayName = "GlitchLogo";
 
 const Navbar = memo(() => {
   const pathname = usePathname();
-  const [isScrolled, setIsScrolled] = useState(false);
+  // Initialize scroll state from window to avoid setState in effect
+  const [isScrolled, setIsScrolled] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.scrollY > 10;
+  });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const normalizedPath = useMemo(() => {
@@ -168,7 +182,6 @@ const Navbar = memo(() => {
   );
 
   useEffect(() => {
-    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
