@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
       ],
     };
 
-    // Send to Discord webhook
+    // Send to Discord webhook first
     const response = await fetch(webhookUrl, {
       method: "POST",
       headers: {
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       throw new Error(`Discord webhook error: ${response.statusText}`);
     }
 
-    // Update rate limit in MongoDB
+    // Only update rate limit after successful webhook delivery
     await collection.updateOne(
       { ip },
       { $set: { timestamp: now } },

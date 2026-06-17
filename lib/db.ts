@@ -1,4 +1,5 @@
 import { MongoClient, type Collection } from "mongodb";
+import { cache } from "react";
 
 // MongoDB config
 const uri = process.env.MONGODB_URI || "";
@@ -19,11 +20,12 @@ const handlersRegistered = globalForDb.__dbHandlersRegistered ?? false;
 
 /**
  * Obtain the rate-limits MongoDB collection, establishing and caching a client connection if needed.
+ * Uses React.cache() for per-request deduplication and global caching for HMR survival.
  *
  * @returns The MongoDB collection for the configured database and collection name.
  * @throws If establishing the MongoDB connection fails, the error is rethrown.
  */
-export async function getCollection() {
+const getCollectionCached = cache(async () => {
   // Return existing collection if already connected
   if (globalForDb.__dbCollection) return globalForDb.__dbCollection;
 
@@ -64,6 +66,16 @@ export async function getCollection() {
   })();
 
   return globalForDb.__dbConnectionPromise;
+});
+
+/**
+ * Obtain the rate-limits MongoDB collection with per-request deduplication.
+ *
+ * @returns The MongoDB collection for the configured database and collection name.
+ * @throws If establishing the MongoDB connection fails, the error is rethrown.
+ */
+export async function getCollection() {
+  return getCollectionCached();
 }
 
 /**

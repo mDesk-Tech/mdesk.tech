@@ -1,7 +1,15 @@
 "use client";
 
 import type React from "react";
-import { Code, Zap, Layers, Globe, Lock, Users } from "lucide-react";
+import {
+  Code,
+  Zap,
+  Layers,
+  Globe,
+  Lock,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import { useState, memo, useRef, useCallback, useMemo } from "react";
 import { motion } from "motion/react";
 import {
@@ -15,17 +23,29 @@ import {
 interface Feature {
   title: string;
   description: string;
-  icon: React.ReactNode;
+  iconName: IconName;
   details: string[];
   color: string;
 }
+
+type IconName = "code" | "zap" | "layers" | "globe" | "lock" | "users";
+
+// Icon component mapping to avoid JSX element recreation
+const iconMap: Record<IconName, LucideIcon> = {
+  code: Code,
+  zap: Zap,
+  layers: Layers,
+  globe: Globe,
+  lock: Lock,
+  users: Users,
+};
 
 const features: Feature[] = [
   {
     title: "Open Source Powered",
     description:
       "Built on industry-standard open-source technologies, standing on giants' shoulders",
-    icon: <Code className="size-6" />,
+    iconName: "code",
     details: [
       "Built with Next.js, React, and TypeScript",
       "Leverages industry-standard open-source libraries",
@@ -38,7 +58,7 @@ const features: Feature[] = [
     title: "Dynamic Streaming",
     description:
       "Instantly stream UI from the server with React Suspense for optimal performance",
-    icon: <Zap className="size-6" />,
+    iconName: "zap",
     details: [
       "Progressive rendering for faster perceived performance",
       "Seamless integration with React Suspense boundaries",
@@ -51,7 +71,7 @@ const features: Feature[] = [
     title: "Server Components",
     description:
       "Add components without sending additional client-side JavaScript",
-    icon: <Layers className="size-6" />,
+    iconName: "layers",
     details: [
       "Zero-bundle-size server components",
       "Direct database access from components",
@@ -64,7 +84,7 @@ const features: Feature[] = [
     title: "AI Integration",
     description:
       "Leverage machine learning to automate tasks and suggest optimizations",
-    icon: <Globe className="size-6" />,
+    iconName: "globe",
     details: [
       "Intelligent code completion and suggestions",
       "Automated refactoring recommendations",
@@ -76,7 +96,7 @@ const features: Feature[] = [
   {
     title: "Advanced Security",
     description: "Built-in protection against common web vulnerabilities",
-    icon: <Lock className="size-6" />,
+    iconName: "lock",
     details: [
       "CSRF and XSS protection out of the box",
       "Secure headers and content security policies",
@@ -89,7 +109,7 @@ const features: Feature[] = [
     title: "Team Collaboration",
     description:
       "Enable seamless collaboration with live editing and version control",
-    icon: <Users className="size-6" />,
+    iconName: "users",
     details: [
       "Live cursor tracking and presence indicators",
       "Conflict-free collaborative editing",
@@ -112,6 +132,7 @@ const SpotlightCard = memo(
   }) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const spotlightRef = useRef<HTMLDivElement>(null);
+    const IconComponent = iconMap[feature.iconName];
 
     const handleMouseMove = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
@@ -200,7 +221,7 @@ const SpotlightCard = memo(
             style={iconStyle}
             whileHover={iconHoverVariants}
           >
-            {feature.icon}
+            <IconComponent className="size-6" />
           </motion.div>
 
           {/* Number */}
@@ -382,7 +403,10 @@ const Features = memo(() => {
                       color: selectedFeature.color,
                     }}
                   >
-                    {selectedFeature.icon}
+                    {(() => {
+                      const SelectedIcon = iconMap[selectedFeature.iconName];
+                      return <SelectedIcon className="size-6" />;
+                    })()}
                   </motion.div>
                   <DialogTitle className="text-lg font-bold text-white sm:text-xl">
                     {selectedFeature.title}

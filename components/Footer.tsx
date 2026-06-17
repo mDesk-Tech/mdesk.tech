@@ -57,8 +57,8 @@ const Footer = memo(({ year }: FooterProps) => {
             </Link>
 
             <p className="mt-4 max-w-md text-sm/relaxed text-[#a0a0a0] sm:text-base">
-              Designing and hosting your digital future with cutting-edge web
-              solutions that drive growth and success.
+              Websites that work—built to last, hosted reliably, supported
+              honestly.
             </p>
 
             {/* Social */}

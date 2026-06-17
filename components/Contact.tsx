@@ -32,8 +32,8 @@ const Contact = memo(() => {
             Get in <span className="text-gradient">Touch</span>
           </h2>
           <p className="mx-auto max-w-2xl text-base text-[#a0a0a0]">
-            Ready to start your next project? We&apos;d love to hear from you
-            and discuss how we can help bring your vision to life.
+            Have a project in mind? Send us a message and we&apos;ll get back to
+            you within 24 hours.
           </p>
         </div>
 
